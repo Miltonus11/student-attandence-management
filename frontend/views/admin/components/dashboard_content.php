@@ -1,4 +1,11 @@
+<?php
+    echo json_encode([
+        "message"=> "Session",
+        "username" => $_SESSION['username']
+    ]);
 
+    
+?>
 <h1 class="page_title">Administrator Dashboard</h1>
 
 <div class="row">

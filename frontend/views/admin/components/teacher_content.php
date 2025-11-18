@@ -2,7 +2,7 @@
                 <div class="container-fluid">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb_item"><a href="./admin.php">Home</a></li>
+                            <li class="breadcrumb_item"><a href="./admin-dashboard.php">Home</a></li>
                             <li class="breadcrumb_item active" aria-current="page">Manage Teachers</li>
                         </ol>
                     </nav>

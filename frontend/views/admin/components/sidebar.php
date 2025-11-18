@@ -58,7 +58,7 @@
                         </a>            
                     </div> 
 
-                             <div class="sidebar_item">
+                    <div class="sidebar_item">
                         <span class="sidebar_item_icon"><i class="fas fa-sign-out-alt"></i></span>
                         <span class="sidebar_item_text">Logout</span>
                     </div>

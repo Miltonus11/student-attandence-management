@@ -1,7 +1,7 @@
 <div class="col-md-9 col-lg-10 main_content">
                 <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb_item"><a href="./admin.php">Home</a></li>
+                <li class="breadcrumb_item"><a href="./admin-dashboard.php">Home</a></li>
                 <li class="breadcrumb_item active" aria-current="page">Manage Classes</li>
             </ol>
         </nav>

@@ -1,5 +1,7 @@
 <?php 
     session_start();
+
+    
     // validate user method
     if($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
@@ -12,6 +14,9 @@
     $uname = $_POST['username'];
     $pw = $_POST['password'];
 
+    // $hashed_pw = password_hash($pw, PASSWORD_BCRYPT);
+    // echo $hashed_pw;
+    
     require_once('../db/conn.php');
     if(isset($uname) && isset($pw)){
         //sql
@@ -46,6 +51,8 @@
                 $_SESSION['username'] = $uname;
                 $_SESSION['user_level'] = $user['user_level'];
 
+                
+
                 exit();
             } else {
                 // if not correct
@@ -73,6 +80,5 @@
         ]);
         exit();
     }
-    // validate
 
 ?>
