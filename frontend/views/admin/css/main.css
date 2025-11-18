@@ -1,0 +1,31 @@
+:root {
+    --primary-color: #3498db;
+    --sidebar-bg: #2c3e50;
+    --sidebar-hover: #34495e;
+    --header-bg: #ffffff;
+    --card-students: #407cb1;
+    --card-classes: #407cb1;
+    --card-attendance: #407cb1;
+    --card-teachers: #407cb1;
+    --card-session: #407cb1;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        height: auto;
+        position: relative;
+    }
+    
+    .dashboard_card {
+        height: auto;
+        min-height: 120px;
+    }
+}
