@@ -1,4 +1,5 @@
-
+<?php
+?>
 <header class="header">
     <div class="container-fluid">
         <div class="row align-items-center">
@@ -15,7 +16,7 @@
                     <span class="search_icon"><i class="fas fa-search"></i></span>
                     <div class="profile d-flex align-items-center ms-3">
                         <div class="profile_icon"><i class="fas fa-user"></i></div>
-                        <span class="profile_text ms-2">Welcome Admin Vince</span>
+                        <span class="profile_text ms-2">Welcome Admin <?php echo $_SESSION['username']?></span>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,3 @@
-alert("Script Loaded")
 $(document).ready(function(e){
     
     $('#loginForm').on("submit", function(e){

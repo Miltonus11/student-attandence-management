@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if(!isset($_SESSION['username']) && $_SESSION['user_level'] == "admin"){
+        header("Location: ../loginPage.php");
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

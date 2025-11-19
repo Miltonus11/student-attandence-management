@@ -1,7 +1,5 @@
 <?php 
     session_start();
-
-    
     // validate user method
     if($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
