@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- css -->
        <link rel="stylesheet" href="../admin/main.css"> 
-<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="../css/studentcss/header.css">
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/student_content.css"> 
 </head>
