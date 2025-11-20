@@ -1,0 +1,61 @@
+/* Header container with sticky positioning */
+.header {
+    background-color: var(--header-bg);        /* Uses CSS variable for background color */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);    /* Subtle shadow for depth */
+    padding: 15px 0;                           /* Vertical padding only */
+    position: sticky;                          /* Sticks to top when scrolling */
+    top: 0;                                    /* Position at top of viewport */
+    z-index: 1000;                             /* Ensures header stays above other content */
+    display: flex;                             /* Flexbox for layout */
+    align-items: center;                       /* Vertically center items */
+    justify-content: space-between;            /* Space between left and right sections */
+    width: 100%;                               /* Full width container */
+}
+
+/* Logo image styling */
+.logo_img {
+    height: 40px;                              /* Initial height */
+    border-radius: 100px;                      /* Circular border radius */
+    height: 50px;                              /* Final height (overrides previous) */
+    margin-left: 50px;                         /* Left margin for spacing */
+}
+
+/* Main title styling */
+.sams_title {
+    font-weight: 600;                          /* Semi-bold font weight */
+    font-size: 1.5rem;                         /* Relative font size */
+    color: #2c3e50;                           /* Dark blue-gray color */
+    margin: 0;                                 /* Remove default margins */
+    text-align: left;                          /* Left-align text */
+    position: absolute;                        /* Absolute positioning */
+    left: 120px;                               /* Position from left edge */
+}
+
+/* Right-side controls container */
+.header_controls {
+    display: flex;                             /* Flexbox for horizontal layout */
+    align-items: center;                       /* Vertically center items */
+    margin-right: 50px;                        /* Right margin for spacing */
+}
+
+/* Search icon styling */
+.search_icon {
+    color: #6c757d;                           /* Medium gray color */
+    font-size: 1.2rem;                         /* Slightly larger icon size */
+    margin-right: 20px;                        /* Space between search and profile */
+    cursor: pointer;                           /* Pointer cursor on hover */
+}
+
+/* User profile icon/circle */
+.profile_icon {
+    background-color: var(--primary-color);    /* Uses CSS variable for primary color */
+    color: white;                              /* White text/icon color */
+    width: 35px;                               /* Fixed width */
+    height: 35px;                              /* Fixed height (creates circle) */
+    border-radius: 50%;                        /* Perfect circle border radius */
+    display: flex;                             /* Flexbox for centering content */
+    align-items: center;                       /* Vertical centering */
+    justify-content: center;                   /* Horizontal centering */
+    margin-right: 10px;                        /* Right margin for spacing */
+    font-weight: bold;                         /* Bold text for initials */
+}
