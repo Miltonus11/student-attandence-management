@@ -1,87 +1,199 @@
-
+/* Sidebar Styles */
 .sidebar {
-    background-color: #2c3e50;
-    color: white;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 250px;
-    overflow-y: auto;
-    z-index: 1000;
-    padding-top: 80px; 
+    background-color: #FFFFFF;                 /* White background */
+    min-height: 100vh;                        /* Full viewport height */
+    padding: 20px 0;                          /* Vertical padding */
+    border-right: 1px solid #e0e0e0;          /* Right border for separation */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font stack */
+    position: fixed;                          /* Fixed positioning */
+    left: 0;                                  /* Align to left edge */
+    top: 70px;                                /* Position below header */
+    width: 250px;                             /* Fixed sidebar width */
+    overflow-y: auto;                         /* Enable vertical scrolling if needed */
+    z-index: 999;                             /* Lower z-index than header */
+    padding-top: 20px;                        /* Additional top padding */
+    height: calc(100vh - 80px);               /* Adjust height to account for header */
 }
 
+/* Sidebar section grouping */
 .sidebar_section {
-    margin-bottom: 10px;
+    margin-bottom: 15px;                      /* Space between sections */
 }
 
+/* Section title styling */
 .sidebar_title {
-    font-weight: bold;
-    color: #ecf0f1;
-    padding: 15px 20px 5px;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 15px;                          /* Small font size */
+    font-weight: 1000;                        /* Extra bold weight */
+    color: #6c757d;                           /* Medium gray color */
+    text-transform: uppercase;                /* Uppercase text */
+    padding: 10px 20px 5px;                   /* Padding: top, sides, bottom */
+    letter-spacing: 0.5px;                    /* Slightly spaced letters */
 }
 
+/* Individual sidebar menu items */
 .sidebar_item {
-    display: flex;
-    align-items: center;
-    padding: 12px 20px;
-    color: #bdc3c7;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border-left: 3px solid transparent;
+    display: flex;                            /* Flexbox for icon and text alignment */
+    align-items: center;                      /* Vertically center content */
+    padding: 12px 20px;                       /* Comfortable padding */
+    text-decoration: none;                    /* Remove underline from links */
+    color: #495057;                           /* Dark gray text color */
+    transition: all 0.3s ease;                /* Smooth hover transitions */
+    border-left: 3px solid transparent;       /* Transparent left border for active state */
+    position: relative;                       /* For positioning child elements */
 }
 
+/* Hover state for sidebar items */
 .sidebar_item:hover {
-    background-color: #34495e;
-    color: white;
-    border-left: 3px solid #3498db;
-    text-decoration: none;
+    background-color: #e9ecef;                /* Light gray background on hover */
+    color: #000;                              /* Darker text color on hover */
 }
 
+/* Active/selected sidebar item */
 .sidebar_item.active {
-    background-color: #34495e;
-    color: white;
-    border-left: 3px solid #3498db;
+    background-color: #e9ecef;                /* Light gray background */
+    color: #000;                              /* Dark text color */
+    font-weight: 500;                         /* Medium font weight */
 }
 
+/* Icon container within sidebar items */
 .sidebar_item_icon {
-    width: 20px;
-    margin-right: 10px;
-    text-align: center;
+    width: 20px;                              /* Fixed width for icons */
+    margin-right: 12px;                       /* Space between icon and text */
+    text-align: center;                       /* Center icon horizontally */
+    font-size: 20px;                          /* Icon size */
 }
 
+/* Text label for sidebar items */
 .sidebar_item_text {
-    flex-grow: 1;
+    flex-grow: 10;                            /* Allow text to take available space */
+    color: #012970;                           /* Dark blue color */
+    font-weight: bold;                        /* Bold text */
+    font-family: sans-serif;                  /* Clean sans-serif font */
+    font-size: 18px;                          /* Readable font size */
 }
 
+/* Dropdown arrow styling */
 .arrow {
-    font-size: 12px;
-    transition: transform 0.3s ease;
+    font-size: 12px;                          /* Small arrow size */
+    color: #060b10;                           /* Dark color for arrows */
 }
 
-.sidebar_item:hover .arrow {
-    transform: translateX(3px);
+/* Special styling for the last sidebar item (typically logout) */
+.sidebar_item:last-child {
+    margin-top: 10px;                         /* Space above last item */
+    border-top: 1px solid #e0e0e0;            /* Top border for separation */
+    padding-top: 15px;                        /* Additional top padding */
+    color: #9785e8;                           /* Purple color for logout */
 }
 
-.col-md-9.col-lg-10 {
-    margin-left: 250px;
-    width: calc(100% - 250px);
+/* Icon color for last sidebar item */
+.sidebar_item:last-child .sidebar_item_icon {
+    color: #010207;                           /* Very dark color for icon */
 }
 
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1001;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* Hover state for last sidebar item */
+.sidebar_item:last-child:hover {
+    background-color: #6c86dc;                /* Blue background on hover */
+    color: #2c3e50;                           /* Dark blue-gray text */
+    border-radius: 10px;                      /* Rounded corners on hover */
 }
 
-body {
-    padding-top: 80px;
+/* Dashboard Header Styles */
+.dashboard-header {
+    margin-left: 250px;                       /* Account for sidebar width */
+    padding: 20px 30px;                       /* Comfortable padding */
+    background-color: #f8f9fa;                /* Light gray background */
+    border-bottom: 1px solid #e0e0e0;         /* Bottom border */
+    margin-top: 80px;                         /* Space below fixed header */
+}
+
+/* Main dashboard title */
+.dashboard-title {
+    font-size: 24px;                          /* Large font size */
+    font-weight: 700;                         /* Bold weight */
+    color: #012970;                           /* Dark blue color */
+    margin-bottom: 5px;                       /* Small bottom margin */
+}
+
+/* Dashboard subtitle/description */
+.dashboard-subtitle {
+    font-size: 14px;                          /* Smaller font size */
+    color: #6c757d;                           /* Medium gray color */
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;                       /* Account for sidebar width */
+    padding: 20px 30px;                       /* Comfortable padding */
+    margin-top: 80px;                         /* Space below fixed header */
+}
+
+/* Status/Information Cards */
+.status-card {
+    background-color: #fff;                   /* White background */
+    border-radius: 8px;                       /* Rounded corners */
+    padding: 20px;                            /* Internal spacing */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);   /* Subtle shadow for depth */
+    margin-bottom: 20px;                      /* Space between cards */
+    border-left: 4px solid #012970;           /* Colored left accent border */
+}
+
+/* Status card title */
+.status-title {
+    font-size: 16px;                          /* Medium font size */
+    font-weight: 600;                         /* Semi-bold weight */
+    color: #495057;                           /* Dark gray color */
+    margin-bottom: 10px;                      /* Space below title */
+}
+
+/* Table for class lists */
+.class-list {
+    width: 100%;                              /* Full width tables */
+    border-collapse: collapse;                /* Remove spacing between borders */
+    margin-top: 15px;                         /* Space above table */
+}
+
+/* Table header cells */
+.class-list th {
+    background-color: #f8f9fa;                /* Light gray background */
+    padding: 12px 15px;                       /* Comfortable cell padding */
+    text-align: left;                         /* Left-aligned text */
+    font-weight: 600;                         /* Semi-bold headers */
+    color: #495057;                           /* Dark gray text */
+    border-bottom: 2px solid #e0e0e0;         /* Bottom border for headers */
+}
+
+/* Table data cells */
+.class-list td {
+    padding: 12px 15px;                       /* Consistent cell padding */
+    border-bottom: 1px solid #e0e0e0;         /* Bottom border for rows */
+}
+
+/* Table row hover effect */
+.class-list tr:hover {
+    background-color: #f8f9fa;                /* Light gray background on hover */
+}
+
+/* Responsive Design for Mobile Devices */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;                     /* Remove full height on mobile */
+        padding: 10px 0;                      /* Reduced padding */
+        width: 100%;                          /* Full width sidebar */
+        position: relative;                   /* Normal flow positioning */
+        top: 0;                               /* Reset top position */
+        height: auto;                         /* Auto height */
+    }
+    
+    /* Adjust sidebar items for mobile */
+    .sidebar_item {
+        padding: 10px 15px;                   /* Reduced padding */
+    }
+    
+    /* Reset margins for mobile layout */
+    .dashboard-header,
+    .main-content {
+        margin-left: 0;                       /* Remove sidebar offset */
+        margin-top: 0;                        /* Remove header offset */
+    }
 }

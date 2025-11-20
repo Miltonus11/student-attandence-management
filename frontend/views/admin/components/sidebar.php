@@ -1,9 +1,16 @@
  <div class="col-md-3 col-lg-2 p-0">
+    
                 <div class="sidebar">
-                    <div class="sidebar_section">
-                        <div class="sidebar_title">Dashboard</div>     
-                    </div>
 
+                     <div class="sidebar_section">
+                        <div class="sidebar_title">Dashboard</div>
+                        <a href="admin-dashboard.php" class="sidebar_item" id="admin-dashboard.php">
+                            <span class="sidebar_item_icon"><i class="fas fa-chalkboard"></i></span>
+                            <span class="sidebar_item_text">Dashboard</span>
+                            <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                        </a>
+                    </div>
+                    
                     <div class="sidebar_section">
                         <div class="sidebar_title">Classes</div>
                         <a href="classes.php" class="sidebar_item" id="classes.php">
