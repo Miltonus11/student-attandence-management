@@ -10,52 +10,57 @@
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>
                     </div>
-                    
-                    <div class="sidebar_section">
-                        <div class="sidebar_title">Classes</div>
-                        <a href="classes.php" class="sidebar_item" id="classes.php">
-                            <span class="sidebar_item_icon"><i class="fas fa-chalkboard"></i></span>
-                            <span class="sidebar_item_text">Manage Classes</span>
-                            <span class="arrow"><i class="fas fa-chevron-right"></i></span>
-                        </a>
-                    </div>
 
                     <div class="sidebar_section">
                         <div class="sidebar_title">Teachers</div>
                         <a href="teachers.php" class="sidebar_item" id="teachers.php">
                             <span class="sidebar_item_icon"><i class="fas fa-chalkboard-teacher"></i></span>
-                            <span class="sidebar_item_text">Manage Teachers</span>
+                            <span class="sidebar_item_text">Teachers</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>
                     </div>
-
-                    <div class="sidebar_section">
+                    
+                       <div class="sidebar_section">
                         <div class="sidebar_title">Students</div>
                         <a href="students.php" class="sidebar_item" id="students.php">
                             <span class="sidebar_item_icon"><i class="fas fa-user-graduate"></i></span>
-                            <span class="sidebar_item_text">Manage Students</span>
+                            <span class="sidebar_item_text">Students</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>
                     </div>
 
+                      <div class="sidebar_section">
+                        <div class="sidebar_title">Subject</div>
+                        <a href="subject.php" class="sidebar_item" id="subject.php">
+                            <span class="sidebar_item_icon"><i class="fas fa-book"></i></span>
+                            <span class="sidebar_item_text">Subject</span>
+                            <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                        </a>
+                    </div>
+
+
                     <div class="sidebar_section">
-                        <div class="sidebar_title">Report</div>
+                        <div class="sidebar_title">Classes</div>
+                        <a href="classes.php" class="sidebar_item" id="classes.php">
+                            <span class="sidebar_item_icon"><i class="fas fa-chalkboard"></i></span>
+                            <span class="sidebar_item_text">Classes</span>
+                            <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                        </a>
+                    </div>
+
+                    
+
+                
+                    <div class="sidebar_section">
+                        <div class="sidebar_title">History</div>
                         <a href="report.php" class="sidebar_item" id="report.php">
-                            <span class="sidebar_item_icon"><i class="fas fa-print"></i></span>
-                            <span class="sidebar_item_text">Generate Report</span>
+                            <span class="sidebar_item_icon"><i class="fas fa-history"></i></span>
+                            <span class="sidebar_item_text">History</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>
                     </div>
 
-                    <div class="sidebar_section">
-                        <div class="sidebar_title">Session & Terms</div>
-                        <a href="session.php" class="sidebar_item" id="session.php">
-                            <span class="sidebar_item_icon"><i class="fas fa-calendar-alt"></i></span>
-                            <span class="sidebar_item_text">Session & Terms</span>
-                            <span class="arrow"><i class="fas fa-chevron-right"></i></span>
-                        </a>
-                    </div>
-
+                  
                     <div class="sidebar_section">
                         <div class="sidebar_title">Setting</div>
                         <a href="setting.php" class="sidebar_item" id="setting.php">
