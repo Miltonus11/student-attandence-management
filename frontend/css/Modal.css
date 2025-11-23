@@ -1,282 +1,138 @@
-/* Main Content Styles */
-.main-content {
-    padding: 40px;
-    background-color: #f9f9f9;
-    width: 1450px;
+/* Custom CSS */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
 }
+
+.main-content {
+    margin-left: 0;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .main-content {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        margin-top: 0; 
+    }
+}
+
 .content-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Search Bar */
 .search-bar {
-    flex: 1;
-    max-width: 500px;
     position: relative;
-    display: flex;
-    align-items: center;
+    width: 300px;
 }
 
 .search-icon {
     position: absolute;
-    left: 15px;
-    color: #999;
-    font-size: 18px;
-    pointer-events: none;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
 }
 
 .search-bar input {
+    padding-left: 35px;
     width: 100%;
-    padding: 12px 15px 12px 50px;
-    border: 2px solid #333;
-    border-radius: 8px;
-    font-size: 14px;
-    background-color: #ffffff;
-    transition: border-color 0.3s ease;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    height: 38px;
 }
 
-.search-bar input::placeholder {
-    color: #999;
-}
-
-.search-bar input:focus {
-    outline: none;
-    border-color: #333;
-}
-
-/* Add Teacher Button */
-.add-btn {
-    padding: 11px 24px;
-    background-color:#012970;                                
-    color: white; ;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-}
-
-.add-btn:hover {
-    background-color: #95a0b5;
-}
-
-.add-btn:active {
-    background-color: #8a95aa;
-}
-
-/* Content Area */
-.content-area {
-    background-color: transparent;
-    border-radius: 0;
-    padding: 0;
-    box-shadow: none;
-}
-
-/* Section Title */
 .section-title {
-    font-size: 26px;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 25px;
+    color: #012970;
+    font-weight: 600;
+    margin-bottom: 20px;
+    margin-top: 0; 
+}
+
+.content-area {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-top: 0;
 }
 
-/* Table Container */
 .table-container {
     overflow-x: auto;
-    width: 100%;
-    background-color: #ffffff;
-    border-radius: 4px;
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin: 0;
 }
 
-.table thead {
-    background-color: #e8e8e8;
-    border-bottom: 1px solid #d0d0d0;
+.table th {
+    background-color: #f8f9fa;
+    color: #012970;
+    font-weight: 600;
+    padding: 12px 15px;
+    border-bottom: 2px solid #e9ecef;
 }
 
-.table thead tr {
-    border: none;
-}
-
-.table thead th {
-    padding: 14px 20px;
-    text-align: left;
-    font-weight: 700;
-    color: #1a1a1a;
-    font-size: 14px;
-    border: none;
-    background-color: #e8e8e8;
-}
-
-.table tbody tr {
-    border-bottom: 1px solid #e0e0e0;
-    background-color: #ffffff;
-    transition: background-color 0.2s ease;
+.table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
 }
 
 .table tbody tr:hover {
-    background-color: #f5f5f5;
+    background-color: #f8f9fa;
 }
 
-.table tbody td {
-    padding: 14px 20px;
-    color: #333;
-    font-size: 14px;
-    border: none;
-    line-height: 1.5;
-}
-
-/* View Link */
 .view-link {
-    color: #0066cc;
-    text-decoration: underline;
+    color: #0d6efd;
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
+    text-decoration: underline;
 }
 
-.view-link:hover {
-    color: #0052a3;
-}
-
-/* Pagination Wrapper */
 .pagination-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    font-size: 14px;
-    color: #666;
-}
-
-/* Modal Styles */
-.modal-header {
-    background-color: #012970;
-    color: white;
-    border-bottom: none;
-    padding: 20px 30px;
-}
-
-.modal-title {
-    font-weight: 600;
-    font-size: 1.25rem;
-}
-
-.modal-content {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.modal-body {
-    padding: 30px;
-}
-
-.modal-footer {
+    padding-top: 15px;
     border-top: 1px solid #e9ecef;
-    padding: 20px 30px;
 }
 
-.btn-close {
-    filter: invert(1);
-}
-
-.form-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-.form-control, .form-select {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px 12px;
-    transition: all 0.3s ease;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: #012970;
-    box-shadow: 0 0 0 0.2rem rgba(1, 41, 112, 0.25);
+.pagination {
+    margin: 0;
 }
 
 .btn-primary {
     background-color: #012970;
     border-color: #012970;
-    padding: 10px 25px;
-    font-weight: 600;
 }
 
 .btn-primary:hover {
-    background-color: #011d5c;
-    border-color: #011d5c;
+    background-color: #011a57;
+    border-color: #011a57;
 }
 
-.btn-secondary {
-    padding: 10px 25px;
+.modal-header {
+    background-color: #012970;
+    color: white;
+}
+
+.modal-title {
     font-weight: 600;
 }
+.content-header {
+    margin-top: 0; 
+}
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .main-content {
-        padding: 20px;
-    } 
-
-     .content-header {
-        flex-direction: column;
-        align-items: stretch;
-    } 
-
-    .search-bar {
-        max-width: 100%;
-    }
-
-    .add-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .section-title {
-        font-size: 22px;
-        margin-bottom: 20px;
-    }
-
-    .table thead th,
-    .table tbody td {
-        padding: 12px 16px;
-        font-size: 13px;
-    }
-
-    .pagination-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .pagination {
-        width: 100%;
-    }
-
-    .modal-dialog {
-        margin: 20px;
-    }
-
-    .modal-body {
-        padding: 20px;
-    }
+* {
+    box-sizing: border-box;
 }

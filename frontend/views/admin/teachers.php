@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Manage Teacher</title>
+    <title>Manage Teacher</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
-  <link rel="stylesheet" href="../../css/Modal.css">
+<link rel="stylesheet" href="../../css/modal.css"> 
 </head>
 <body>
     <!-- Header -->
@@ -39,7 +39,7 @@
                         <span class="search-icon">🔍</span>
                         <input type="text" placeholder="Search">
                     </div>
-                    <button class="btn btn-primary me-2" onclick="openModal('teacher')">+ Add Teacher</button>
+                    <button class="btn btn-primary me-2" onclick="openModal()">+ Add Teacher</button>
                 </div>
 
                 <!-- Content Area -->
@@ -61,12 +61,11 @@
                                     <td>23101000</td>
                                     <td>Lawrence Gabriel</td>
                                     <td><span class="view-link" data-type="teacher">View</span></td>
-
                                 </tr>
                                 <tr>
                                     <td>23101001</td>
                                     <td>Jhustine Ocampo</td>
-                                    <td><span class="view-link" data-type="teacher" >View</span></td>
+                                    <td><span class="view-link" data-type="teacher">View</span></td>
                                 </tr>
                                 <tr>
                                     <td>23101002</td>
@@ -119,114 +118,81 @@
                         </nav>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    
-<!-- Add Teacher Modal -->
-<div class="modal fade" id="addTeacherModal" tabindex="-1" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header" style="background:#012970; color:white;">
-        <h5 class="modal-title" id="addTeacherModalLabel">Add New Teacher</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="addTeacherForm">
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="teacherId" class="form-label">Teacher ID No.</label>
-              <input type="text" class="form-control" id="teacherId" required>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <label for="firstName" class="form-label">First Name</label>
-              <input type="text" class="form-control" id="firstName" required>
-            </div>
-            <div class="col-md-4">
-              <label for="middleName" class="form-label">Middle Name</label>
-              <input type="text" class="form-control" id="middleName">
-            </div>
-            <div class="col-md-4">
-              <label for="lastName" class="form-label">Last Name</label>
-              <input type="text" class="form-control" id="lastName" required>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" required>
-            </div>
-            <div class="col-md-6">
-              <label for="phone" class="form-label">Phone Number</label>
-              <input type="tel" class="form-control" id="phone">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="birthDate" class="form-label">Date of Birth</label>
-              <input type="date" class="form-control" id="birthDate">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Gender</label>
-              <div class="d-flex gap-4 mt-2">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="teacherGender" id="male" value="male">
-                  <label class="form-check-label" for="male">Male</label>
+    <!-- Add Teacher Modal -->
+    <div class="modal fade" id="addTeacherModal" tabindex="-1" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background:#012970; color:white;">
+                    <h5 class="modal-title" id="addTeacherModalLabel">Add New Teacher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="teacherGender" id="female" value="female">
-                  <label class="form-check-label" for="female">Female</label>
+                <div class="modal-body">
+                    <form id="addTeacherForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="teacherId" class="form-label">Teacher ID No.</label>
+                                <input type="text" class="form-control" id="teacherId" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="middleName" class="form-label">Middle Name</label>
+                                <input type="text" class="form-control" id="middleName">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone">
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="teacherGender" id="other" value="other">
-                  <label class="form-check-label" for="other">Other</label>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveTeacher()">Save Teacher</button>
                 </div>
-              </div>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeModal('teacher')">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="savePerson('teacher')">Save Teacher</button>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+        </div>
     </div>
-  </div>
-</div>
-
 
     <!-- VIEW TEACHER MODAL -->
-<div class="modal fade" id="viewTeacherModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title">Teacher Information</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div class="modal fade" id="viewTeacherModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Teacher Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Teacher ID:</strong> <span id="viewTeacherId"></span></p>
+                    <p><strong>Name:</strong> <span id="viewTeacherName"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
-
-            <div class="modal-body">
-                <p><strong>Teacher ID:</strong> <span id="viewTeacherId"></span></p>
-                <p><strong>Name:</strong> <span id="viewTeacherName"></span></p>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-
         </div>
     </div>
-</div>
-
-
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../../scripts/Modal.js"></script> 
+   <script src="../../scripts/admincontent/teacher.js"></script> 
 </body>
 </html>
