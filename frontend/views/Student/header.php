@@ -7,7 +7,7 @@
                     <div class="logo_container me-3">
                         <img src="" alt="Logo" class="logo_img">
                     </div>
-                    <span class="sams_title">Student Dashboard</span>
+                    <span class="sams_title">SITS Attendance Management System</span>
                 </div>
             </div>
             <div class="col-md-6 text-end">
