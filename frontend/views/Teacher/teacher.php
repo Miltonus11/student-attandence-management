@@ -22,17 +22,10 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-             <?php include '../Student/sidebar.php'; ?> 
+             <?php include 'sidebar.php'; ?> 
 
             <!-- Main Content -->
                  <div class="col-md-9 col-lg-10 main_content">
-  <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <!-- <li class="breadcrumb_item"><a href=""></a></li> -->
-                <li class="breadcrumb_item active" aria-current="page"></li>
-            </ol>
-        </nav> 
-
                 <h1 class="page_title">Not yet done</h1>
                 
                 <!-- Classes Management Content -->
@@ -93,7 +86,7 @@
     <!-- Bootstrap JS Bundle with Popper -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
- <script src="../scripts/logout.js"></script> 
+ <script src="../../scripts/admin.js"></script> 
 </body>
 </html>
 </body>

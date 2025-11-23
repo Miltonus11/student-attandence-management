@@ -7,7 +7,7 @@
             <div class="col-md-6">
                 <div class="d-flex align-items-center">
                     <div class="logo_container me-3">
-                        <img src="../img/n.png" alt="Logo" class="logo_img">
+                        <img src="../../../src/sits_logo.png" alt="Logo" class="logo_img">
                     </div>
                     <span class="sams_title">Administrator Dashboard</span>
                 </div>
@@ -17,7 +17,7 @@
                     <span class="search_icon"><i class="fas fa-search"></i></span>
                     <div class="profile d-flex align-items-center ms-3">
                         <div class="profile_icon"><i class="fas fa-user"></i></div>
-                        <span class="profile_text ms-2">Welcome Admin <?php echo $_SESSION['username']?></span>
+                        <span class="profile_text ms-2">Welcome Admin </span>
                     </div>
                 </div>
             </div>

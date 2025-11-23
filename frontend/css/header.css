@@ -1,6 +1,6 @@
 /* Header container with sticky positioning */
 .header {
-    background-color: var(--header-bg);        /* Uses CSS variable for background color */
+  background-color: #3C416F !important;            /* New header color */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);    /* Subtle shadow for depth */
     padding: 15px 0;                           /* Vertical padding only */
     position: sticky;                          /* Sticks to top when scrolling */
@@ -24,7 +24,7 @@
 .sams_title {
     font-weight: 600;                          /* Semi-bold font weight */
     font-size: 1.5rem;                         /* Relative font size */
-    color: #2c3e50;                           /* Dark blue-gray color */
+    color: #ffffff;                           /* Changed to white for better contrast */
     margin: 0;                                 /* Remove default margins */
     text-align: left;                          /* Left-align text */
     position: absolute;                        /* Absolute positioning */
@@ -40,7 +40,7 @@
 
 /* Search icon styling */
 .search_icon {
-    color: #6c757d;                           /* Medium gray color */
+    color: #ffffff;                           /* Changed to white for better contrast */
     font-size: 1.2rem;                         /* Slightly larger icon size */
     margin-right: 20px;                        /* Space between search and profile */
     cursor: pointer;                           /* Pointer cursor on hover */
