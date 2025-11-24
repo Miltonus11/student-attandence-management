@@ -38,18 +38,26 @@
             // there is a user , validate with password
             if(password_verify($pw, $user['password'])){
                 //if the pw is correct
-                echo json_encode([
-                    "status" => "success",
-                    "message" => "Welcome " . $user['username'],
-                    "user_level" =>  $user['user_level']
-                    
-                ]);
-                
-                // Start session
-                $_SESSION['username'] = $uname;
-                $_SESSION['user_level'] = $user['user_level'];
-
-                
+                $user_id = $user['user_id'];
+                // gets table data from user if they are student or instructor
+                if($user['user_role'] === 'student'){
+                    $sql = "SELECT * FROM tbl_students WHERE user_id = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute([$user_id]);
+                    $user_account = $stmt->fetch(PDO::FETCH_ASSOC);
+                    echo json_encode([
+                        "User" => $user_account
+                    ]);
+                    exit();
+                } elseif($user['user_role'] === 'instructor'){
+                    $sql = "SELECT * FROM tbl_instructors WHERE user_id = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->execute([$user_id]);
+                    $user_account = $stmt->fetch(PDO::FETCH_ASSOC);
+                    echo json_encode([
+                        "User" => $user_account
+                    ]);
+                } 
 
                 exit();
             } else {
@@ -68,7 +76,7 @@
                 ]);
                 exit();
             //return no user found
-        }
+        }   
         exit();
         
     } else {
@@ -78,5 +86,4 @@
         ]);
         exit();
     }
-
 ?>
