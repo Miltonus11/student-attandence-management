@@ -57,49 +57,7 @@
                                     <th>Details</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>23101000</td>
-                                    <td>Lawrence Gabriel</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101001</td>
-                                    <td>Jhustine Ocampo</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101002</td>
-                                    <td>Crystalyn Llarenas</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101003</td>
-                                    <td>William Rodriguez</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101004</td>
-                                    <td>Vince Alvendia</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101005</td>
-                                    <td>Lawrence Gabriel</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101006</td>
-                                    <td>Jhustine Ocampo</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
+                            <tbody id="studentTableBody">
                                 <tr>
                                     <td>23101007</td>
                                     <td>Vince Alvendia</td>
@@ -199,6 +157,7 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../../scripts/admincontent/student.js"></script> 
     
 </body>

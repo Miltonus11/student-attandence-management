@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
-<link rel="stylesheet" href="../../css/modal.css"> 
+    <link rel="stylesheet" href="../../css/modal.css"> 
 </head>
 <body>
     <!-- Header -->
@@ -56,52 +56,8 @@
                                     <th>Details</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>23101000</td>
-                                    <td>Lawrence Gabriel</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101001</td>
-                                    <td>Jhustine Ocampo</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101002</td>
-                                    <td>Crystalyn Llarenas</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101003</td>
-                                    <td>William Rodriguez</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101004</td>
-                                    <td>Vince Alvendia</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101005</td>
-                                    <td>Lawrence Gabriel</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101006</td>
-                                    <td>Jhustine Ocampo</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101007</td>
-                                    <td>Vince Alvendia</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>23101008</td>
-                                    <td>Lawrence Gabriel</td>
-                                    <td><span class="view-link" data-type="teacher">View</span></td>
-                                </tr>
+                            <tbody id="teacherTableBody">
+                                <!-- Render Dynamically -->
                             </tbody>
                         </table>
                     </div>
@@ -193,6 +149,8 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-   <script src="../../scripts/admincontent/teacher.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../../scripts/admincontent/teacher.js"></script>
+
 </body>
 </html>

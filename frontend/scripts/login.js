@@ -1,6 +1,5 @@
 $(document).ready(function(e){
-    
-    $('#loginForm').on("submit", function(e){
+     $('#loginForm').on("submit", function(e){
         e.preventDefault();
         $.ajax({
             url:'../../backend/controllers/login.php',
@@ -21,6 +20,9 @@ $(document).ready(function(e){
                             break;
                         case "student":
                             window.location.href ="students/student-dashboard.php";
+                            break;
+                        case "instructor":
+                            window.location.href ="teacher/teacher.php";
                             break;
                         default:
                             window.location.href ="../loginPage.php";
