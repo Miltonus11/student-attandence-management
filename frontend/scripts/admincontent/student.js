@@ -11,6 +11,7 @@
                 }
             })
         }
+        //fetching for student
         fetchStudents();
 
         function renderStudentTable(Students) {
@@ -67,26 +68,26 @@
         }
 
         function saveStudent() {
-            const studentId = document.getElementById('studentId').value;
-            const studentyearlevel = document.getElementById('studentyearlevel').value;
-            const studentFirstName = document.getElementById('studentFirstName').value;
-            const studentLastName = document.getElementById('studentLastName').value;
-            const studentEmail = document.getElementById('studentEmail').value;
+            const student_id = document.getElementById('student_id').value;
+            const year_level = document.getElementById('year_level').value;
+            const first_name = document.getElementById('first_name').value;
+            const last_name = document.getElementById('last_name').value;
+            const student_email = document.getElementById('student_email').value;
 
-            if(!studentId || !studentyearlevel || !studentFirstName || !studentLastName || !studentEmail) {
+            if(!student_id || !year_level  || !first_name || !last_name || !student_email) {
                 alert('Please fill in all required fields.');
                 return;
             }
 
             // Validate input
-            if(studentId.trim() === '' || studentyearlevel.trim() === '' || studentFirstName.trim() === '' || studentLastName.trim() === '' || studentEmail.trim() === '') {
+            if(student_id.trim() === '' || year_level.trim() === '' || first_name.trim() === '' || last_name.trim() === '' || student_email.trim() === '') {
                 alert('Please fill in all required fields.');
                 return;
             }
 
             // Email validation
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(studentEmail)) {
+            if (!emailRegex.test(student_email)) {
                 alert('Please enter a valid email address.');
                 return;
             }
@@ -101,14 +102,14 @@
         // View Modal Function for Students
         document.addEventListener("DOMContentLoaded", function () {
 
-            document.querySelectorAll(".view-link").forEach(function (link) {
+            document.querySelectorAll("view-link").forEach(function (link) {
                 link.addEventListener("click", function () {
                     const row = this.closest("tr");
-                    const studentId = row.cells[0].innerText;
+                    const student_id = row.cells[0].innerText;
                     const studentName = row.cells[1].innerText;
                     const studentyearlevel = row.cells[2].innerText;
 
-                    document.getElementById("viewStudentId").innerText = studentId;
+                    document.getElementById("viewStudentId").innerText = student_id;
                     document.getElementById("viewStudentName").innerText = studentName;
                     document.getElementById("viewStudentyearlevel").innerText = studentyearlevel;
               

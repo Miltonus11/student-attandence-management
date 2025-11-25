@@ -1,5 +1,49 @@
+       // Modal Functions for Teacher
+            const fetchInstructors = () => {
+            $.ajax({
+                //   url:"../../../backend/controllers/Students/get.php",   //update for the instructor
+                method:"GET",
+                dataType:"json",
+                success: function(result){
+                    renderStudentTable(result);
+                    console.log(result.Instructors)
+                }
+            })
+        }
+        //fetching for Instructor
+        fetchInstructors();
 
-        // Modal Functions for Teacher
+        function renderTeacherTable(Instructors) {
+            const tbody = document.getElementById('teacherTableBody');
+            tbody.innerHTML = ''; // Clear existing rows
+            Instructors.Instructors.forEach(instructor => {
+                const row = document.createElement('tr');
+                // Teacher ID No. cell
+                const idCell = document.createElement('td');
+                idCell.textContent = instructor.instructor_number;
+                row.appendChild(idCell);
+                // Name cell
+                const nameCell = document.createElement('td');
+                nameCell.textContent = instructor.first_name;
+                row.appendChild(nameCell);     
+                      
+                // Details cell with a view link
+                const detailsCell = document.createElement('td');
+                const viewLink = document.createElement('a');
+                viewLink.textContent = 'View';
+                viewLink.className = 'view-link';
+                viewLink.href = '#'; // Replace with actual link or add event listener
+                viewLink.addEventListener('click', () => {
+                    // Add your logic here, e.g., open a modal or navigate to details page
+                    alert(`Viewing details for ${teacher.name} (ID: ${teacher.id})`);
+                }); 
+                detailsCell.appendChild(viewLink);
+                row.appendChild(detailsCell);
+                tbody.appendChild(row);
+            });
+        }
+       
+       // Modal Functions for Teacher
     
    
         function openModal() {

@@ -53,7 +53,7 @@
                 
                     <div class="sidebar_section">
                         <div class="sidebar_title">History</div>
-                        <a href="report.php" class="sidebar_item" id="report.php">
+                        <a href="history.php" class="sidebar_item" id="history.php">
                             <span class="sidebar_item_icon"><i class="fas fa-history"></i></span>
                             <span class="sidebar_item_text">History</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>

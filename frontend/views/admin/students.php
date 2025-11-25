@@ -56,14 +56,12 @@
                                     <th>Year Level</th>
                                     <th>Details</th>
                                 </tr>
+                                
                             </thead>
+                    
                             <tbody id="studentTableBody">
-                                <tr>
-                                    <td>23101007</td>
-                                    <td>Vince Alvendia</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
+                                <td><span class="view-link" data-type="tbl_student">View</span></td>
+                              <!-- Render Dynamically -->
                             </tbody>
                         </table>
                     </div>

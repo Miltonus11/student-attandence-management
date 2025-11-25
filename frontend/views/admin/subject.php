@@ -57,37 +57,8 @@
                                     <th>Details</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
+                           <tbody id="subjectTableBody">
+                              <!-- Render Dynamically -->
                             </tbody>
                         </table>
                     </div>

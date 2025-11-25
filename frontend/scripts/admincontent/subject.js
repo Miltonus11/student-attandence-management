@@ -1,5 +1,50 @@
+  // Modal Functions for Teacher
+            const fetchSubjects = () => {
+            $.ajax({
+                //   url:"../../../backend/controllers/Students/get.php",   //update for the subject
+                method:"GET",
+                dataType:"json",
+                success: function(result){
+                    renderSubjectTable(result);
+                    console.log(result.Subjects)
+                }
+            })
+        }
+        //fetching for subject
+        fetchSubjects();
 
-        // Modal Functions for Subject
+        function renderSubjectTable(Subjects) {
+            const tbody = document.getElementById('subjectTableBody');
+            tbody.innerHTML = ''; // Clear existing rows
+            Subjects.Subjects.forEach(subject => {
+                const row = document.createElement('tr');
+                // Teacher ID No. cell
+                const idCell = document.createElement('td');
+                idCell.textContent = subject.subject_number;
+                row.appendChild(idCell);
+                // Name cell
+                const nameCell = document.createElement('td');
+                nameCell.textContent = subject.subject_name;
+                row.appendChild(nameCell);     
+                      
+                // Details cell with a view link
+                const detailsCell = document.createElement('td');
+                const viewLink = document.createElement('a');
+                viewLink.textContent = 'View';
+                viewLink.className = 'view-link';
+                viewLink.href = '#'; // Replace with actual link or add event listener
+                viewLink.addEventListener('click', () => {
+                    // Add your logic here, e.g., open a modal or navigate to details page
+                    alert(`Viewing details for ${teacher.name} (ID: ${teacher.id})`);
+                }); 
+                detailsCell.appendChild(viewLink);
+                row.appendChild(detailsCell);
+                tbody.appendChild(row);
+            });
+        }
+       
+       
+       // Modal Functions for Subject
         function openModal() {
             const modalId = 'addSubjectModal';
             const modal = new bootstrap.Modal(document.getElementById(modalId));
