@@ -65,7 +65,7 @@
                         <div class="sidebar_title">Setting</div>
                         <a href="setting.php" class="sidebar_item" id="setting.php">
                             <span class="sidebar_item_icon"><i class="fas fa-cog"></i></span>
-                            <span class="sidebar_item_text">Manage Password</span>
+                            <span class="sidebar_item_text">Settings</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>            
                     </div> 

@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
-  <link rel="stylesheet" href="../../css/modal.css"> 
+    <link rel="stylesheet" href="../../css/modal.css"> 
 </head>
 <body>
     <!-- Header -->
@@ -54,13 +54,12 @@
                                     <th>Student ID No.</th>
                                     <th>Name</th>
                                     <th>Year Level</th>
+                                    <th></th>  
                                     <th>Details</th>
                                 </tr>
-                                
                             </thead>
                     
                             <tbody id="studentTableBody">
-                                <td><span class="view-link" data-type="tbl_student">View</span></td>
                               <!-- Render Dynamically -->
                             </tbody>
                         </table>
@@ -93,33 +92,36 @@
                 <div class="modal-body">
                     <form id="addStudentForm">
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="studentId" class="form-label">Student ID No.</label>
-                                <input type="text" class="form-control" id="studentId" required>
+                            <div class="col-md-3">
+                                <label for="student_id" class="form-label">Student ID No.</label>
+                                <input type="text" class="form-control" id="student_id" required>
                             </div>
-                            <div class="col-md-6">
-                                <label for="studentyearlevel" class="form-label">Year Level</label>
-                                <input type="text" class="form-control" id="studentyearlevel" required>
+                            
+                            <div class="col-md-2">
+                                <label for="year_level" class="form-label">Year Level</label>
+                                <input type="text" class="form-control" id="year_level" required>
+                            </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" required>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="middle_name" class="form-label">Middle Name</label>
+                                <input type="text" class="form-control" id="middle_name">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" required>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="studentFirstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="studentFirstName" required>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="studentMiddleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="studentMiddleName">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="studentLastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="studentLastName" required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="studentEmail" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="studentEmail" required>
+                                <label for="student_email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="student_email" required>
                             </div>
                         </div>
                     </form>
@@ -142,9 +144,9 @@
                 </div>
                 <div class="modal-body">
                     <p><strong>Student ID:</strong> <span id="viewStudentId"></span></p>
+                    <p><strong>Name:</strong> <span id="viewStudentName"></span></p> 
                     <p><strong>Year Level:</strong> <span id="viewStudentyearlevel"></span></p>
-                    <p><strong>Name:</strong> <span id="viewStudentName"></span></p>
-                   
+                    <p><strong>Contact:</strong> <span id="viewStudentcontact"></span></p>  
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -3,7 +3,7 @@
 
              <!-- Profile Section -->
     <div class="profile-section" style="text-align: center; padding: 20px; border-bottom: 1px solid #ddd;">
-        <img src="image.png" 
+         <img src="../../src/image.png"
              alt="Profile Picture" class="profile-image" style="width: 70px; height: 70px;  object-fit: cover; margin-bottom: 10px; border-radius:100px;">
         <div class="profile-name" style="font-weight: bold; font-size: 16px;">John lawrence Gabriel</div>
     </div>

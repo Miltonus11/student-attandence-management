@@ -90,33 +90,30 @@
                     <form id="addTeacherForm">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="teacherId" class="form-label">Teacher ID No.</label>
-                                <input type="text" class="form-control" id="teacherId" required>
+                                <label for="teacher_id" class="form-label">Teacher ID No.</label>
+                                <input type="text" class="form-control" id="teacher_id" required>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="firstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" required>
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" required>
                             </div>
                             <div class="col-md-4">
-                                <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="middleName">
+                                <label for="middle_name" class="form-label">Middle Name</label>
+                                <input type="text" class="form-control" id="middle_name">
                             </div>
                             <div class="col-md-4">
-                                <label for="lastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" required>
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" required>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" required>
+                                <label for="instructor_email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="instructor_email" required>
                             </div>
-                            <div class="col-md-6">
-                                <label for="phone" class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" id="phone">
-                            </div>
+                        
                         </div>
                     </form>
                 </div>
@@ -139,6 +136,7 @@
                 <div class="modal-body">
                     <p><strong>Teacher ID:</strong> <span id="viewTeacherId"></span></p>
                     <p><strong>Name:</strong> <span id="viewTeacherName"></span></p>
+                    <p><strong>Contact:</strong> <span id="viewTeacherContact"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
