@@ -1,5 +1,7 @@
 
         // Modal Functions for Teacher
+    
+   
         function openModal() {
             const modalId = 'addTeacherModal';
             const modal = new bootstrap.Modal(document.getElementById(modalId));
@@ -73,4 +75,6 @@
                     if(form) form.reset();
                 });
             });
+
+
         });

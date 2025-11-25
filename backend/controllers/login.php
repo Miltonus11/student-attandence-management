@@ -46,7 +46,8 @@
                     $stmt->execute([$user_id]);
                     $user_account = $stmt->fetch(PDO::FETCH_ASSOC);
                     echo json_encode([
-                        "User" => $user_account
+                        "status" => "success",
+                        "user_level" => $user['user_role']
                     ]);
                     exit();
                 } elseif($user['user_role'] === 'instructor'){
@@ -55,9 +56,16 @@
                     $stmt->execute([$user_id]);
                     $user_account = $stmt->fetch(PDO::FETCH_ASSOC);
                     echo json_encode([
-                        "User" => $user_account
+                        "status" => "success",
+                        "user_level" => $user['user_role']
                     ]);
-                } 
+                    exit();
+                } else {
+                    echo json_encode([
+                        "status" => "success",
+                        "user_level" => $user['user_role']
+                    ]);
+                }
 
                 exit();
             } else {

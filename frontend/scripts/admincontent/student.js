@@ -1,5 +1,53 @@
 
         // Modal Functions for Student
+            const fetchStudents = () => {
+            $.ajax({
+                url:"../../../backend/controllers/Students/getStudents.php",
+                method:"GET",
+                dataType:"json",
+                success: function(result){
+                    renderStudentTable(result);
+                    console.log(result.Students)
+                }
+            })
+        }
+        fetchStudents();
+
+        function renderStudentTable(Students) {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = ''; // Clear existing rows
+            Students.Students.forEach(student => {
+                const row = document.createElement('tr');
+                // Teacher ID No. cell
+                const idCell = document.createElement('td');
+                idCell.textContent = student.student_number;
+                row.appendChild(idCell);
+                // Name cell
+                const nameCell = document.createElement('td');
+                nameCell.textContent = student.first_name;
+                row.appendChild(nameCell);
+
+                //yearlevel
+                const yearLevelCell = document.createElement('td');
+                yearLevelCell.textContent = student.year_level;
+                row.appendChild(yearLevelCell) ;           
+                // Details cell with a view link
+                const detailsCell = document.createElement('td');
+                const viewLink = document.createElement('a');
+                viewLink.textContent = 'View';
+                viewLink.className = 'view-link';
+                viewLink.href = '#'; // Replace with actual link or add event listener
+                viewLink.addEventListener('click', () => {
+                    // Add your logic here, e.g., open a modal or navigate to details page
+                    alert(`Viewing details for ${teacher.name} (ID: ${teacher.id})`);
+                }); 
+                detailsCell.appendChild(viewLink);
+                row.appendChild(detailsCell);
+                tbody.appendChild(row);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderStudentTable);
         function openModal() {
             const modalId = 'addStudentModal';
             const modal = new bootstrap.Modal(document.getElementById(modalId));
@@ -52,6 +100,7 @@
 
         // View Modal Function for Students
         document.addEventListener("DOMContentLoaded", function () {
+
             document.querySelectorAll(".view-link").forEach(function (link) {
                 link.addEventListener("click", function () {
                     const row = this.closest("tr");

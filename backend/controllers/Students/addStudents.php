@@ -9,14 +9,14 @@
         exit();
     }
 
-    //get input
+    //get input from frontend
     $student_number = $_POST['stud_num'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
 
     require_once('../../db/conn.php');
     try{
-        //create user
+        //create user 
         if(isset($student_number) && isset($first_name) && isset($last_name)){
         $password = random_int(1000,9000);
 
