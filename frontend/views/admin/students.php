@@ -60,7 +60,13 @@
                             </thead>
                     
                             <tbody id="studentTableBody">
-                              <!-- Render Dynamically -->
+                                <tr>
+                                    <td>23101007</td>
+                                    <td>Vince Alvendia</td>
+                                    <td>3</td>
+                                    <td><span class="view-link" data-type="student">View</span></td>
+                                </tr>
+                                <!-- Dynamically update data -->
                             </tbody>
                         </table>
                     </div>

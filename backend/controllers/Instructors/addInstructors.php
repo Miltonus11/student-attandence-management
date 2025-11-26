@@ -10,36 +10,19 @@
     }
 
     //get input from frontend
-    $student_number = $_POST['stud_num'];
+    $instructor_number = $_POST['instructor_number'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
-    $year_level = $_POST['year_level'];
     require_once('../../db/conn.php');
     try{
         //create user 
-        if(!$student_number && !$first_name && !$last_name && !$year_level){
+        if(isset($instructor_number) && isset($first_name) && isset($last_name)){
         $password = random_int(1000,9000);
-
-        //check student number if it exist
-        $sql = "SELECT * from tbl_students WHERE student_number = :student_number";
-        $stmt = $conn -> prepare($sql);
-        $stmt -> bindParam(':student_number', $student_number);
-        $stmt->execute();
-        $student = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if($student){
-            http_response_code(409);
-            echo json_encode([
-                "error"=> "Conflict / redundant ID"
-            ]);
-            exit();
-        };
-        //if it exist, exit
 
         $sql = "INSERT INTO tbl_users (username, password, user_role, status) 
                 VALUES (:username, :password, 'student', 1)";
         $stmt = $conn -> prepare($sql);
-        $stmt -> bindParam(':username', $student_number);
+        $stmt -> bindParam(':username', $instructor_number);
         $stmt -> bindParam(':password', $password);
         $stmt -> execute();
 
@@ -47,14 +30,13 @@
         $user_id = $conn->lastInsertId();
         
         // sql statement for student creation
-        $sql = "INSERT INTO tbl_students (user_id ,student_number, first_name, last_name, year_level) 
-                VALUES (:user_id, :student_number, :first_name, :last_name, :year_level)";
+        $sql = "INSERT INTO tbl_instructors (user_id ,instructor_number, first_name, last_name) 
+                VALUES (:user_id, :instructor_number, :first_name, :last_name)";
         $stmt = $conn ->prepare($sql);
         $stmt -> bindParam(':user_id', $user_id);
-        $stmt -> bindParam(':student_number', $student_number);
+        $stmt -> bindParam(':instructor_number', $instructor_number);
         $stmt -> bindParam(':first_name', $first_name);
         $stmt -> bindParam(':last_name', $last_name);
-        $stmt -> bindParam(':year_level', $year_level);
 
         $stmt -> execute();
 
@@ -62,7 +44,6 @@
         echo json_encode([
             "message" => "User added succesfully"
         ]);
-
         exit();
         }  else{
             http_response_code(403);
@@ -77,7 +58,5 @@
             "message" => "Error" . $e->getMessage()
         ]);
     }
-    //To do next, verify if yearLevel is empty, use ! rather than isset
-    // craete transaction.
+    
 ?>
-
