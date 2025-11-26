@@ -13,6 +13,10 @@
         }
         fetchStudents();
 
+        const mockData = {
+            
+        }
+
         function renderStudentTable(Students) {
             const tbody = document.getElementById('studentTableBody');
             tbody.innerHTML = ''; // Clear existing rows
