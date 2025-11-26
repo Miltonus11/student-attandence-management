@@ -57,37 +57,8 @@
                                     <th>Details</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>CFE 1</td>
-                                    <td>God 's Journey with his people</td>
-                                    <td><span class="view-link" data-type="subject">View</span></td>
-                                </tr>
+                           <tbody id="subjectTableBody">
+                              <!-- Render Dynamically -->
                             </tbody>
                         </table>
                     </div>
@@ -121,18 +92,18 @@
                     <form id="addsubjectform">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="subjectid" class="form-label">Subject ID No.</label>
-                                <input type="text" class="form-control" id="subjectid" required>
+                                <label for="subject_id" class="form-label">Subject ID No.</label>
+                                <input type="text" class="form-control" id="subject_id" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="subjectcode" class="form-label">Subject Code</label>
-                                <input type="text" class="form-control" id="subjectcode" required>
+                                <label for="subject_code" class="form-label">Subject Code</label>
+                                <input type="text" class="form-control" id="subject_code" required>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label for="subjecttitle" class="form-label">Subject Title</label>
-                                <input type="text" class="form-control" id="subjecttitle" required>
+                                <label for="subject_title" class="form-label">Subject Title</label>
+                                <input type="text" class="form-control" id="subject_title" required>
                             </div>
                         </div>
                     </form>
