@@ -1,11 +1,19 @@
  <div class="col-md-3 col-lg-2 p-0">
                 <div class="sidebar">
 
+             <!-- Profile Section -->
+    <div class="profile-section" style="text-align: center; padding: 20px; border-bottom: 1px solid #ddd;">
+         <img src="../../src/image.png"
+             alt="Profile Picture" class="profile-image" style="width: 70px; height: 70px;  object-fit: cover; margin-bottom: 10px; border-radius:100px;">
+        <div class="profile-name" style="font-weight: bold; font-size: 16px;">John lawrence Gabriel</div>
+    </div>
+
+
                      <div class="sidebar_section">
-                        <div class="sidebar_title">Attendance</div>
+                        <div class="sidebar_title">Subject</div>
                         <a href="Components/attendance.php" class="sidebar_item" id="Components/attendance.php">
-                            <span class="sidebar_item_icon"><i class="fas fa-calendar-check"></i></span>
-                            <span class="sidebar_item_text">Attendance</span>
+                            <span class="sidebar_item_icon"><i class="fas fa-book"></i></span>
+                            <span class="sidebar_item_text">Subject</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>
                     </div>
