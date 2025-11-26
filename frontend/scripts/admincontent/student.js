@@ -1,58 +1,15 @@
 // Modal Functions for Student
-
-        // Modal Functions for Student
-            const fetchStudents = () => {
-            $.ajax({
-                url:"../../../backend/controllers/Students/getStudents.php",
-                method:"GET",
-                dataType:"json",
-                success: function(result){
-                    renderStudentTable(result);
-                    console.log(result.Students)
+        const fetchStudents = () => {
+        $.ajax({
+            url:"../../../backend/controllers/Students/getStudents.php",
+            method:"GET",
+            dataType:"json",
+            success: function(result){
+                renderStudentTable(result.Students);
+                console.log(result)
                 }
             })
         }
-        fetchStudents();
-
-        const mockData = {
-            
-        }
-
-        function renderStudentTable(Students) {
-            const tbody = document.getElementById('studentTableBody');
-            tbody.innerHTML = ''; // Clear existing rows
-            Students.Students.forEach(student => {
-                const row = document.createElement('tr');
-                // Teacher ID No. cell
-                const idCell = document.createElement('td');
-                idCell.textContent = student.student_number;
-                row.appendChild(idCell);
-                // Name cell
-                const nameCell = document.createElement('td');
-                nameCell.textContent = student.first_name;
-                row.appendChild(nameCell);
-
-                //yearlevel
-                const yearLevelCell = document.createElement('td');
-                yearLevelCell.textContent = student.year_level;
-                row.appendChild(yearLevelCell) ;           
-                // Details cell with a view link
-                const detailsCell = document.createElement('td');
-                const viewLink = document.createElement('a');
-                viewLink.textContent = 'View';
-                viewLink.className = 'view-link';
-                viewLink.href = '#'; // Replace with actual link or add event listener
-                viewLink.addEventListener('click', () => {
-                    // Add your logic here, e.g., open a modal or navigate to details page
-                    alert(`Viewing details for ${teacher.name} (ID: ${teacher.id})`);
-                }); 
-                detailsCell.appendChild(viewLink);
-                row.appendChild(detailsCell);
-                tbody.appendChild(row);
-            });
-        }
-    });
-};
 
 // Initial fetch on page load
 document.addEventListener('DOMContentLoaded', fetchStudents);
@@ -71,9 +28,9 @@ function renderStudentTable(students) {
         row.appendChild(idCell);
 
        // Name cell (full name: first_name + middle_name + last_name)
-const nameCell = document.createElement('td');
-nameCell.textContent = `${student.first_name} ${student.middle_name || ''} ${student.last_name}`.trim();
-row.appendChild(nameCell);
+        const nameCell = document.createElement('td');
+        nameCell.textContent = `${student.first_name} ${student.middle_name || ''} ${student.last_name}`.trim();
+        row.appendChild(nameCell);
 
         // Year Level cell
         const yearLevelCell = document.createElement('td');
