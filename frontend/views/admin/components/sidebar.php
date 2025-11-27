@@ -40,10 +40,10 @@
 
 
                     <div class="sidebar_section">
-                        <div class="sidebar_title">Classes</div>
-                        <a href="classes.php" class="sidebar_item" id="classes.php">
+                        <div class="sidebar_title">Section</div>
+                        <a href="section.php" class="sidebar_item" id="section.php">
                             <span class="sidebar_item_icon"><i class="fas fa-chalkboard"></i></span>
-                            <span class="sidebar_item_text">Classes</span>
+                            <span class="sidebar_item_text">Section</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>
                     </div>

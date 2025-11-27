@@ -29,6 +29,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 /* Simple Form Alignment */
 .form-group {
     margin-bottom: 15px;
@@ -66,10 +67,12 @@ body {
     margin-top: 20px;
 }
 
-
+/* Updated Search Bar Styles */
 .search-bar {
     position: relative;
-    width: 300px;
+    width: 400px; /* Increased width to accommodate the button */
+    display: flex;
+    align-items: center;
 }
 
 .search-icon {
@@ -78,14 +81,28 @@ body {
     top: 50%;
     transform: translateY(-50%);
     color: #6c757d;
+    z-index: 2;
 }
 
 .search-bar input {
     padding-left: 35px;
+    padding-right: 100px; /* Space for the button */
     width: 100%;
     border-radius: 4px;
     border: 1px solid #ced4da;
     height: 38px;
+    position: relative;
+}
+
+.search-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 32px;
+    padding: 0 12px;
+    font-size: 14px;
+    z-index: 2;
 }
 
 .section-title {
@@ -129,12 +146,24 @@ body {
     background-color: #f8f9fa;
 }
 
+.checkbox-cell {
+    width: 50px;
+    text-align: center;
+}
+
+.view-link {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.view-link:hover {
+    text-decoration: underline;
+}
+
 .view-link {
     color: #0d6efd;
     cursor: pointer;
     text-decoration: underline;
-    
-  
 }
 
 .pagination-wrapper {
@@ -168,8 +197,7 @@ body {
 .modal-title {
     font-weight: 600;
 }
+
 .content-header {
     margin-top: 0; 
-
 }
-

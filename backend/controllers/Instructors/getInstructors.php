@@ -8,7 +8,7 @@
         ]);
         exit();
     }
-    $instructor_id = $_GET['isntructor_id'] ?? null;
+    $instructor_id = $_GET['inst_id'] ?? null;
 
     if($instructor_id){
         require_once('../../db/conn.php');
@@ -41,7 +41,7 @@
     } else {
         require_once('../../db/conn.php');
         //sql
-        $sql = "SELECT * FROM tbl_instructors";
+        $sql = "SELECT * FROM tbl_instructors ";
         //prep
         $stmt = $conn->prepare($sql);
         //exe
@@ -52,7 +52,7 @@
         //echo
         echo json_encode([
             "success" => true,
-            "instructors" => $instructors
+            "Instructors" => $instructors
         ]);
     }
 ?>

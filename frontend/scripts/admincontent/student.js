@@ -1,45 +1,88 @@
 // Modal Functions for Student
-        const fetchStudents = () => {
-        $.ajax({
-            url:"../../../backend/controllers/Students/getStudents.php",
-            method:"GET",
-            dataType:"json",
-            success: function(result){
-                renderStudentTable(result.Students);
-                console.log(result)
-                }
-            })
-        }
+// Storing all Students for filtering
+let allStudents = [];
 
-// Initial fetch on page load
-document.addEventListener('DOMContentLoaded', fetchStudents);
+// Fetch students from the backend and render the table
+const fetchStudents = () => {
+    $.ajax({
+        url: "../../../backend/controllers/Students/getStudents.php",
+        method: "GET",
+        dataType: "json",
+        success: function (result) {
+           
+            allStudents = result.Students || result.students || [];
+            renderStudentTable(allStudents);  
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching students:", error);
+            alert("Failed to load students. Please try again.");
+        }
+    });
+};
+
+// Search function
+function performSearch() {
+    const searchTerm = document.getElementById('studentSearch').value.trim().toLowerCase();
+    
+    if (searchTerm === '') {
+        // If search is empty, show all Students
+        renderStudentTable(allStudents);
+        return;
+    }
+    
+    // Filter students based on search term (optimized: removed redundant checks)
+    const filteredStudents = allStudents.filter(student => {
+        const fullName = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.toLowerCase().trim();
+        const studentNumber = (student.student_number || '').toString().toLowerCase();
+        
+        return fullName.includes(searchTerm) || studentNumber.includes(searchTerm);
+    });
+    
+    renderStudentTable(filteredStudents);
+}
 
 // Render the student table
 function renderStudentTable(students) {
     const tbody = document.getElementById('studentTableBody');
+    if (!tbody) {
+        console.error('Student table body not found!');
+        return;
+    }
+   
     tbody.innerHTML = ''; // Clear existing rows
+
+    if (students.length === 0) {
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 5; 
+        cell.textContent = 'No Students found';
+        cell.style.textAlign = 'center';
+        row.appendChild(cell);
+        tbody.appendChild(row);
+        return;
+    }
 
     students.forEach(student => {
         const row = document.createElement('tr');
 
         // Student ID No. cell
         const idCell = document.createElement('td');
-        idCell.textContent = student.student_number;
+        idCell.textContent = student.student_number || 'N/A';
         row.appendChild(idCell);
 
-       // Name cell (full name: first_name + middle_name + last_name)
+        // Name cell (full name: first_name + middle_name + last_name)
         const nameCell = document.createElement('td');
-        nameCell.textContent = `${student.first_name} ${student.middle_name || ''} ${student.last_name}`.trim();
+        nameCell.textContent = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.trim() || 'N/A';
         row.appendChild(nameCell);
 
         // Year Level cell
         const yearLevelCell = document.createElement('td');
-        yearLevelCell.textContent = student.year_level;
+        yearLevelCell.textContent = student.year_level || 'N/A';
         row.appendChild(yearLevelCell);
 
         // Contact cell
         const contactCell = document.createElement('td');
-        contactCell.textContent = student.contact;
+        contactCell.textContent = student.contact || 'N/A';
         row.appendChild(contactCell);
 
         // Details cell with a view link
@@ -47,20 +90,22 @@ function renderStudentTable(students) {
         const viewLink = document.createElement('a');
         viewLink.textContent = 'View';
         viewLink.className = 'view-link';
-        viewLink.href = '#'; // Prevent navigation
+        viewLink.href = '#';
+        viewLink.style.cursor = 'pointer';
 
         // Event listener for opening the modal
         viewLink.addEventListener('click', function (event) {
             event.preventDefault();
 
-            // Get data from the student object
-            document.getElementById("viewStudentId").innerText = student.student_number;
-           document.getElementById("viewStudentName").innerText = `${student.first_name} ${student.middle_name || ''} ${student.last_name}`.trim();
-            document.getElementById("viewStudentyearlevel").innerText = student.year_level;
-            document.getElementById("viewStudentcontact").innerText = student.contact;
+            // Get data from the student object with fallbacks
+            document.getElementById("viewStudentId").innerText = student.student_number || 'N/A';
+            document.getElementById("viewStudentName").innerText = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.trim() || 'N/A';
+            document.getElementById("viewStudentyearlevel").innerText = student.year_level || 'N/A';
+            document.getElementById("viewStudentcontact").innerText = student.contact || 'N/A';
 
             // Show the modal
-            const modal = new bootstrap.Modal(document.getElementById("viewStudentModal"));
+            const modalElement = document.getElementById("viewStudentModal");
+            const modal = new bootstrap.Modal(modalElement);
             modal.show();
         });
 
@@ -73,8 +118,9 @@ function renderStudentTable(students) {
 // Open the add student modal
 function openModal() {
     const modalId = 'addStudentModal';
-    const modal = new bootstrap.Modal(document.getElementById(modalId));
-    const form = document.querySelector(`#${modalId} form`);
+    const modalElement = document.getElementById(modalId);
+    const modal = new bootstrap.Modal(modalElement);
+    const form = modalElement.querySelector('form');
     if (form) form.reset();
     modal.show();
 }
@@ -85,22 +131,52 @@ function closeModal() {
     const modalElement = document.getElementById(modalId);
     const modal = bootstrap.Modal.getInstance(modalElement);
     
-    if (modal) modal.hide();
+    // If no instance exists, create one
+    if (!modal) {
+        const newModal = new bootstrap.Modal(modalElement);
+        newModal.hide();
+    } else {
+        modal.hide();
+    }
+    
     const form = modalElement.querySelector('form');
     if (form) form.reset();
 }
 
-// Save a new student (send to backend)
+// Add event listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    fetchStudents();
+    
+    // Add Enter key support for search
+    const searchInput = document.getElementById('studentSearch');
+    const searchButton = document.getElementById('searchButton');
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+    }
+    
+    if (searchButton) {
+        searchButton.addEventListener('click', performSearch);
+    }
+});
+
+
+/// Save a new student (send to backend)
 function saveStudent() {
-    const student_id = document.getElementById('student_id').value.trim();
+    const student_number = document.getElementById('student_id').value.trim();
     const year_level = document.getElementById('year_level').value.trim();
     const first_name = document.getElementById('first_name').value.trim();
-     const middle_name_name = document.getElementById('middle_name').value.trim();
+    const middle_name = document.getElementById('middle_name').value.trim(); 
     const last_name = document.getElementById('last_name').value.trim();
-    const student_email = document.getElementById('student_email').value.trim();
+    const contact = document.getElementById('contact').value.trim();
+
 
     // Check for empty fields
-    if (!student_id || !year_level || !first_name || !last_name || !student_email) {
+    if (!student_number || !year_level || !first_name || !last_name || !contact ) {
         alert('Please fill in all required fields.');
         return;
     }
@@ -112,31 +188,41 @@ function saveStudent() {
         return;
     }
 
+    // Contact number validation (optional but recommended)
+    const contactRegex = /^[0-9+\-\s()]{10,}$/;
+    if (!contactRegex.test(contact)) {
+        alert('Please enter a valid contact number.');
+        return;
+    }
+
     // Prepare data for AJAX
     const studentData = {
-        student_id: student_id,
+        student_number: student_number,
         year_level: year_level,
         first_name: first_name,
-        middle_name: middle_name,
+        middle_name: middle_name,  
         last_name: last_name,
-        student_email: student_email
+        contact: contact,
+       
     };
 
-    // Send to backend (adjust URL as needed)
+    // Send to backend
     $.ajax({
-        // url: "../../../backend/controllers/Students/addStudent.php", 
-        data: studentData,
+        url: "../../../backend/controllers/Instructors/addInstructor.php",  // Uncomment this
+        method: "POST",  
+        data: teacherData,
         success: function (response) {
-            alert('Student added successfully!');
+            alert('Teacher added successfully!');
             closeModal();
-            fetchStudents(); // Refresh the table
+            fetchInstructors(); // Refresh the table
         },
         error: function (xhr, status, error) {
-            console.error("Error saving student:", error);
-            alert("Failed to save student. Please try again.");
+            console.error("Error saving teacher:", error);
+            alert("Failed to save teacher. Please try again.");
         }
     });
 }
+
 
 // Reset modals on hide (global for all modals)
 document.addEventListener('DOMContentLoaded', () => {

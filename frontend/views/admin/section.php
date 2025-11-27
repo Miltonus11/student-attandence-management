@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Class</title>
+    <title>Manage Classes</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- jQuery (required for AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
     <link rel="stylesheet" href="../../css/modal.css"> 
+    
 </head>
 <body>
     <!-- Header -->
@@ -35,10 +38,12 @@
                 <div class="content-header">
                     <div class="search-bar">
                         <span class="search-icon"><i class="fas fa-search"></i></span>
-                        <input type="text" placeholder="Search classes...">
+                      <input type="text" placeholder="Search" id="classSearch">
+    <button class="btn btn-primary me-1 search-btn" onclick="performSearch()">Search</button>
                     </div>
-                    <button class="btn btn-primary me-2" onclick="openModal()">
-                        <i class="fas fa-plus"></i> Add Class
+                    
+                    <button class="btn btn-primary me-2" onclick="window.location.href='add-classes.php'">
+                     <i class="fas fa-plus"></i> Add Classes
                     </button>
                 </div>
 
@@ -56,39 +61,15 @@
                                     <th>Details</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>BSIT 1A</td>
-                                    <td><span class="view-link" data-type="classes">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>BSIT 1A</td>
-                                    <td><span class="view-link" data-type="classes">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>BSIT 1A</td>
-                                    <td><span class="view-link" data-type="classes">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>BSIT 1A</td>
-                                    <td><span class="view-link" data-type="classes">View</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2310092222</td>
-                                    <td>BSIT 1A</td>
-                                    <td><span class="view-link" data-type="classes">View</span></td>
-                                </tr>
+                            <tbody id="classTableBody">
+                                <!-- Render Dynamically -->
                             </tbody>
                         </table>
                     </div>
 
                     <!-- Pagination Section -->
                     <div class="pagination-wrapper">
-                        <div>Showing 1 to 8 of 8 entries</div>
+                        <div>Showing <span id="classCount">0</span> entries</div>
                         <nav>
                             <ul class="pagination pagination-sm mb-0">
                                 <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
@@ -102,39 +83,8 @@
         </div>
     </div>
 
-    <!-- Add Class Modal -->
-    <div class="modal fade" id="addClassesModal" tabindex="-1" aria-labelledby="addClassesModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addClassesModalLabel">Add New Class</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-
-          <div class="modal-body">
-            <form id="addClassForm">
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="classesid" class="form-label">Class ID No.</label>
-                  <input type="text" class="form-control" id="classesid" required>
-                </div>
-                <div class="col-md-6">
-                  <label for="classsection" class="form-label">Class Section</label>
-                  <input type="text" class="form-control" id="classsection" required>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-            <button type="button" class="btn btn-primary" onclick="saveClasses()">Save Class</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- View Class Modal -->
-    <div class="modal fade" id="viewClassesModal" tabindex="-1">
+    <div class="modal fade" id="viewClassModal" tabindex="-1">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -142,7 +92,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Class ID No.:</strong> <span id="viewClassesId"></span></p>
+                    <p><strong>Class ID No.:</strong> <span id="viewClassId"></span></p> 
                     <p><strong>Class Section:</strong> <span id="viewClassSection"></span></p>
                 </div>
                 <div class="modal-footer">
@@ -154,6 +104,6 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../../scripts/admincontent/classes.js"></script> 
+    <script src="../../scripts/admincontent/section.js"></script> 
 </body>
 </html>

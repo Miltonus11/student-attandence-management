@@ -53,7 +53,7 @@
                                 <tr>
                                     <th>Subject ID No.</th>
                                     <th>Subject Code</th>
-                                    <th>Subject Title</th>
+                                    <th>Subject Name</th>
                                     <th>Details</th>
                                 </tr>
                             </thead>
@@ -102,8 +102,8 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label for="subject_title" class="form-label">Subject Title</label>
-                                <input type="text" class="form-control" id="subject_title" required>
+                                <label for="subject_name" class="form-label">Subject Name</label>
+                                <input type="text" class="form-control" id="subject_name" required>
                             </div>
                         </div>
                     </form>
@@ -128,7 +128,7 @@
                 <div class="modal-body">
                     <p><strong>Subject ID No.:</strong> <span id="viewSubjectId"></span></p>
                     <p><strong>Subject Code:</strong> <span id="viewSubjectCode"></span></p>
-                    <p><strong>Subject Title:</strong> <span id="viewSubjectTitle"></span></p>
+                    <p><strong>Subject Name:</strong> <span id="viewSubjectName"></span></p>
                 </div>
 
                 <div class="modal-footer">
@@ -139,7 +139,9 @@
     </div>
 
     <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-   <script src="../../scripts/admincontent/subject.js"></script> 
+   <!-- Add this before your custom scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../scripts/admincontent/subject.js"></script>
 </body>
 </html>

@@ -7,44 +7,44 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: fixed;
     left: 0;
-    top: 50px; /* Reduced from 70px */
-    width: 200px; /* Reduced from 250px */
+    top: 50px; 
+    width: 200px;
     overflow-y: auto;
     z-index: 999;
-    padding-top: 15px; /* Reduced from 20px */
-    height: calc(100vh - 70px); /* Reduced from 80px */
+    padding-top: 30px;
+    height: calc(100vh - 70px); 
 }
 
 /* Sidebar section grouping - tighter spacing */
 .sidebar_section {
-    margin-bottom: 0px; /* Reduced from 15px */
+    margin-bottom: 0px; 
 }
 
 /* Section title styling - more compact */
 .sidebar_title {
-    font-size: 13px; /* Reduced from 15px */
-    font-weight: 1000; /* Reduced from 1000 */
+    font-size: 12px; 
+    font-weight: 1000; 
     color: #6c757d;
     text-transform: uppercase;
-    padding: 8px 15px 3px; /* Reduced padding */
-    letter-spacing: 0.3px; /* Reduced spacing */
+    padding: 8px 20px 3px;
+    letter-spacing: 0.3px; 
 }
 
 /* Individual sidebar menu items - more compact */
 .sidebar_item {
     display: flex;
     align-items: center;
-    padding: 2px 15px; /* Reduced from 12px 20px */
+    padding: 2px 15px; 
     text-decoration: none;
     color: #495057;
-    transition: all 0.2s ease; /* Faster transition */
-    border-left: 2px solid transparent; /* Thinner border */
+    transition: all 0.2s ease; 
+    border-left: 2px solid transparent; 
     position: relative;
 }
 
 /* Hover state for sidebar items */
 .sidebar_item:hover {
-    background-color: #f1f3f4; /* Lighter hover color */
+    background-color: #f1f3f4;
     color: #000;
 }
 
@@ -57,32 +57,32 @@
 
 /* Icon container - smaller */
 .sidebar_item_icon {
-    width: 16px; /* Reduced from 20px */
-    margin-right: 10px; /* Reduced from 12px */
+    width: 16px; 
+    margin-right: 10px; 
     text-align: center;
-    font-size: 16px; /* Reduced from 20px */
+    font-size: 16px; 
 }
 
 /* Text label - smaller and tighter */
 .sidebar_item_text {
     flex-grow: 10;
     color: #012970;
-    font-weight: 600; /* Reduced from bold */
+    font-weight: 600; 
     font-family: sans-serif;
-    font-size: 14px; /* Reduced from 18px */
+    font-size: 14px;
 }
 
 /* Dropdown arrow - smaller */
 .arrow {
-    font-size: 10px; /* Reduced from 12px */
+    font-size: 10px; 
     color: #060b10;
 }
 
 /* Special styling for the last sidebar item */
 .sidebar_item:last-child {
-    margin-top: 8px; /* Reduced from 10px */
+    margin-top: 8px;
     border-top: 1px solid #e0e0e0;
-    padding-top: 12px; /* Reduced from 15px */
+    padding-top: 12px; 
     color: #9785e8;
 }
 
@@ -95,81 +95,81 @@
 .sidebar_item:last-child:hover {
     background-color: #6c86dc;
     color: #2c3e50;
-    border-radius: 6px; /* Smaller radius */
+    border-radius: 6px;
 }
 
 /* Adjust dashboard header to match smaller sidebar */
 .dashboard-header {
-    margin-left: 200px; /* Match sidebar width */
-    padding: 15px 25px; /* Reduced padding */
+    margin-left: 200px; 
+    padding: 15px 25px; 
     background-color: #f8f9fa;
     border-bottom: 1px solid #e0e0e0;
-    margin-top: 60px; /* Match sidebar top position */
+    margin-top: 60px;
 }
 
 /* Main dashboard title - slightly smaller */
 .dashboard-title {
-    font-size: 22px; /* Reduced from 24px */
+    font-size: 22px; 
     font-weight: 700;
     color: #012970;
-    margin-bottom: 4px; /* Reduced from 5px */
+    margin-bottom: 4px; 
 }
 
 /* Dashboard subtitle - smaller */
 .dashboard-subtitle {
-    font-size: 13px; /* Reduced from 14px */
+    font-size: 13px; 
     color: #6c757d;
 }
 
 /* Main Content Area - adjusted for smaller sidebar */
 .main-content {
-    margin-left: 200px; /* Match sidebar width */
-    padding: 15px 25px; /* Reduced padding */
-    margin-top: 60px; /* Match sidebar top position */
+    margin-left: 200px; 
+    padding: 15px 25px; 
+    margin-top: 60px; 
 }
 
 /* Status/Information Cards - slightly more compact */
 .status-card {
     background-color: #fff;
-    border-radius: 6px; /* Smaller radius */
-    padding: 15px; /* Reduced from 20px */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Softer shadow */
-    margin-bottom: 15px; /* Reduced from 20px */
-    border-left: 3px solid #012970; /* Thinner border */
+    border-radius: 6px; 
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    border-left: 3px solid #012970; 
 }
 
 /* Status card title - smaller */
 .status-title {
-    font-size: 15px; /* Reduced from 16px */
+    font-size: 15px; 
     font-weight: 600;
     color: #495057;
-    margin-bottom: 8px; /* Reduced from 10px */
+    margin-bottom: 8px; 
 }
 
 /* Table for class lists - more compact */
 .class-list {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 12px; /* Reduced from 15px */
-    font-size: 14px; /* Smaller font */
+    margin-top: 12px;
+    font-size: 14px; 
 }
 
 /* Table header cells - more compact */
 .class-list th {
     background-color: #f8f9fa;
-    padding: 10px 12px; /* Reduced from 12px 15px */
+    padding: 10px 12px; 
     text-align: left;
     font-weight: 600;
     color: #495057;
-    border-bottom: 1px solid #e0e0e0; /* Thinner border */
-    font-size: 14px; /* Smaller font */
+    border-bottom: 1px solid #e0e0e0; 
+    font-size: 14px; /
 }
 
 /* Table data cells - more compact */
 .class-list td {
-    padding: 10px 12px; /* Reduced from 12px 15px */
+    padding: 10px 12px; 
     border-bottom: 1px solid #e0e0e0;
-    font-size: 14px; /* Smaller font */
+    font-size: 14px; 
 }
 
 /* Table row hover effect */
@@ -178,35 +178,35 @@
 }
 
 
-/* Responsive Design for Mobile Devices */
+/* Responsive Design */
 @media (max-width: 768px) {
     .sidebar {
         min-height: auto;
-        padding: 8px 0; /* Even more compact on mobile */
+        padding: 8px 0;
         width: 100%;
         position: relative;
         top: 0;
         height: auto;
     }
     
-    /* Adjust sidebar items for mobile - even smaller */
+    /* Adjust sidebar item */
     .sidebar_item {
-        padding: 6px 12px; /* More compact on mobile */
+        padding: 6px 12px; 
     }
     
-    /* Smaller text on mobile */
+    /* Smaller text */
     .sidebar_item_text {
         font-size: 13px;
     }
     
-    /* Reset margins for mobile layout */
+    /* Reset margins  */
     .dashboard-header,
     .main-content {
         margin-left: 0;
         margin-top: 0;
     }
     
-    /* More compact cards on mobile */
+    /* More compact cards */
     .status-card {
         padding: 12px;
         margin-bottom: 12px;

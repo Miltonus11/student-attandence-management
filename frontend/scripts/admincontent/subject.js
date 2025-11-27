@@ -3,15 +3,21 @@
 // Fetch subjects from the backend and render the table
 const fetchSubjects = () => {
     $.ajax({
-        // url: "../../../backend/controllers/Subjects/getSubjects.php", 
+        url: "../../../backend/controllers/Subject/getSubject.php", 
         method: "GET",
         dataType: "json",
         success: function (result) {
-            renderSubjectTable(result.Subjects);  
+            if (result.success) {
+                renderSubjectTable(result.Subjects || result.subjects); 
+            } else {
+                console.error("Error in response:", result.message);
+                alert("Failed to load subjects: " + (result.message || "Unknown error"));
+            }
         },
         error: function (xhr, status, error) {
             console.error("Error fetching subjects:", error);
-            alert("Failed to load subjects. Please try again.");
+            console.log("XHR response:", xhr.responseText);
+            alert("Failed to load subjects. Please check console for details.");
         }
     });
 };
@@ -22,42 +28,54 @@ document.addEventListener('DOMContentLoaded', fetchSubjects);
 // Render the subject table
 function renderSubjectTable(subjects) {
     const tbody = document.getElementById('subjectTableBody');
+    if (!tbody) {
+        console.error("Table body element not found");
+        return;
+    }
+    
     tbody.innerHTML = ''; // Clear existing rows
+
+    if (!subjects || subjects.length === 0) {
+        const row = document.createElement('tr');
+        row.innerHTML = ``;
+        tbody.appendChild(row);
+        return;
+    }
 
     subjects.forEach(subject => {
         const row = document.createElement('tr');
 
         // Subject ID No. cell
         const idCell = document.createElement('td');
-        idCell.textContent = subject.subject_id;
+        idCell.textContent = subject.subject_number || subject.id || 'N/A';
         row.appendChild(idCell);
 
         // Subject Code cell
         const codeCell = document.createElement('td');
-        codeCell.textContent = subject.subject_code;
+        codeCell.textContent = subject.subject_code || 'N/A';
         row.appendChild(codeCell);
 
         // Subject Title cell
-        const titleCell = document.createElement('td');
-        titleCell.textContent = subject.subject_name;  
-        row.appendChild(titleCell);
-
+        const nameCell = document.createElement('td');
+        nameCell.textContent = subject.subject_name || subject.subject_title || 'N/A';  
+        row.appendChild(nameCell);
 
         // Details cell with a view link
         const detailsCell = document.createElement('td');
         const viewLink = document.createElement('a');
         viewLink.textContent = 'View';
         viewLink.className = 'view-link';
-        viewLink.href = '#'; // Prevent navigation
+        viewLink.href = '#';
+        viewLink.style.cursor = 'pointer';
 
         // Event listener for opening the modal
         viewLink.addEventListener('click', function (event) {
             event.preventDefault();
 
             // Get data from the subject object
-            document.getElementById("viewSubjectId").innerText = subject.subject_id;
-            document.getElementById("viewSubjectCode").innerText = subject.subject_code;
-            document.getElementById("viewSubjectTitle").innerText = subject.subject_name;
+            document.getElementById("viewSubjectId").innerText = subject.subject_number || subject.id || 'N/A';
+            document.getElementById("viewSubjectCode").innerText = subject.subject_code || 'N/A';
+            document.getElementById("viewSubjectName").innerText = subject.subject_name || subject.subject_title || 'N/A';
 
             // Show the modal
             const modal = new bootstrap.Modal(document.getElementById("viewSubjectModal"));
@@ -85,7 +103,13 @@ function closeModal() {
     const modalElement = document.getElementById(modalId);
     const modal = bootstrap.Modal.getInstance(modalElement);
     
-    if (modal) modal.hide();
+    if (modal) {
+        modal.hide();
+    } else {
+        const newModal = new bootstrap.Modal(modalElement);
+        newModal.hide();
+    }
+    
     const form = modalElement.querySelector('form');
     if (form) form.reset();
 }
@@ -94,11 +118,10 @@ function closeModal() {
 function saveSubject() {
     const subject_id = document.getElementById('subject_id').value.trim();
     const subject_code = document.getElementById('subject_code').value.trim();
-    const subject_title = document.getElementById('subject_title').value.trim();
-   
+    const subject_name = document.getElementById('subject_name').value.trim(); // Fixed: was subject_title
 
     // Check for empty fields
-    if (!subjectid || !subjectcode || !subjecttitle) {
+    if (!subject_id || !subject_code || !subject_name) {
         alert('Please fill in all required fields.');
         return;
     }
@@ -107,23 +130,35 @@ function saveSubject() {
     const subjectData = {
         subject_id: subject_id,
         subject_code: subject_code,
-        subject_title: subject_title,
-      
+        subject_name: subject_name, // Fixed: was subject_title
     };
 
-    // Send to backend (adjust URL as needed)
+    // Send to backend
     $.ajax({
-        // url: "../../../backend/controllers/Subjects/addSubject.php",  
+        url: "../../../backend/controllers/Subject/addSubject.php", // Make sure this file exists
         method: "POST", 
         data: subjectData,
         success: function (response) {
-            alert('Subject added successfully!');
-            closeModal();
-            fetchSubjects(); // Refresh the table
+            try {
+                const result = typeof response === 'string' ? JSON.parse(response) : response;
+                if (result.success) {
+                    alert('Subject added successfully!');
+                    closeModal();
+                    fetchSubjects(); // Refresh the table
+                } else {
+                    alert('Failed to add subject: ' + (result.message || 'Unknown error'));
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                alert('Subject added successfully!');
+                closeModal();
+                fetchSubjects();
+            }
         },
         error: function (xhr, status, error) {
             console.error("Error saving subject:", error);
-            alert("Failed to save subject. Please try again.");
+            console.log("XHR response:", xhr.responseText);
+            alert("Failed to save subject. Please check console for details.");
         }
     });
 }

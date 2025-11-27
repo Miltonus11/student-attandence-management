@@ -35,12 +35,15 @@
                 
                 <!-- Header Section with Search and Add Button -->
                 <div class="content-header">
-                    <div class="search-bar">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" placeholder="Search">
-                    </div>
-                    <button class="btn btn-primary me-2" onclick="openModal()">+ Add Teacher</button>
-                </div>
+                    
+   <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" placeholder="Search" id="teacherSearch">
+    <button class="btn btn-primary me-1 search-btn" onclick="performSearch()">Search</button>
+</div>
+
+    <button class="btn btn-primary me-2" onclick="openModal()">+ Add Teacher</button>
+</div>
 
                 <!-- Content Area -->
                 <div class="content-area">
@@ -53,11 +56,15 @@
                                 <tr>
                                     <th>Teacher ID No.</th>
                                     <th>Name</th>
-                                    <th>Details</th>
+                               <th>Contact</th>
+                                       <th>Details</th> 
                                 </tr>
                             </thead>
                             <tbody id="teacherTableBody">
                                 <!-- Render Dynamically -->
+                                    <tr>
+                                  <td colspan="5" class="text-center">Loading teachers...</td>
+                              </tr>
                             </tbody>
                         </table>
                     </div>

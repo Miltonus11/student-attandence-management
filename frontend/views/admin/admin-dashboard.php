@@ -28,7 +28,7 @@
             <!-- Main Content -->
            
             <div class="col-md-9 col-lg-10 main_content">
-                <h1 class="page_title">Administrator Dashboard</h1>
+                <h1 class="page_title">Administrator Dashboard</h1>  
 
 <div class="row">
    
@@ -45,9 +45,9 @@
     </div>
 
         <div class="col-md-6 col-lg-3">
-        <div class="dashboard_card card-classes" onclick="window.location.href='classes.php'">
+        <div class="dashboard_card card-classes" onclick="window.location.href='section.php'">
             <div class="card_content">
-                <div class="card_label">Classes</div>
+                <div class="card_label">Section</div>
                 <div class="card_value">4</div>
             </div>
             <div class="card_icon">
