@@ -11,7 +11,7 @@
 
                      <div class="sidebar_section">
                         <div class="sidebar_title">Subject</div>
-                        <a href="Components/attendance.php" class="sidebar_item" id="Components/attendance.php">
+                        <a href="attendance.php" class="sidebar_item" id="attendance.php">
                             <span class="sidebar_item_icon"><i class="fas fa-book"></i></span>
                             <span class="sidebar_item_text">Subject</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>

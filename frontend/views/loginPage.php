@@ -17,12 +17,12 @@
   <!-- LOGIN WRAPPER -->
   <div class="login-wrapper d-flex flex-column justify-content-center align-items-center min-vh-100">
     <div class="login-form">
-      <div class="form-title">ACCOUNT LOGIN</div>
+      <div class="form-title">SITS Attendance Management System</div>
 
       <!-- LOGO -->
       <div class="logo-container mb-4">
         <div class="logo">
-          <img src="../src/sits_logo.png" alt="Logo">
+          <img src="../src/sitslogo.jpg" alt="Logo">
         </div>
       </div>
 

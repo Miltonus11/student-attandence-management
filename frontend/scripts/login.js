@@ -19,7 +19,7 @@ $(document).ready(function(e){
                             window.location.href ="admin/admin-dashboard.php";
                             break;
                         case "student":
-                            window.location.href ="students/student-dashboard.php";
+                            window.location.href ="student/attendance.php";
                             break;
                         case "instructor":
                             window.location.href ="teacher/teacher.php";

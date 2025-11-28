@@ -12,7 +12,7 @@
 
                      <div class="sidebar_section">
                         <div class="sidebar_title">Subject</div>
-                        <a href="Components/subject.php" class="sidebar_item" id="Components/subject.php">
+                        <a href="subject.php" class="sidebar_item" id="subject.php">
                             <span class="sidebar_item_icon"><i class="fas fa-book"></i></span>
                             <span class="sidebar_item_text">Subject</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
@@ -21,10 +21,10 @@
 
 
                     <div class="sidebar_section">
-                        <div class="sidebar_title">Classes</div>
-                        <a href="Components/classes.php" class="sidebar_item" id="Components/classes.php">
+                        <div class="sidebar_title">Section</div>
+                        <a href="section.php" class="sidebar_item" id="section.php">
                             <span class="sidebar_item_icon"><i class="fas fa-chalkboard"></i></span>
-                            <span class="sidebar_item_text">Classes</span>
+                            <span class="sidebar_item_text">Section</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>
                     </div>
@@ -32,7 +32,7 @@
 
                     <div class="sidebar_section">
                         <div class="sidebar_title">History</div>
-                        <a href="Components/history.php" class="sidebar_item" id="Components/history.php">
+                        <a href="history.php" class="sidebar_item" id="history.php">
                             <span class="sidebar_item_icon"><i class="fas fa-history"></i></span>
                             <span class="sidebar_item_text">History</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
@@ -42,7 +42,7 @@
                    
                     <div class="sidebar_section">
                         <div class="sidebar_title">Settings</div>
-                        <a href="Components/settings.php" class="sidebar_item" id="Components/settings.php">
+                        <a href="settings.php" class="sidebar_item" id="settings.php">
                             <span class="sidebar_item_icon"><i class="fas fa-gears"></i></span>
                             <span class="sidebar_item_text">Settings</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>

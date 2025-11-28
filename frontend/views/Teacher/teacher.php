@@ -16,13 +16,13 @@
 </head>
 <body>
     <!-- Header -->
-   <?php include 'header.php'; ?> 
+   <?php include 'components/header.php'; ?> 
 
     <!-- Main Container -->
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-             <?php include 'sidebar.php'; ?> 
+             <?php include 'components/sidebar.php'; ?> 
 
             <!-- Main Content -->
                  <div class="col-md-9 col-lg-10 main_content">

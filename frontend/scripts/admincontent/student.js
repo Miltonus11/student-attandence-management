@@ -1,158 +1,147 @@
-// Modal Functions for Student
-// Storing all Students for filtering
-let allStudents = [];
+// Modal Functions for Student  
+// Storing all Students for filtering  
+let allStudents = [];  // array kung saan ilalagay ang listahan ng students
 
-// Fetch students from the backend and render the table
+// Fetch students from the backend and render the table  
 const fetchStudents = () => {
     $.ajax({
-        url: "../../../backend/controllers/Students/getStudents.php",
-        method: "GET",
-        dataType: "json",
-        success: function (result) {
+        url: "../../../backend/controllers/Students/getStudents.php", 
+        method: "GET", // GET request
+        dataType: "json", // inaasahang JSON ang response
+        success: function (result) { // kapag successful ang request
            
-            allStudents = result.Students || result.students || [];
-            renderStudentTable(allStudents);  
+            allStudents = result.Students || result.students || []; // kunin ang students mula sa response
+            renderStudentTable(allStudents);  // i-display ang students sa table
         },
-        error: function (xhr, status, error) {
-            console.error("Error fetching students:", error);
-            alert("Failed to load students. Please try again.");
+        error: function (xhr, status, error) { // kapag nag-error
+            console.error("Error fetching students:", error); // ipakita ang error sa console
+            alert("Failed to load students. Please try again."); // alert na may nag-error
         }
     });
 };
 
-// Search function
+// Search function  
 function performSearch() {
-    const searchTerm = document.getElementById('studentSearch').value.trim().toLowerCase();
+    const searchTerm = document.getElementById('studentSearch').value.trim().toLowerCase(); // kunin ang search input at gawing lowercase
     
-    if (searchTerm === '') {
-        // If search is empty, show all Students
-        renderStudentTable(allStudents);
+    if (searchTerm === '') { // kung walang laman ang search box
+        renderStudentTable(allStudents); // ibalik ang full list
         return;
     }
     
-    // Filter students based on search term (optimized: removed redundant checks)
+    // Filter students based on search term  
     const filteredStudents = allStudents.filter(student => {
-        const fullName = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.toLowerCase().trim();
-        const studentNumber = (student.student_number || '').toString().toLowerCase();
+        const fullName = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.toLowerCase().trim(); // buo pangalan
+        const studentNumber = (student.student_number || '').toString().toLowerCase(); // student number
         
-        return fullName.includes(searchTerm) || studentNumber.includes(searchTerm);
+        return fullName.includes(searchTerm) || studentNumber.includes(searchTerm); // match ng pangalan o student number
     });
     
-    renderStudentTable(filteredStudents);
+    renderStudentTable(filteredStudents); // i-display ang filtered results
 }
 
-// Render the student table
+// Render the student table  
 function renderStudentTable(students) {
-    const tbody = document.getElementById('studentTableBody');
-    if (!tbody) {
-        console.error('Student table body not found!');
+    const tbody = document.getElementById('studentTableBody'); // kunin ang table body
+    if (!tbody) { // kung hindi makita ang table body
+        console.error('Student table body not found!'); 
         return;
     }
    
-    tbody.innerHTML = ''; // Clear existing rows
+    tbody.innerHTML = ''; // i-clear ang laman ng table
 
-    if (students.length === 0) {
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.colSpan = 5; 
-        cell.textContent = 'No Students found';
-        cell.style.textAlign = 'center';
+    if (students.length === 0) { // kung walang students
+        const row = document.createElement('tr'); // gumawa ng row
+        const cell = document.createElement('td'); // gumawa ng cell
+        cell.colSpan = 5;  // ispread sa 5 columns
+        cell.textContent = 'No Students found'; // text kapag walang data
+        cell.style.textAlign = 'center'; // gitnang text
         row.appendChild(cell);
         tbody.appendChild(row);
         return;
     }
 
-    students.forEach(student => {
-        const row = document.createElement('tr');
+    students.forEach(student => { // loop sa bawat student
+        const row = document.createElement('tr'); // bagong row
 
-        // Student ID No. cell
-        const idCell = document.createElement('td');
-        idCell.textContent = student.student_number || 'N/A';
+        const idCell = document.createElement('td'); // cell para sa ID
+        idCell.textContent = student.student_number || 'N/A'; // display student number
         row.appendChild(idCell);
 
-        // Name cell (full name: first_name + middle_name + last_name)
-        const nameCell = document.createElement('td');
-        nameCell.textContent = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.trim() || 'N/A';
+        const nameCell = document.createElement('td'); // cell para sa pangalan
+        nameCell.textContent = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.trim() || 'N/A'; // buo pangalan
         row.appendChild(nameCell);
 
-        // Year Level cell
-        const yearLevelCell = document.createElement('td');
-        yearLevelCell.textContent = student.year_level || 'N/A';
+        const yearLevelCell = document.createElement('td'); // cell para sa year level
+        yearLevelCell.textContent = student.year_level || 'N/A'; 
         row.appendChild(yearLevelCell);
 
-        // Contact cell
-        const contactCell = document.createElement('td');
+        const contactCell = document.createElement('td'); // cell para sa contact number
         contactCell.textContent = student.contact || 'N/A';
         row.appendChild(contactCell);
 
-        // Details cell with a view link
-        const detailsCell = document.createElement('td');
-        const viewLink = document.createElement('a');
+        const detailsCell = document.createElement('td'); // cell para sa actions
+        const viewLink = document.createElement('a'); // "View" link
         viewLink.textContent = 'View';
         viewLink.className = 'view-link';
         viewLink.href = '#';
         viewLink.style.cursor = 'pointer';
 
-        // Event listener for opening the modal
-        viewLink.addEventListener('click', function (event) {
-            event.preventDefault();
+        viewLink.addEventListener('click', function (event) { // pag-click ng view
+            event.preventDefault(); // iwas i-refresh ang page
 
-            // Get data from the student object with fallbacks
-            document.getElementById("viewStudentId").innerText = student.student_number || 'N/A';
-            document.getElementById("viewStudentName").innerText = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.trim() || 'N/A';
-            document.getElementById("viewStudentyearlevel").innerText = student.year_level || 'N/A';
-            document.getElementById("viewStudentcontact").innerText = student.contact || 'N/A';
+            document.getElementById("viewStudentId").innerText = student.student_number || 'N/A'; // ipakita ID
+            document.getElementById("viewStudentName").innerText = `${student.first_name || ''} ${student.middle_name || ''} ${student.last_name || ''}`.trim() || 'N/A'; // ipakita name
+            document.getElementById("viewStudentyearlevel").innerText = student.year_level || 'N/A'; // ipakita year
+            document.getElementById("viewStudentcontact").innerText = student.contact || 'N/A'; // ipakita contact
 
-            // Show the modal
-            const modalElement = document.getElementById("viewStudentModal");
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
+            const modalElement = document.getElementById("viewStudentModal"); // kunin modal
+            const modal = new bootstrap.Modal(modalElement); // initialize bootstrap modal
+            modal.show(); // ipakita modal
         });
 
-        detailsCell.appendChild(viewLink);
-        row.appendChild(detailsCell);
-        tbody.appendChild(row);
+        detailsCell.appendChild(viewLink); // ilagay ang view link sa cell
+        row.appendChild(detailsCell); // idagdag ang cell sa row
+        tbody.appendChild(row); // idagdag ang row sa table body
     });
 }
 
-// Open the add student modal
+// Open the add student modal 
 function openModal() {
-    const modalId = 'addStudentModal';
-    const modalElement = document.getElementById(modalId);
-    const modal = new bootstrap.Modal(modalElement);
-    const form = modalElement.querySelector('form');
-    if (form) form.reset();
-    modal.show();
+    const modalId = 'addStudentModal'; 
+    const modalElement = document.getElementById(modalId); 
+    const modal = new bootstrap.Modal(modalElement); 
+    const form = modalElement.querySelector('form'); 
+    if (form) form.reset(); // reset ang form
+    modal.show(); // ipakita ang modal
 }
 
-// Close the add student modal
+// Close the add student modal 
 function closeModal() {
     const modalId = 'addStudentModal';
     const modalElement = document.getElementById(modalId);
     const modal = bootstrap.Modal.getInstance(modalElement);
     
-    // If no instance exists, create one
-    if (!modal) {
+    if (!modal) { // kung walang bootstrap instance
         const newModal = new bootstrap.Modal(modalElement);
         newModal.hide();
     } else {
-        modal.hide();
+        modal.hide(); // itago modal
     }
     
     const form = modalElement.querySelector('form');
-    if (form) form.reset();
+    if (form) form.reset(); // reset form
 }
 
-// Add event listeners when DOM is loaded
+// Add event listeners when DOM is loaded  or  pag-load ng page
 document.addEventListener('DOMContentLoaded', function() {
-    fetchStudents();
+    fetchStudents(); // i-load ang students
     
-    // Add Enter key support for search
-    const searchInput = document.getElementById('studentSearch');
-    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('studentSearch'); // search input
+    const searchButton = document.getElementById('searchButton'); // search button
     
     if (searchInput) {
-        searchInput.addEventListener('keypress', function(event) {
+        searchInput.addEventListener('keypress', function(event) { // Enter key search
             if (event.key === 'Enter') {
                 performSearch();
             }
@@ -160,61 +149,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if (searchButton) {
-        searchButton.addEventListener('click', performSearch);
+        searchButton.addEventListener('click', performSearch); // click search
     }
 });
 
 
-/// Save a new student (send to backend)
+///   // function para mag-save ng student
 function saveStudent() {
-    const student_number = document.getElementById('student_id').value.trim();
-    const year_level = document.getElementById('year_level').value.trim();
-    const first_name = document.getElementById('first_name').value.trim();
-    const middle_name = document.getElementById('middle_name').value.trim(); 
-    const last_name = document.getElementById('last_name').value.trim();
-    const contact = document.getElementById('contact').value.trim();
+    const student_number = document.getElementById('student_id').value.trim(); // kunin ID
+    const year_level = document.getElementById('year_level').value.trim(); // year level
+    const first_name = document.getElementById('first_name').value.trim(); // first name
+    const middle_name = document.getElementById('middle_name').value.trim();  // middle name
+    const last_name = document.getElementById('last_name').value.trim(); // last name
+    const contact = document.getElementById('contact').value.trim(); // contact number
 
-
-    // Check for empty fields
-    if (!student_number || !year_level || !first_name || !last_name || !contact ) {
+    if (!student_number || !year_level || !first_name || !last_name || !contact ) { // validation
         alert('Please fill in all required fields.');
         return;
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(student_email)) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // regex para sa email
+    if (!emailRegex.test(student_email)) { // ERROR: student_email not declared
         alert('Please enter a valid email address.');
         return;
     }
 
-    // Contact number validation (optional but recommended)
-    const contactRegex = /^[0-9+\-\s()]{10,}$/;
+    const contactRegex = /^[0-9+\-\s()]{10,}$/; // validation para sa contact #
     if (!contactRegex.test(contact)) {
         alert('Please enter a valid contact number.');
         return;
     }
 
-    // Prepare data for AJAX
-    const studentData = {
+    const studentData = { // ihanda data para sa backend
         student_number: student_number,
         year_level: year_level,
         first_name: first_name,
         middle_name: middle_name,  
         last_name: last_name,
         contact: contact,
-       
     };
 
-    // Send to backend
     $.ajax({
-        url: "../../../backend/controllers/Instructors/addInstructor.php",  // Uncomment this
+        // url: "../../../backend/controllers/Instructors/addInstructor.php",  
         method: "POST",  
-        data: teacherData,
+        data: teacherData, // ERROR: teacherData hindi declared
         success: function (response) {
-            alert('Teacher added successfully!');
+            alert('Teacher added successfully!'); 
             closeModal();
-            fetchInstructors(); // Refresh the table
+            fetchInstructors(); // ERROR: fetchInstructors hindi defined
         },
         error: function (xhr, status, error) {
             console.error("Error saving teacher:", error);
@@ -223,13 +205,12 @@ function saveStudent() {
     });
 }
 
-
-// Reset modals on hide (global for all modals)
+// auto-reset ng bawat modal kapag sinara
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.modal').forEach(modalEl => {
-        modalEl.addEventListener('hidden.bs.modal', () => {
-            const form = modalEl.querySelector('form');
-            if (form) form.reset();
+        modalEl.addEventListener('hidden.bs.modal', () => { 
+            const form = modalEl.querySelector('form'); 
+            if (form) form.reset(); // reset form
         });
     });
 });
