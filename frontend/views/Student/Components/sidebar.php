@@ -7,11 +7,21 @@
              alt="Profile Picture" class="profile-image" style="width: 70px; height: 70px;  object-fit: cover; margin-bottom: 10px; border-radius:100px;">
         <div class="profile-name" style="font-weight: bold; font-size: 16px;">John lawrence Gabriel</div>
     </div>
+                        
+
+       <div class="sidebar_section">
+                        <div class="sidebar_title">Attendance</div>
+                        <a href="student.php" class="sidebar_item" id="student.php">
+                            <span class="sidebar_item_icon"><i class="fas fa-book"></i></span>
+                            <span class="sidebar_item_text">Attendance</span>
+                            <span class="arrow"><i class="fas fa-chevron-right"></i></span>
+                        </a>
+                    </div>
 
 
                      <div class="sidebar_section">
                         <div class="sidebar_title">Subject</div>
-                        <a href="attendance.php" class="sidebar_item" id="attendance.php">
+                        <a href="subject.php" class="sidebar_item" id="subject.ph">
                             <span class="sidebar_item_icon"><i class="fas fa-book"></i></span>
                             <span class="sidebar_item_text">Subject</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
@@ -22,7 +32,7 @@
 
                     <div class="sidebar_section">
                         <div class="sidebar_title">Setting</div>
-                        <a href="Components/settings.php" class="sidebar_item" id="Components/settings.php">
+                        <a href="settings.php" class="sidebar_item" id="settings.php">
                             <span class="sidebar_item_icon"><i class="fas fa-gears"></i></span>
                             <span class="sidebar_item_text">Setting</span>
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>

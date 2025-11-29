@@ -1,0 +1,149 @@
+/* Compact Sidebar Styles */
+.sidebar {
+    background-color: #FFFFFF;
+    min-height: 100vh;
+    padding: 15px 0;
+    border-right: 1px solid #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: fixed;
+    left: 0;
+    top: 50px; 
+    width: 200px;
+    overflow-y: auto;
+    z-index: 999;
+    padding-top: 30px;
+    height: calc(100vh - 70px); 
+}
+
+/* Sidebar section grouping */
+.sidebar_section {
+    margin-bottom: 0px; 
+}
+
+/* Section title styling */
+.sidebar_title {
+    font-size: 12px; 
+    font-weight: 1000; 
+    color: #6c757d;
+    text-transform: uppercase;
+    padding: 8px 20px 3px;
+    letter-spacing: 0.3px; 
+}
+
+/* Individual sidebar menu items */
+.sidebar_item {
+    display: flex;
+    align-items: center;
+    padding: 2px 15px; 
+    text-decoration: none;
+    color: #495057;
+    transition: all 0.2s ease; 
+    border-left: 2px solid transparent; 
+    position: relative;
+}
+
+/* Hover state for sidebar items */
+.sidebar_item:hover {
+    background-color: #f1f3f4;
+    color: #000;
+}
+
+/* Active/selected sidebar item */
+.sidebar_item.active {
+    background-color: #f1f3f4;
+    color: #000;
+    font-weight: 500;
+}
+
+/* Icon container */
+.sidebar_item_icon {
+    width: 16px; 
+    margin-right: 10px; 
+    text-align: center;
+    font-size: 16px; 
+}
+
+/* Text label */
+.sidebar_item_text {
+    flex-grow: 10;
+    color: #012970;
+    font-weight: 600; 
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+/* Dropdown arrow */
+.arrow {
+    font-size: 10px; 
+    color: #060b10;
+}
+
+/* Special styling for the last sidebar item */
+.sidebar_item:last-child {
+    margin-top: 8px;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 12px; 
+    color: #9785e8;
+}
+
+/* Icon color for last sidebar item */
+.sidebar_item:last-child .sidebar_item_icon {
+    color: #010207;
+}
+
+/* Hover state for last sidebar item */
+.sidebar_item:last-child:hover {
+    background-color: #6c86dc;
+    color: #2c3e50;
+    border-radius: 6px;
+}
+
+/* Profile Section Styles */
+.profile-section {
+    text-align: center;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.profile-section:hover {
+    background-color: #f1f3f4;
+}
+
+.profile-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 100px;
+    border: 2px solid #012970;
+}
+
+.profile-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #012970;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+        padding: 8px 0;
+        width: 100%;
+        position: relative;
+        top: 0;
+        height: auto;
+    }
+    
+    /* Adjust sidebar item */
+    .sidebar_item {
+        padding: 6px 12px; 
+    }
+    
+    /* Smaller text */
+    .sidebar_item_text {
+        font-size: 13px;
+    }
+}

@@ -150,53 +150,62 @@ function closeModal() {
 }
 
 
-/// Save a new teacher (send to backend)
+/// Save a new teacher 
 function saveTeacher() {
     const instructor_id = document.getElementById('instructor_id').value.trim();
     const first_name = document.getElementById('first_name').value.trim();
     const last_name = document.getElementById('last_name').value.trim();
-    const instructor_email = document.getElementById('instructor_email').value.trim();
+    const contact = document.getElementById('contact').value.trim();
 
-    // Check for empty fields
-    if (!instructor_id || !first_name || !last_name || !instructor_email) {
+     // Validation - check required fields
+    if (!instructor_id || !first_name || !last_name || !contact) {
         alert('Please fill in all required fields.');
         return;
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(instructor_email)) {
-        alert('Please enter a valid email address.');
-        return;
-    }
-
-    // Prepare data for AJAX
+   // Prepare teacher data 
     const teacherData = {
         instructor_id: instructor_id,
         first_name: first_name,
         last_name: last_name,
-        instructor_email: instructor_email,
+       contact: contact,
     };
 
-    // Send to backend
+    // Send AJAX request to save teacher
     $.ajax({
-        url: "../../../backend/controllers/Instructors/addInstructor.php",  // Uncomment this
+        url: "../../../backend/controllers/Instructors/addInstructors.php",  
         method: "POST",  
         data: teacherData,
         success: function (response) {
-            alert('Teacher added successfully!');
-            closeModal();
-            fetchInstructors(); // Refresh the table
+         try {
+                // Try to parse JSON response
+                const result = typeof response === 'string' ? JSON.parse(response) : response;
+                
+                if (result.message && result.message.includes("successfully")) {
+                    alert('Teacher added successfully!');
+                    closeModal();
+                    fetchStudents();
+                } else if (result.error) {
+                    alert(result.error);
+                } else {
+                    alert(result.message || 'Failed to add teacher.');
+                }
+            } catch (e) {
+                console.error("Parse error:", e);
+                alert('Unexpected response from server.');
+            }
         },
         error: function (xhr, status, error) {
             console.error("Error saving teacher:", error);
+            console.log("XHR response:", xhr.responseText);
             alert("Failed to save teacher. Please try again.");
         }
     });
 }
 
 
-// Reset modals on hide (global for all modals)
+
+// auto-reset ng bawat modal kapag sinara
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.modal').forEach(modalEl => {
         modalEl.addEventListener('hidden.bs.modal', () => {

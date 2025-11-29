@@ -154,34 +154,24 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-///   // function para mag-save ng student
+/// Function to save student
 function saveStudent() {
-    const student_number = document.getElementById('student_id').value.trim(); // kunin ID
-    const year_level = document.getElementById('year_level').value.trim(); // year level
-    const first_name = document.getElementById('first_name').value.trim(); // first name
-    const middle_name = document.getElementById('middle_name').value.trim();  // middle name
-    const last_name = document.getElementById('last_name').value.trim(); // last name
-    const contact = document.getElementById('contact').value.trim(); // contact number
+    const student_number = document.getElementById('student_id').value.trim();
+    const year_level = document.getElementById('year_level').value.trim();
+    const first_name = document.getElementById('first_name').value.trim();
+    const middle_name = document.getElementById('middle_name').value.trim();
+    const last_name = document.getElementById('last_name').value.trim();
+    const contact = document.getElementById('contact').value.trim();
 
-    if (!student_number || !year_level || !first_name || !last_name || !contact ) { // validation
+    // Validation - check required fields
+    if (!student_number || !year_level || !first_name || !last_name || !contact) {
         alert('Please fill in all required fields.');
         return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // regex para sa email
-    if (!emailRegex.test(student_email)) { // ERROR: student_email not declared
-        alert('Please enter a valid email address.');
-        return;
-    }
-
-    const contactRegex = /^[0-9+\-\s()]{10,}$/; // validation para sa contact #
-    if (!contactRegex.test(contact)) {
-        alert('Please enter a valid contact number.');
-        return;
-    }
-
-    const studentData = { // ihanda data para sa backend
-        student_number: student_number,
+    // Prepare student data 
+    const studentData = {
+        stud_num: student_number,           
         year_level: year_level,
         first_name: first_name,
         middle_name: middle_name,  
@@ -189,18 +179,34 @@ function saveStudent() {
         contact: contact,
     };
 
+    // Send AJAX request to save student
     $.ajax({
-        // url: "../../../backend/controllers/Instructors/addInstructor.php",  
-        method: "POST",  
-        data: teacherData, // ERROR: teacherData hindi declared
+        url: "../../../backend/controllers/Students/addStudents.php",
+        method: "POST",
+        data: studentData,
         success: function (response) {
-            alert('Teacher added successfully!'); 
-            closeModal();
-            fetchInstructors(); // ERROR: fetchInstructors hindi defined
+            try {
+                // Try to parse JSON response
+                const result = typeof response === 'string' ? JSON.parse(response) : response;
+                
+                if (result.message && result.message.includes("successfully")) {
+                    alert('Student added successfully!');
+                    closeModal();
+                    fetchStudents();
+                } else if (result.error) {
+                    alert(result.error);
+                } else {
+                    alert(result.message || 'Failed to add student.');
+                }
+            } catch (e) {
+                console.error("Parse error:", e);
+                alert('Unexpected response from server.');
+            }
         },
         error: function (xhr, status, error) {
-            console.error("Error saving teacher:", error);
-            alert("Failed to save teacher. Please try again.");
+            console.error("Error saving student:", error);
+            console.log("XHR response:", xhr.responseText);
+            alert("Failed to save student. Please try again.");
         }
     });
 }
