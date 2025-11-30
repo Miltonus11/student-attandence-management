@@ -1,5 +1,0 @@
-<?php
-    //Assign Sections
-    
-    
-?>

@@ -42,9 +42,12 @@ header('Content-Type: application/json');
             //execute
             $stmt -> execute();
 
+            $class_id = $conn -> lastInsertId();
+
             http_response_code(201);
             echo json_encode([
-                "message" => "Section Added Succesfully"
+                "message" => "Section Added Succesfully",
+                "class_id" => $class_id
             ]);
             exit();
         } else {
