@@ -1,0 +1,147 @@
+
+        .profile-section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .profile-container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        
+        .profile-avatar {
+            text-align: center;
+            flex-shrink: 0;
+        }
+        
+        .avatar-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #3d4a7c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f2f5;
+            margin-bottom: 10px;
+        }
+        
+        .avatar-circle i {
+            font-size: 40px;
+            color: #3d4a7c;
+        }
+        
+        .upload-image-link {
+            color: #3d4a7c;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .upload-image-link:hover {
+            text-decoration: underline;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            gap: 15px;
+        }
+        
+        .info-item {
+            flex: 1;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #3d4a7c;
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+        }
+        
+        .info-value {
+            color: #1a1a1a;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+        
+        .info-value a {
+            color: #3d4a7c;
+            text-decoration: none;
+        }
+        
+        .info-value a:hover {
+            text-decoration: underline;
+        }
+        
+        .show-link {
+            color: #3d4a7c;
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+        
+        .show-link:hover {
+            text-decoration: underline;
+        }
+        
+        .edit-btn {
+            background-color: #3d4a7c;
+            color: white;
+            border: none;
+            padding: 5px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+        
+        .edit-btn:hover {
+            background-color: #2d3551;
+        }
+        
+        .about-section {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        
+        .about-section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+        
+        .about-item {
+            margin-bottom: 15px;
+        }
+        
+        .about-label {
+            font-weight: 600;
+            color: #3d4a7c;
+            font-size: 0.85rem;
+            margin-bottom: 3px;
+        }
+        
+        .about-value {
+            color: #1a1a1a;
+            font-size: 0.95rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }

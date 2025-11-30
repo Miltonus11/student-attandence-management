@@ -1,0 +1,95 @@
+
+.about-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 50px;
+    border-radius: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.about-item {
+    margin-bottom: 40px;
+    padding-bottom: 25px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.about-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.about-label {
+    font-weight: 800;
+    color:#012970;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: left;
+}
+
+.about-label::before {
+    content: "▸";
+    color: #012970;
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 1.5rem;
+}
+
+.about-value {
+    color: #012970;
+    font-size: 1.4rem;
+    padding-left: 35px;
+    line-height: 1.6;
+    margin-top: 5px;
+}
+
+/* Specific styling for system name */
+.about-item:first-child .about-value {
+    color: #012970;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 0.5px;
+    align-items: left;
+}
+
+/* Specific styling for version */
+.about-item:nth-child(2) .about-value {
+    color: #012970;
+    padding: 8px 20px;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 1.5rem;
+    align-items: left;
+}
+
+/* Specific styling for email */
+.about-item:last-child .about-value {
+    color: #012970;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.about-item:last-child .about-value:hover {
+    text-decoration: underline;
+}
+
+
+.about-section::before {
+    content: "ABOUT";
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #012970;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    text-align: center;
+    border-bottom: 3px solid #012970;;
+    padding-bottom: 15px;
+}
+
+

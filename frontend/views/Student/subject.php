@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Subject</title>
+    <title>Student Subject</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,15 +32,7 @@
             <!-- Main Content -->
             <div class="main-content">
                 <!-- Header Section with Search and Add Button -->
-                <div class="content-header">
-                    <div class="search-bar">
-                        <span class="search-icon"><i class="fas fa-search"></i></span>
-                        <input type="text" placeholder="Search subjects...">
-                    </div>
-                    <button class="btn btn-primary me-2" onclick="openModal()">
-                        <i class="fas fa-plus"></i> Add Subject
-                    </button>
-                </div>
+               
 
                 <!-- Content Area -->
                 <div class="content-area">
@@ -108,10 +100,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveSubject()">Save Subject</button>
-                </div>
+                
             </div>
         </div>
     </div>

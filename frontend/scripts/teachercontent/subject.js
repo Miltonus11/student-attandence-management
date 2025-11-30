@@ -118,7 +118,7 @@ function closeModal() {
 function saveSubject() {
     const subject_id = document.getElementById('subject_id').value.trim();
     const subject_code = document.getElementById('subject_code').value.trim();
-    const subject_name = document.getElementById('subject_name').value.trim(); 
+    const subject_name = document.getElementById('subject_name').value.trim(); // Fixed: was subject_title
 
     // Check for empty fields
     if (!subject_id || !subject_code || !subject_name) {
@@ -130,12 +130,12 @@ function saveSubject() {
     const subjectData = {
         subject_id: subject_id,
         subject_code: subject_code,
-        subject_name: subject_name, 
+        subject_name: subject_name, // Fixed: was subject_title
     };
 
     // Send to backend
     $.ajax({
-        url: "../../../backend/controllers/Subject/addSubject.php", 
+        url: "../../../backend/controllers/Subject/addSubject.php", // Make sure this file exists
         method: "POST", 
         data: subjectData,
         success: function (response) {

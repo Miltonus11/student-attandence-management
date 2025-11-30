@@ -1,40 +1,39 @@
 /* Header container with sticky positioning */
 .header {
-  background-color: #3C416F !important;            /* New header color */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);    /* Subtle shadow for depth */
-    padding: 15px 0;                           /* Vertical padding only */
-    position: sticky;                          /* Sticks to top when scrolling */
-    top: 0;                                    /* Position at top of viewport */
-    z-index: 1000;                             /* Ensures header stays above other content */
-    display: flex;                             /* Flexbox for layout */
-    align-items: center;                       /* Vertically center items */
-    justify-content: space-between;            /* Space between left and right sections */
+  background-color: #3C416F !important;         
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);   
+    padding: 15px 0;                         
+    position: sticky;                         
+    top: 0;                                 
+    z-index: 1000;                         
+    display: flex;                        
+    align-items: center;                     
+    justify-content: space-between;           
     width: 100%;  
-    height: auto;                             /* Full width container */
+    height: auto;                          
 }
 
 /* Logo image styling */
 .logo_img {
-    height: 40px;                              /* Initial height */
-    border-radius: 100px;                      /* Circular border radius */
-    height: 50px;                              /* Final height (overrides previous) */
-    margin-left: 50px;                         /* Left margin for spacing */
+    height: 40px;                             
+    border-radius: 100px;                                                
+    margin-left: 50px;                      
 }
 
 /* Main title styling */
 .sams_title {
-    font-weight: 600;                          /* Semi-bold font weight */
-    font-size: 1.5rem;                         /* Relative font size */
-    color: #ffffff;                           /* Changed to white for better contrast */
-    margin: 0;                                 /* Remove default margins */
-    text-align: left;                          /* Left-align text */
-    position: absolute;                        /* Absolute positioning */
-    left: 120px;                               /* Position from left edge */
+    font-weight: 600;                          
+    font-size: 1.2rem;                      
+    color: #ffffff;                         
+    margin: 0;                               
+    text-align: left;                        
+    position: absolute;                 
+    left: 120px;                            
 }
 
 /* Right-side controls container */
 .header_controls {
-    display: flex;                             /* Flexbox for horizontal layout */
-    align-items: center;                       /* Vertically center items */
-    margin-right: 50px;                        /* Right margin for spacing */
+    display: flex;                           
+    align-items: center;                   
+    margin-right: 50px;                        
 }

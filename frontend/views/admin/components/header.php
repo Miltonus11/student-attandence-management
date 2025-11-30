@@ -7,12 +7,10 @@
             <div class="col-md-6">
                 <div class="d-flex align-items-center">
                     <div class="logo_container me-3">
-                        <img src="../../../src/sits_logo.png" alt="Logo" class="logo_img">
+                        <img src="../../src/sitslogo.jpg" alt="Logo" class="logo_img">
                     </div>
-                    <span class="sams_title">Administrator Dashboard</span>
+                    <span class="sams_title">SITS Attendance Management System</span>
                 </div>
-            </div>
-
             </div>
         </div>
     </div>

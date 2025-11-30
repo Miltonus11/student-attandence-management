@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
     <link rel="stylesheet" href="../../css/modal.css"> 
+    
 </head>
 <body>
     <!-- Header -->
@@ -37,39 +38,37 @@
                 <div class="content-header">
                     <div class="search-bar">
                         <span class="search-icon">🔍</span>
-                        <input type="text" placeholder="Search">
+                       <input type="text" placeholder="Search" id="studentSearch">
+    <button class="btn btn-primary me-1 search-btn" onclick="performSearch()">Search</button>
                     </div>
                     <button class="btn btn-primary me-2" onclick="openModal()">+ Add Student</button>
                 </div>
 
-                <!-- Content Area -->
+                 <!-- Content Area -->
                 <div class="content-area">
                     <h2 class="section-title">Student List</h2>
 
-                    <!-- Table Section -->
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Student ID No.</th>
-                                    <th>Name</th>
-                                    <th>Year Level</th>
-                                    <th></th>  
-                                    <th>Details</th>
-                                </tr>
-                            </thead>
-                    
-                            <tbody id="studentTableBody">
-                                <tr>
-                                    <td>23101007</td>
-                                    <td>Vince Alvendia</td>
-                                    <td>3</td>
-                                    <td><span class="view-link" data-type="student">View</span></td>
-                                </tr>
-                                <!-- Dynamically update data -->
-                            </tbody>
-                        </table>
-                    </div>
+                 <!-- Table Section -->
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Student ID No.</th>
+                <th>Name</th>
+                <th>Year Level</th>
+                <th>Details</th>
+                <th>Actions</th> 
+            </tr>
+        </thead>
+        
+        <tbody id="studentTableBody">
+            <!-- Render Dynamically -->
+            <tr>
+                <td colspan="6" class="text-center">Loading students...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
                     <!-- Pagination Section -->
                     <div class="pagination-wrapper">
@@ -95,6 +94,7 @@
                     <h5 class="modal-title" id="addStudentModalLabel">Add New Student</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
                     <form id="addStudentForm">
                         <div class="row mb-3">
@@ -107,6 +107,7 @@
                                 <label for="year_level" class="form-label">Year Level</label>
                                 <input type="text" class="form-control" id="year_level" required>
                             </div>
+                        </div> 
 
                         <div class="row mb-3">
                             <div class="col-md-3">
@@ -124,14 +125,16 @@
                                 <input type="text" class="form-control" id="last_name" required>
                             </div>
                         </div>
+
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="student_email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="student_email" required>
+                                <label for="contact" class="form-label">Contact</label>
+                                <input type="text" class="form-control" id="contact" required>
                             </div>
                         </div>
                     </form>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                     <button type="button" class="btn btn-primary" onclick="saveStudent()">Save Student</button>
@@ -141,19 +144,21 @@
     </div>
 
     <!-- VIEW STUDENT MODAL -->
-    <div class="modal fade" id="viewStudentModal" tabindex="-1">
+    <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header" style="background:#012970; color:white;">
-                    <h5 class="modal-title">Student Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="viewStudentModalLabel">Student Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
-                    <p><strong>Student ID:</strong> <span id="viewStudentId"></span></p>
-                    <p><strong>Name:</strong> <span id="viewStudentName"></span></p> 
-                    <p><strong>Year Level:</strong> <span id="viewStudentyearlevel"></span></p>
-                    <p><strong>Contact:</strong> <span id="viewStudentcontact"></span></p>  
+                    <p><strong>Student ID:</strong> <span id="viewStudentId">-</span></p>
+                    <p><strong>Name:</strong> <span id="viewStudentName">-</span></p> 
+                    <p><strong>Year Level:</strong> <span id="viewStudentyearlevel">-</span></p>
+                    <p><strong>Contact:</strong> <span id="viewStudentcontact">-</span></p>  
                 </div>
+                
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
@@ -161,10 +166,91 @@
         </div>
     </div>
 
+    <!-- EDIT STUDENT MODAL -->
+    <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="editStudentForm">
+                        <input type="hidden" id="edit_student_id">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="edit_student_number" class="form-label">Student ID No.</label>
+                                <input type="text" class="form-control" id="edit_student_number" required>
+                            </div>
+                            
+                            <div class="col-md-2">
+                                <label for="edit_year_level" class="form-label">Year Level</label>
+                                <input type="text" class="form-control" id="edit_year_level" required>
+                            </div>
+                        </div> 
+
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="edit_first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="edit_first_name" required>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="edit_middle_name" class="form-label">Middle Name</label>
+                                <input type="text" class="form-control" id="edit_middle_name">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="edit_last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="edit_last_name" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="edit_contact" class="form-label">Contact</label>
+                                <input type="text" class="form-control" id="edit_contact" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateStudent()">Update Student</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div class="modal fade delete-modal" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteStudentModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this student?</p>
+                    <p><strong>Student ID:</strong> <span id="deleteStudentId">-</span></p>
+                    <p><strong>Name:</strong> <span id="deleteStudentName">-</span></p>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="../../scripts/admincontent/student.js"></script> 
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+   <script src="../../scripts/admincontent/stud.js"></script>
+   
 </body>
 </html>
