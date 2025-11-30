@@ -1,0 +1,196 @@
+/* Custom Styles */
+:root {
+  --primary-color: #012970;
+  --light-bg: #f8f9fa;
+  --card-bg: white;
+  --text-color: #333;
+  --light-text: #7f8c8d;
+  --border-color: #e0e0e0;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--text-color);
+}
+
+.main-content {
+  padding: 15px;
+  margin-left: 200px;
+  width: calc(100% - 200px);
+}
+
+.section-title, .semester-info { margin-bottom: 3px; }
+.section-title { color: var(--primary-color); font-weight: 600; font-size: 1.3rem; }
+.semester-info { color: var(--light-text); margin-bottom: 15px; font-size: 0.9rem; }
+
+.calendar-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.calendar-section {
+  flex: 3;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 15px;
+  overflow-x: auto;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.month-calendar {
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.month-header {
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.calendar-table th {
+  background-color: #f1f8ff;
+  padding: 6px 3px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--primary-color);
+}
+
+.calendar-table td {
+  padding: 6px 3px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+  height: 45px;
+  vertical-align: top;
+}
+
+.calendar-table td:hover { background-color: #f0f8ff; }
+
+.grayed {
+  color: #bdc3c7;
+  background-color: #f9f9f9;
+}
+
+.today {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.has-task {
+  background-color: #e8f5e9;
+  position: relative;
+}
+
+.has-task::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--success-color);
+  border-radius: 50%;
+}
+
+.task-indicator {
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  font-size: 0.6rem;
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.stats-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-card, .attendance-reminder, .pagination-wrapper {
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 15px;
+}
+
+.stat-card { text-align: center; }
+.stat-card h3 { font-size: 0.9rem; color: var(--light-text); margin-bottom: 12px; }
+
+.stat-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.stat-value i { font-size: 1.4rem; color: var(--primary-color); }
+.days-present .stat-value i { color: var(--success-color); }
+.days-absent .stat-value i { color: var(--danger-color); }
+
+.attendance-reminder h3 {
+  font-size: 1rem;
+  color: var(--primary-color);
+  margin-bottom: 12px;
+}
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+/* Task Modal Styles */
+.modal-header { background-color: var(--primary-color); color: white; padding: 12px 15px; }
+.modal-header .modal-title { font-size: 1rem; }
+.task-list { max-height: 250px; overflow-y: auto; }
+
+.task-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.task-item:last-child { border-bottom: none; }
+.task-actions { display: flex; gap: 8px; }
+.task-actions button { padding: 2px 6px; font-size: 0.75rem; }
+.no-tasks { text-align: center; color: var(--light-text); padding: 15px; font-size: 0.85rem; }
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .calendar-container { flex-direction: column; }
+  .main-content { margin-left: 0; width: 100%; padding: 10px; }
+}
