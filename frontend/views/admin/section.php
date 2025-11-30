@@ -1,112 +1,141 @@
+<?php
+include __DIR__ . '/../../../backend/db/conn.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>Manage Classes</title>
-    
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- jQuery (required for AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Custom CSS -->
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" href="../../css/admin/section.css">
+
+    <!-- Global CSS -->
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
-    <link rel="stylesheet" href="../../css/modal.css"> 
-    
+    <link rel="stylesheet" href="../../css/modal.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
+
     <!-- Header -->
     <?php include 'components/header.php'; ?>
 
-    <!-- Main Container with Sidebar and Content -->
+    <!-- Main Container -->
     <div class="container-fluid">
         <div class="row">
-            
+
             <!-- Sidebar -->
             <div class="col-md-3 col-lg-2 p-0">
                 <?php include 'components/sidebar.php'; ?>
             </div>
 
             <!-- Main Content -->
-            <div class="main-content">
-                <!-- Header Section with Search and Add Button -->
-                <div class="content-header">
-                    <div class="search-bar">
-                        <span class="search-icon"><i class="fas fa-search"></i></span>
-                      <input type="text" placeholder="Search" id="classSearch">
-    <button class="btn btn-primary me-1 search-btn" onclick="performSearch()">Search</button>
+            <div class="col-md-9 col-lg-10 p-4">
+
+                <!-- Title + Search + Add Button -->
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+
+                    <!-- Left: Title + Search Bar -->
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <div>
+                            <h2 class="mb-0">
+                                <i class="fas fa-chalkboard-teacher text-primary"></i> Manage Classes
+                            </h2>
+                            <span class="class-count">
+                                <?php
+                                    $stmt = $conn->query("SELECT COUNT(*) AS count FROM tbl_classes");
+                                    $count = $stmt->fetch()['count'];
+                                    echo "Total Classes: {$count}";
+                                ?>
+                            </span>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="search-bar d-flex align-items-center">
+                            <div class="search-box d-flex align-items-center">
+                                <span class="search-icon"><i class="fas fa-search"></i></span>
+                                <input type="text" placeholder="Search classes..." id="classSearch" class="form-control search-input">
+                            </div>
+                            <button class="btn btn-primary ms-2 search-btn" onclick="performSearch()">Search</button>
+                        </div>
                     </div>
-                    
-                    <button class="btn btn-primary me-2" onclick="window.location.href='add-classes.php'">
-                     <i class="fas fa-plus"></i> Add Classes
+
+                    <!-- Right: Add Class Button -->
+                    <button class="btn btn-primary" onclick="window.location.href='add-classes.php'">
+                        <i class="fas fa-plus"></i> Add Classes
                     </button>
+
                 </div>
 
-                <!-- Content Area -->
-                <div class="content-area">
-                    <h2 class="section-title">Class List</h2>
+                <!-- Class List -->
+                <div id="classList">
+                    <?php
+                        $stmt = $conn->query("SELECT * FROM tbl_classes ORDER BY class_id DESC");
+                        $classes = $stmt->fetchAll();
 
-                    <!-- Table Section -->
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Class ID No.</th>
-                                    <th>Class Section</th>
-                                    <th>Details</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody id="classTableBody">
-                                <!-- Render Dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
+                        if (!$classes) {
+                            echo '
+                                <div class="alert alert-info text-center">
+                                    <i class="fas fa-info-circle"></i> No classes yet. Add one to get started!
+                                </div>
+                            ';
+                        } else {
+                            echo '<div class="row" id="classGrid">';
 
-                    <!-- Pagination Section -->
-                    <div class="pagination-wrapper">
-                        <div>Showing <span id="classCount">0</span> entries</div>
-                        <nav>
-                            <ul class="pagination pagination-sm mb-0">
-                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                            foreach ($classes as $c) {
+                                $title = htmlspecialchars($c['class_name']) . ' — ' . htmlspecialchars($c['class_section']);
+                                $year = isset($c['year_level']) && $c['year_level'] !== null
+                                    ? "<span class='badge bg-secondary ms-2'>Year {$c['year_level']}</span>"
+                                    : "";
+
+                                echo "
+                                    <div class='col-md-12 col-lg-12 mb-3 class-card' data-title='{$title}'>
+                                        <div class='card h-100'>
+                                            <div class='card-body d-flex justify-content-between align-items-center'>
+                                                <h5 class='card-title mb-0'>
+                                                    <i class='fas fa-graduation-cap text-primary me-2'></i>
+                                                    {$title}{$year}
+                                                </h5>
+                                                <button class='btn btn-primary'
+                                                    onclick=\"window.location.href='section-details.php?class_id={$c['class_id']}'\">
+                                                    <i class='fas fa-eye'></i> View
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ";
+                            }
+
+                            echo '</div>';
+
+                            echo '
+                                <div class="no-results alert alert-warning text-center">
+                                    <i class="fas fa-search-minus"></i> No classes match your search.
+                                </div>
+                            ';
+                        }
+                    ?>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <!-- View Class Modal -->
-    <div class="modal fade" id="viewClassModal" tabindex="-1">
-        <div class="modal-dialog modal-md modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Class Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Class ID No.:</strong> <span id="viewClassId"></span></p> 
-                    <p><strong>Class Section:</strong> <span id="viewClassSection"></span></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Scripts -->
+    <script src="../../scripts/admincontent/add-classes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    
-
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../scripts/admincontent/section.js"></script> 
 </body>
 </html>
