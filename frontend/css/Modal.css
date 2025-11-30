@@ -201,3 +201,18 @@ body {
 .content-header {
     margin-top: 0; 
 }
+
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .view-modal-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+   

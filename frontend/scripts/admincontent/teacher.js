@@ -1,21 +1,18 @@
-// Modal Functions for teacher
-// Storing all teachers for filtering
+// Global variables
 let allTeachers = [];
+let currentTeacherId = null;
 
-// Fetch instructors from the backend and render the table
-const fetchInstructors = () => {
+// Fetch teachers
+const fetchTeachers = () => {
     $.ajax({
-        url: "../../../backend/controllers/Instructors/getInstructors.php",  
+        url: "../../../backend/controllers/Instructors/getInstructors.php",
         method: "GET",
         dataType: "json",
-        success: function (result) {
-            allTeachers = result.Teachers || result.Instructors || [];
-            renderTeacherTable(allTeachers);  
+        success: (result) => {
+            allTeachers = result.Instructors || result.teachers || [];
+            renderTeacherTable(allTeachers);
         },
-        error: function (xhr, status, error) {
-            console.error("Error fetching instructors:", error);
-            alert("Failed to load instructors. Please try again.");
-        }
+        error: () => alert("Failed to load instructors. Please try again.")
     });
 };
 
@@ -24,196 +21,261 @@ function performSearch() {
     const searchTerm = document.getElementById('teacherSearch').value.trim().toLowerCase();
     
     if (searchTerm === '') {
-        // If search is empty, show all teachers
         renderTeacherTable(allTeachers);
         return;
     }
     
-    // Filter teachers based on search term
     const filteredTeachers = allTeachers.filter(teacher => {
-        // Search in individual name fields
-        if (teacher.first_name && teacher.first_name.toLowerCase().includes(searchTerm)) {
-            return true;
-        }
+        const fullName = `${teacher.first_name || ''} ${teacher.middle_name || ''} ${teacher.last_name || ''}`.toLowerCase().trim();
+        const teacherNumber = (teacher.instructor_number || teacher.teacher_number || '').toString().toLowerCase();
         
-        return false;
+        return fullName.includes(searchTerm) || teacherNumber.includes(searchTerm);
     });
     
     renderTeacherTable(filteredTeachers);
 }
 
-// Add event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    fetchInstructors();
-    
-    // Add Enter key support for search
-    const searchInput = document.getElementById('teacherSearch');
-    const searchButton = document.getElementById('searchButton');
-    
-    if (searchInput) {
-        searchInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        });
-    }
-    
-    if (searchButton) {
-        searchButton.addEventListener('click', performSearch);
-    }
-});
-
-// Render the teacher table
+// Render teacher table
 function renderTeacherTable(teachers) {
     const tbody = document.getElementById('teacherTableBody');
-    if (!tbody) {
-        console.error('Teacher table body not found!');
-        return;
-    }
-    
-    tbody.innerHTML = ''; // Clear existing rows
+    if (!tbody) return;
+   
+    tbody.innerHTML = '';
 
     if (teachers.length === 0) {
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.colSpan = 4;
-        cell.textContent = 'No teachers found';
-        cell.style.textAlign = 'center';
-        row.appendChild(cell);
-        tbody.appendChild(row);
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No Teachers found</td></tr>';
         return;
     }
 
     teachers.forEach(teacher => {
         const row = document.createElement('tr');
+        const teacherNumber = teacher.instructor_number || teacher.teacher_number || 'N/A';
+        const fullName = `${teacher.first_name || ''} ${teacher.middle_name || ''} ${teacher.last_name || ''}`.trim() || 'N/A';
 
-        // Teacher ID No. cell
-        const idCell = document.createElement('td');
-        idCell.textContent = teacher.instructor_number || teacher.teacher_id || 'N/A';
-        row.appendChild(idCell);
+        row.innerHTML = `
+            <td>${teacherNumber}</td>
+            <td>${fullName}</td>
+            <td><a href="#" class="view-link" style="cursor: pointer;">View</a></td>
+            <td>
+                <div class="action-buttons">
+                    <button class="btn btn-warning" title="Edit">Edit</button>
+                    <button class="btn btn-danger" title="Delete">Delete</button>
+                </div>
+            </td>
+        `;
 
-        // Name cell (full name: first_name + middle_name + last_name)
-        const nameCell = document.createElement('td');
-        nameCell.textContent = `${teacher.first_name} ${teacher.middle_name || ''} ${teacher.last_name}`.trim();
-        row.appendChild(nameCell);
-
-        // Contact cell
-        const contactCell = document.createElement('td');
-        contactCell.textContent = teacher.contact || teacher.email || 'N/A';
-        row.appendChild(contactCell);
-
-        // Details cell with a view link
-        const detailsCell = document.createElement('td');
-        const viewLink = document.createElement('a');
-        viewLink.textContent = 'View';
-        viewLink.className = 'view-link';
-        viewLink.href = '#'; // Prevent navigation
-
-        // Event listener for opening the modal
-        viewLink.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            // Get data from the teacher object
-            document.getElementById("viewTeacherId").innerText = teacher.instructor_number || teacher.teacher_id || 'N/A';
-            document.getElementById("viewTeacherName").innerText = `${teacher.first_name} ${teacher.middle_name || ''} ${teacher.last_name}`.trim();
-            document.getElementById("viewTeacherContact").innerText = teacher.contact || teacher.email || 'N/A';
-
-            // Show the modal
-            const modal = new bootstrap.Modal(document.getElementById("viewTeacherModal"));
-            modal.show();
+        // Add event listeners
+        row.querySelector('.view-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            showTeacherDetails(teacher);
         });
 
-        detailsCell.appendChild(viewLink);
-        row.appendChild(detailsCell);
+        row.querySelector('.btn-warning').addEventListener('click', (e) => {
+            e.preventDefault();
+            editTeacher(teacher);
+        });
+
+        row.querySelector('.btn-danger').addEventListener('click', (e) => {
+            e.preventDefault();
+            deleteTeacher(teacher);
+        });
+
         tbody.appendChild(row);
     });
 }
 
-// Open the add teacher modal
-function openModal() {
-    const modalId = 'addTeacherModal';
-    const modal = new bootstrap.Modal(document.getElementById(modalId));
-    const form = document.querySelector(`#${modalId} form`);
-    if (form) form.reset();
-    modal.show();
+// Show teacher details
+function showTeacherDetails(teacher) {
+    currentTeacherId = teacher.id || teacher.instructor_id;
+    
+    document.getElementById("viewTeacherId").textContent = teacher.instructor_number || teacher.teacher_number || '';
+    document.getElementById("viewTeacherName").textContent = `${teacher.first_name || ''} ${teacher.middle_name || ''} ${teacher.last_name || ''}`.trim() || 'N/A';
+    document.getElementById("viewTeacherContact").textContent = teacher.contact || 'N/A';
+
+    new bootstrap.Modal(document.getElementById("viewTeacherModal")).show();
 }
 
-// Close the add student modal
+// Open add teacher modal
+function openModal() {
+    const modalElement = document.getElementById('addTeacherModal');
+    const form = modalElement.querySelector('form');
+    if (form) form.reset();
+    new bootstrap.Modal(modalElement).show();
+}
+
+// Close add teacher modal
 function closeModal() {
-    const modalId = 'addTeacherModal';
-    const modalElement = document.getElementById(modalId);
-    const modal = bootstrap.Modal.getInstance(modalElement);
+    const modalElement = document.getElementById('addTeacherModal');
+    const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+    modal.hide();
     
-    if (modal) modal.hide();
     const form = modalElement.querySelector('form');
     if (form) form.reset();
 }
 
-
-/// Save a new teacher 
+// Save teacher
 function saveTeacher() {
-    const instructor_id = document.getElementById('instructor_id').value.trim();
-    const first_name = document.getElementById('first_name').value.trim();
-    const last_name = document.getElementById('last_name').value.trim();
-    const contact = document.getElementById('contact').value.trim();
+    const teacherData = {
+        instructor_number: document.getElementById('teacher_id').value.trim(),
+        first_name: document.getElementById('first_name').value.trim(),
+        middle_name: document.getElementById('middle_name').value.trim(),
+        last_name: document.getElementById('last_name').value.trim(),
+        contact: document.getElementById('contact').value.trim(),
+    };
 
-     // Validation - check required fields
-    if (!instructor_id || !first_name || !last_name || !contact) {
-        alert('Please fill in all required fields.');
+    // Validation
+    if (!teacherData.instructor_number || !teacherData.first_name || !teacherData.last_name) {
+        alert('Please fill in all required fields (Teacher ID, First Name, Last Name).');
         return;
     }
 
-   // Prepare teacher data 
-    const teacherData = {
-        instructor_id: instructor_id,
-        first_name: first_name,
-        last_name: last_name,
-       contact: contact,
-    };
-
-    // Send AJAX request to save teacher
     $.ajax({
-        url: "../../../backend/controllers/Instructors/addInstructors.php",  
-        method: "POST",  
+        url: "../../../backend/controllers/Instructors/addInstructors.php",
+        method: "POST",
         data: teacherData,
         success: function (response) {
-         try {
-                // Try to parse JSON response
-                const result = typeof response === 'string' ? JSON.parse(response) : response;
-                
-                if (result.message && result.message.includes("successfully")) {
-                    alert('Teacher added successfully!');
-                    closeModal();
-                    fetchStudents();
-                } else if (result.error) {
-                    alert(result.error);
-                } else {
-                    alert(result.message || 'Failed to add teacher.');
-                }
-            } catch (e) {
-                console.error("Parse error:", e);
-                alert('Unexpected response from server.');
-            }
+            handleResponse(response, 'Teacher added successfully!', fetchTeachers, closeModal);
         },
         error: function (xhr, status, error) {
             console.error("Error saving teacher:", error);
-            console.log("XHR response:", xhr.responseText);
             alert("Failed to save teacher. Please try again.");
         }
     });
 }
 
+// Edit teacher
+function editTeacher(teacher) {
+    currentTeacherId = teacher.id || teacher.instructor_id;
+    
+    document.getElementById('edit_teacher_id').value = currentTeacherId;
+    document.getElementById('edit_teacher_number').value = teacher.instructor_number || teacher.teacher_number || '';
+    document.getElementById('edit_first_name').value = teacher.first_name || '';
+    document.getElementById('edit_middle_name').value = teacher.middle_name || '';
+    document.getElementById('edit_last_name').value = teacher.last_name || '';
+    document.getElementById('edit_contact').value = teacher.contact || '';
+    
+    new bootstrap.Modal(document.getElementById("editTeacherModal")).show();
+}
 
+// Update teacher 
+function updateTeacher() {
+    const teacherId = document.getElementById('edit_teacher_id').value;
+    const teacherData = {
+        id: teacherId,
+        instructor_number: document.getElementById('edit_teacher_number').value.trim(),
+        first_name: document.getElementById('edit_first_name').value.trim(),
+        middle_name: document.getElementById('edit_middle_name').value.trim(),
+        last_name: document.getElementById('edit_last_name').value.trim(),
+        contact: document.getElementById('edit_contact').value.trim(),
+    };
 
-// auto-reset ng bawat modal kapag sinara
-document.addEventListener('DOMContentLoaded', () => {
+    if (!teacherId) {
+        alert('Teacher ID is missing. Please try again.');
+        return;
+    }
+
+    if (!teacherData.instructor_number || !teacherData.first_name || !teacherData.last_name) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    $.ajax({
+        url: "../../../backend/controllers/Instructors/updateInstructors.php",
+        method: "POST",
+        data: teacherData,
+        success: function (response) {
+            handleResponse(response, 'Teacher updated successfully!', fetchTeachers, 
+                () => {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById("editTeacherModal"));
+                    if (modal) modal.hide();
+                });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error updating teacher:", error);
+            alert("Failed to update teacher. Please try again.");
+        }
+    });
+}
+
+// Delete teacher
+function deleteTeacher(teacher) {
+    currentTeacherId = teacher.id || teacher.instructor_id;
+    
+    if (!currentTeacherId) {
+        alert('Cannot delete: Teacher ID is missing.');
+        return;
+    }
+    
+    document.getElementById('deleteTeacherId').textContent = teacher.instructor_number || teacher.teacher_number || 'N/A';
+    document.getElementById('deleteTeacherName').textContent = `${teacher.first_name || ''} ${teacher.middle_name || ''} ${teacher.last_name || ''}`.trim() || 'N/A';
+    
+    new bootstrap.Modal(document.getElementById("deleteTeacherModal")).show();
+}
+
+// Confirm delete
+function confirmDelete() {
+    if (!currentTeacherId) {
+        alert('Teacher ID is missing. Cannot proceed with deletion.');
+        return;
+    }
+
+    $.ajax({
+        url: "../../../backend/controllers/Instructors/deleteInstructors.php",
+        method: "POST",
+        data: { id: currentTeacherId },
+        success: function (response) {
+            handleResponse(response, 'Teacher deleted successfully!', () => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById("deleteTeacherModal"));
+                if (modal) modal.hide();
+                currentTeacherId = null;
+                fetchTeachers();
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("Error deleting teacher:", error);
+            alert("Failed to delete teacher. Please try again.");
+        }
+    });
+}
+
+// Helper function to handle API responses
+function handleResponse(response, successMessage, onSuccess, onSuccessCallback) {
+    try {
+        const result = typeof response === 'string' ? JSON.parse(response) : response;
+        
+        if (result.message && result.message.toLowerCase().includes("success")) {
+            alert(successMessage);
+            if (onSuccessCallback) onSuccessCallback();
+            if (onSuccess) onSuccess();
+        } else {
+            alert(result.error || result.message || 'Operation failed.');
+        }
+    } catch (e) {
+        console.error("Parse error:", e);
+        alert('Unexpected response from server.');
+    }
+}
+
+// Initialize event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    fetchTeachers();
+    
+    const searchInput = document.getElementById('teacherSearch');
+    const searchButton = document.querySelector('.search-btn');
+    
+    if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => e.key === 'Enter' && performSearch());
+    }
+    
+    if (searchButton) {
+        searchButton.addEventListener('click', performSearch);
+    }
+
+    // Auto-reset modals when closed
     document.querySelectorAll('.modal').forEach(modalEl => {
-        modalEl.addEventListener('hidden.bs.modal', () => {
-            const form = modalEl.querySelector('form');
+        modalEl.addEventListener('hidden.bs.modal', () => { 
+            const form = modalEl.querySelector('form'); 
             if (form) form.reset();
         });
     });
 });
-
-
-

@@ -59,6 +59,7 @@
                                     <th>Class ID No.</th>
                                     <th>Class Section</th>
                                     <th>Details</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody id="classTableBody">
@@ -101,6 +102,8 @@
             </div>
         </div>
     </div>
+
+    
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
