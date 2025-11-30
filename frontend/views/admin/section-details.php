@@ -31,7 +31,6 @@ $stuStmt->execute([$class_id]);
 $students = $stuStmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,18 +46,13 @@ $students = $stuStmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <style>
-        body { background-color: #f4f6f9; }
-        .card { border-radius: 12px; transition: all 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-        .student-table th, .student-table td { vertical-align: middle; }
-        .student-count { font-size: 0.9rem; color: #6c757d; }
-    </style>
-
+    <!-- Custom CSS Files -->
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
     <link rel="stylesheet" href="../../css/modal.css">
+
+    <!-- SEPARATED CSS -->
     <link rel="stylesheet" href="../../frontend/css/admin/section.css">
 </head>
 <body>
@@ -95,7 +89,9 @@ $students = $stuStmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="card p-3">
-                    <h4 class="mb-3"><i class="fas fa-users text-primary me-2"></i> Assigned Students</h4>
+                    <h4 class="mb-3">
+                        <i class="fas fa-users text-primary me-2"></i> Assigned Students
+                    </h4>
 
                     <?php if ($students): ?>
                         <div class="table-responsive">
