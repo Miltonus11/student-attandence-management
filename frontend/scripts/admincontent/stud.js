@@ -119,17 +119,16 @@ function closeModal() {
 // Save student
 function saveStudent() {
     const studentData = {
-        stud_num: document.getElementById('student_id').value.trim(),
         student_number: document.getElementById('student_id').value.trim(),
         year_level: document.getElementById('year_level').value.trim(),
         first_name: document.getElementById('first_name').value.trim(),
-        middle_name: document.getElementById('middle_name').value.trim(),
+        // middle_name: document.getElementById('middle_name').value.trim(),
         last_name: document.getElementById('last_name').value.trim(),
-        contact: document.getElementById('contact').value.trim()
+        // contact: document.getElementById('contact').value.trim()
     };
-
+    console.log(studentData.student_number)
     // Validation
-    if (!studentData.student_number || !studentData.year_level || !studentData.first_name || !studentData.last_name || !studentData.contact) {
+    if (!studentData.student_number || !studentData.year_level || !studentData.first_name || !studentData.last_name) {
         alert('Please fill in all required fields.');
         return;
     }
@@ -182,7 +181,7 @@ function updateStudent() {
         return;
     }
 
-    if (!studentData.student_number || !studentData.year_level || !studentData.first_name || !studentData.last_name || !studentData.contact) {
+    if (!studentData.student_number || !studentData.year_level || !studentData.first_name || !studentData.last_name) {
         alert('Please fill in all required fields.');
         return;
     }

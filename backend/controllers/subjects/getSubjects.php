@@ -20,11 +20,11 @@
         //exec
         $stmt -> execute();
 
-        $sections = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        $subjects = $stmt -> fetchAll(PDO::FETCH_ASSOC);
         
         echo json_encode([
             "success" => true,
-            "sections" => $sections
+            "subjects" => $subjects
         ]);
         
     } catch (PDOException $e){

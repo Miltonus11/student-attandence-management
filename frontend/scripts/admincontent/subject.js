@@ -3,16 +3,13 @@
 // Fetch subjects from the backend and render the table
 const fetchSubjects = () => {
     $.ajax({
-        url: "../../../backend/controllers/Subject/getSubject.php", 
+        url: "../../../backend/controllers/subjects/getSubjects.php", 
         method: "GET",
         dataType: "json",
         success: function (result) {
-            if (result.success) {
-                renderSubjectTable(result.Subjects || result.subjects); 
-            } else {
-                console.error("Error in response:", result.message);
-                alert("Failed to load subjects: " + (result.message || "Unknown error"));
-            }
+                console.log(result)
+                renderSubjectTable(result.subjects || result.subjects); 
+
         },
         error: function (xhr, status, error) {
             console.error("Error fetching subjects:", error);
@@ -47,7 +44,7 @@ function renderSubjectTable(subjects) {
 
         // Subject ID No. cell
         const idCell = document.createElement('td');
-        idCell.textContent = subject.subject_number || subject.id || 'N/A';
+        idCell.textContent = subject.subject_id || subject.id || 'N/A';
         row.appendChild(idCell);
 
         // Subject Code cell
@@ -73,7 +70,7 @@ function renderSubjectTable(subjects) {
             event.preventDefault();
 
             // Get data from the subject object
-            document.getElementById("viewSubjectId").innerText = subject.subject_number || subject.id || 'N/A';
+            document.getElementById("viewSubjectId").innerText = subject.subject_id || subject.id || 'N/A';
             document.getElementById("viewSubjectCode").innerText = subject.subject_code || 'N/A';
             document.getElementById("viewSubjectName").innerText = subject.subject_name || subject.subject_title || 'N/A';
 

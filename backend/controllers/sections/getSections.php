@@ -17,7 +17,7 @@ try {
     
     if($class_id){
        
-        $sql = "SELECT * FROM tbl_classes WHERE class_id = :class_id";
+        $sql = "SELECT * FROM tbl_class WHERE class_id = :class_id";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':class_id', $class_id);
         $stmt->execute();
@@ -39,7 +39,7 @@ try {
         }
     } else {
   
-        $sql = "SELECT * FROM tbl_classes ORDER BY class_id";
+        $sql = "SELECT * FROM tbl_class ORDER BY class_id";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $classes = $stmt->fetchAll(PDO::FETCH_ASSOC);

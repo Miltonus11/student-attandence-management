@@ -10,14 +10,14 @@
     }
 
     //get input from frontend
-    $student_number = $_POST['stud_num'];
+    $student_number = $_POST['student_number'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $year_level = $_POST['year_level'];
     require_once('../../db/conn.php');
     try{
         //create user 
-        if(!$student_number && !$first_name && !$last_name && !$year_level){
+        if($student_number && $first_name && $last_name && $year_level){
         $password = random_int(1000,9000);
 
         //check student number if it exist
@@ -26,7 +26,8 @@
         $stmt -> bindParam(':student_number', $student_number);
         $stmt->execute();
         $student = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        
+        //checks for existing user
         if($student){
             http_response_code(409);
             echo json_encode([

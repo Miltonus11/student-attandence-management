@@ -10,6 +10,7 @@ const fetchClasses = () => {
         dataType: "json",
         success: function (result) {
             // Fixed: Simplified data access (removed redundancy)
+
             allClasses = result.classes || [];
             renderClassTable(allClasses);  
         },
@@ -72,7 +73,7 @@ function renderClassTable(classes) {
 
         // Class Section cell
         const sectionCell = document.createElement('td');
-        sectionCell.textContent = classItem.class_section || 'N/A';  
+        sectionCell.textContent = classItem.class_name || 'N/A';  
         row.appendChild(sectionCell);
 
         // Details cell with a view link
@@ -99,7 +100,7 @@ function renderClassTable(classes) {
 
             // Get data from the class object
             modalId.innerText = classItem.class_id || 'N/A';
-            modalSection.innerText = classItem.class_section || 'N/A';
+            modalSection.innerText = classItem.class_name || 'N/A';
 
             // Show the modal
             const modal = new bootstrap.Modal(modalElement);
