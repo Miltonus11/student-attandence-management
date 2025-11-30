@@ -11,40 +11,53 @@ header('Content-Type: application/json');
     };
 
     //create a class
-    $class_name = $_POST["class_name"];
+    $subject_code = $_POST["subject_code"];
+    $subject_name = $_POST["subject_name"];
+
 
     require_once('../../db/conn.php');
 
     try{
-        if($class_name) {
-            $sql = "SELECT * from tbl_class WHERE class_name = ?";
+        if($subject_code && $subject_name) {
+            $sql = "SELECT * from tbl_subjects WHERE subject_code = ?";
             $stmt = $conn -> prepare($sql);
-            $stmt -> execute([$class_name]);
-            $class = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt -> execute([$subject_code]);
+            $subject = $stmt->fetch(PDO::FETCH_ASSOC);
+            
 
-            if($class_name == $class['class_name']){
+            //verify if the subject exist through the subject code
+            if($subject_code == $subject['subject_code']){
                 http_response_code(406);
                 echo json_encode([
-                    "message" => "class name already exists"
+                    "message" => "Subject  already exists"
+                ]);
+                exit();
+            }
+            //double verification
+            if($subject_name == $subject['subject_name']){
+                http_response_code(406);
+                echo json_encode([
+                    "message" => "Subject  already exists"
                 ]);
                 exit();
             }
             
             // sql
-            $sql = "INSERT INTO tbl_class (class_name) 
-                    VALUES (:class_name)";
+            $sql = "INSERT INTO tbl_subjects (subject_code, subject_name) 
+                    VALUES (:subject_code, :subject_name)";
             // prep
             $stmt = $conn -> prepare($sql);
 
             // bindParam
-            $stmt -> bindParam(':class_name', $class_name );
+            $stmt -> bindParam(':subject_code', $subject_code );
+            $stmt -> bindParam(':subject_name', $subject_name );
 
             //execute
             $stmt -> execute();
 
             http_response_code(201);
             echo json_encode([
-                "message" => "Section Added Succesfully"
+                "message" => "Subject Added Succesfully"
             ]);
             exit();
         } else {
