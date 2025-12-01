@@ -92,10 +92,6 @@
                     <form id="addsubjectform">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="subject_id" class="form-label">Subject ID No.</label>
-                                <input type="text" class="form-control" id="subject_id" required>
-                            </div>
-                            <div class="col-md-6">
                                 <label for="subject_code" class="form-label">Subject Code</label>
                                 <input type="text" class="form-control" id="subject_code" required>
                             </div>

@@ -11,7 +11,7 @@
     $student_id = $_GET['stud_id'] ?? null;
 
     if($student_id){
-        require_once('../../db/conn.php');
+        require_once('../../../db/conn.php');
         //sql
         $sql = "SELECT * FROM tbl_students WHERE id = :id";
 
@@ -39,7 +39,7 @@
             exit();
         }
     } else {
-        require_once('../../db/conn.php');
+        require_once('../../../db/conn.php');
         //sql
         $sql = "SELECT * FROM tbl_students";
         //prep

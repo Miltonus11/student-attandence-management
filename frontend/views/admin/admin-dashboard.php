@@ -17,8 +17,11 @@
 </head>
 <body>
     <!-- Header -->
-   <?php include 'components/header.php'; ?>
-
+   <?php 
+    include 'components/header.php'; 
+    
+    ?>
+    
     <!-- Main Container -->
     <div class="container-fluid">
         <div class="row">
@@ -36,7 +39,7 @@
         <div class="dashboard_card card-teachers" onclick="window.location.href='teachers.php'">
             <div class="card_content">
                 <div class="card_label">Teachers</div>
-                <div class="card_value">10</div>
+                <div class="card_value"></div>
             </div>
             <div class="card_icon">
                 <i class="fas fa-chalkboard-teacher"></i>
@@ -48,7 +51,7 @@
         <div class="dashboard_card card-classes" onclick="window.location.href='section.php'">
             <div class="card_content">
                 <div class="card_label">Section</div>
-                <div class="card_value">4</div>
+                <div class="card_value"></div>
             </div>
             <div class="card_icon">
                 <i class="fas fa-chalkboard"></i>
@@ -60,7 +63,7 @@
         <div class="dashboard_card card-students" onclick="window.location.href='students.php'">
             <div class="card_content">
                 <div class="card_label">Students</div>
-                <div class="card_value">4</div>
+                <div class="card_value"></div>
             </div>
             <div class="card_icon">
                 <i class="fas fa-user-graduate"></i>
@@ -74,7 +77,7 @@
         <div class="dashboard_card card-attendance" onclick="window.location.href='subject.php'">
             <div class="card_content">
                 <div class="card_label">Subject</div>
-                <div class="card_value">47</div>
+                <div class="card_value"></div>
             </div>
             <div class="card_icon">
                 <i class="fas fa-book-open"></i>

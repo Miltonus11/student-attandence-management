@@ -5,12 +5,13 @@ let currentTeacherId = null;
 // Fetch teachers
 const fetchTeachers = () => {
     $.ajax({
-        url: "../../backend/controllers/Instructors/getInstructors.php",
+        url: "../../../backend/controllers/admin-controller/Instructors/getInstructors.php",
         method: "GET",
         dataType: "json",
         success: (result) => {
             allTeachers = result.Instructors || result.teachers || [];
             renderTeacherTable(allTeachers);
+            // console.log(result)
         },
         error: () => alert("Failed to load instructors. Please try again.")
     });
@@ -115,14 +116,19 @@ function closeModal() {
 
 // Save teacher
 function saveTeacher() {
+    const instructor_number = document.getElementById('teacher_id').value.trim()
+    const first_name = document.getElementById('first_name').value.trim()
+    const last_name = document.getElementById('last_name').value.trim()
+
     const teacherData = {
-        instructor_number: document.getElementById('teacher_id').value.trim(),
-        first_name: document.getElementById('first_name').value.trim(),
-        middle_name: document.getElementById('middle_name').value.trim(),
-        last_name: document.getElementById('last_name').value.trim(),
-        contact: document.getElementById('contact').value.trim(),
+        instructor_number: instructor_number,
+        first_name: first_name,
+        // middle_name: document.getElementById('middle_name').value.trim(),
+        last_name: last_name
+        // contact: document.getElementById('contact').value.trim(),
     };
 
+    console.log(first_name)
     // Validation
     if (!teacherData.instructor_number || !teacherData.first_name || !teacherData.last_name) {
         alert('Please fill in all required fields (Teacher ID, First Name, Last Name).');
@@ -130,11 +136,14 @@ function saveTeacher() {
     }
 
     $.ajax({
-        url: "../../../backend/controllers/Instructors/addInstructors.php",
+        url: "../../../backend/controllers/admin-controller/Instructors/addInstructors.php",
         method: "POST",
+        dataType: "JSON",
         data: teacherData,
         success: function (response) {
-            handleResponse(response, 'Teacher added successfully!', fetchTeachers, closeModal);
+            handleResponse(response, 'Teacher added successfully!');
+            closeModal();
+            fetchTeachers();
         },
         error: function (xhr, status, error) {
             console.error("Error saving teacher:", error);

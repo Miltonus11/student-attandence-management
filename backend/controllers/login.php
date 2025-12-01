@@ -63,7 +63,8 @@
                 } else {
                     echo json_encode([
                         "status" => "success",
-                        "user_level" => $user['user_role']
+                        "user_level" => $user['user_role'],
+                        "user_id" => $user['user_id'],
                     ]);
                 }
 

@@ -121,12 +121,13 @@
                                 <input type="text" class="form-control" id="instructor_contact" required>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="saveTeacher()">Save Teacher</button>
+                        </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="saveTeacher()">Save Teacher</button>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -186,8 +187,6 @@
                                 <input type="text" class="form-control" id="edit_last_name" required>
                             </div>
                         </div>
-
-                      
                             <div class="col-md-6">
                                 <label for="edit_instructor_contact" class="form-label">Contact</label>
                                 <input type="text" class="form-control" id="edit_instructor_contact" required>

@@ -39,7 +39,7 @@
             exit();
         }
     } else {
-        require_once('../../db/conn.php');
+        require_once('../../../db/conn.php');
         //sql
         $sql = "SELECT * FROM tbl_instructors ";
         //prep

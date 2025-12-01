@@ -3,11 +3,10 @@
 // Fetch subjects from the backend and render the table
 const fetchSubjects = () => {
     $.ajax({
-        url: "../../backend/controllers/subjects/getSubjects.php", 
+        url: "../../../backend/controllers/subjects/getSubjects.php", 
         method: "GET",
         dataType: "json",
         success: function (result) {
-                console.log(result)
                 renderSubjectTable(result.subjects || result.subjects); 
 
         },
@@ -106,33 +105,33 @@ function closeModal() {
         const newModal = new bootstrap.Modal(modalElement);
         newModal.hide();
     }
-    
     const form = modalElement.querySelector('form');
     if (form) form.reset();
 }
 
 // Save a new subject (send to backend)
 function saveSubject() {
-    const subject_id = document.getElementById('subject_id').value.trim();
+
     const subject_code = document.getElementById('subject_code').value.trim();
     const subject_name = document.getElementById('subject_name').value.trim(); 
 
+    console.log(subject_code, subject_name);
+
     // Check for empty fields
-    if (!subject_id || !subject_code || !subject_name) {
+    if (!subject_code || !subject_name) {
         alert('Please fill in all required fields.');
         return;
     }
 
     // Prepare data for AJAX
     const subjectData = {
-        subject_id: subject_id,
         subject_code: subject_code,
         subject_name: subject_name, 
     };
 
     // Send to backend
     $.ajax({
-        url: "../../../backend/controllers/Subject/addSubject.php", 
+        url: "../../../backend/controllers/admin-controller/subjects/addSubjects.php", 
         method: "POST", 
         data: subjectData,
         success: function (response) {
@@ -147,7 +146,6 @@ function saveSubject() {
                 }
             } catch (e) {
                 console.error('Error parsing response:', e);
-                alert('Subject added successfully!');
                 closeModal();
                 fetchSubjects();
             }

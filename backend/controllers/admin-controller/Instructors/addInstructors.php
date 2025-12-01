@@ -13,7 +13,7 @@
     $instructor_number = $_POST['instructor_number'];
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
-    require_once('../../db/conn.php');
+    require_once('../../../db/conn.php');
     try{
         //create user 
         if(isset($instructor_number) && isset($first_name) && isset($last_name)){

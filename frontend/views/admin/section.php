@@ -55,7 +55,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
                             </h2>
                             <span class="class-count">
                                 <?php
-                                    $stmt = $conn->query("SELECT COUNT(*) AS count FROM tbl_classes");
+                                    $stmt = $conn->query("SELECT COUNT(*) AS count FROM tbl_class");
                                     $count = $stmt->fetch()['count'];
                                     echo "Total Classes: {$count}";
                                 ?>
@@ -82,7 +82,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
                 <!-- Class List -->
                 <div id="classList">
                     <?php
-                        $stmt = $conn->query("SELECT * FROM tbl_classes ORDER BY class_id DESC");
+                        $stmt = $conn->query("SELECT * FROM tbl_class ORDER BY class_id DESC");
                         $classes = $stmt->fetchAll();
 
                         if (!$classes) {
@@ -95,7 +95,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
                             echo '<div class="row" id="classGrid">';
 
                             foreach ($classes as $c) {
-                                $title = htmlspecialchars($c['class_name']) . ' — ' . htmlspecialchars($c['class_section']);
+                                $title = htmlspecialchars($c['class_name']);
                                 $year = isset($c['year_level']) && $c['year_level'] !== null
                                     ? "<span class='badge bg-secondary ms-2'>Year {$c['year_level']}</span>"
                                     : "";

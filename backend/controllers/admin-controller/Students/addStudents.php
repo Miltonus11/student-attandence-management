@@ -14,7 +14,7 @@
     $first_name = $_POST['first_name'];
     $last_name = $_POST['last_name'];
     $year_level = $_POST['year_level'];
-    require_once('../../db/conn.php');
+    require_once('../../../db/conn.php');
     try{
         //create user 
         if($student_number && $first_name && $last_name && $year_level){
