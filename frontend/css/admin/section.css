@@ -1,0 +1,86 @@
+body {
+    background-color: #f4f6f9;
+}
+
+.card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.student-table th,
+.student-table td {
+    vertical-align: middle;
+}
+
+.student-count {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #eef3ff;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-box {
+    border: 1px solid var(--bs-primary);
+    border-radius: 6px;
+    display: flex;
+    overflow: hidden;
+    height: 36px;
+}
+
+.search-icon {
+    background-color: var(--bs-primary);
+    color: white;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    height: 36px;
+    padding-left: 8px;
+    width: 200px;
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.search-btn {
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.class-card .card {
+    border-radius: 10px;
+    transition: .25s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.class-card .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.no-results {
+    display: none;
+    margin-top: 20px;
+}
+

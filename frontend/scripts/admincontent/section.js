@@ -9,8 +9,6 @@ const fetchClasses = () => {
         method: "GET",
         dataType: "json",
         success: function (result) {
-            // Fixed: Simplified data access (removed redundancy)
-
             allClasses = result.classes || [];
             renderClassTable(allClasses);  
         },
@@ -31,10 +29,9 @@ function performSearch() {
         return;
     }
     
-    // Filter classes based on search term (fixed: removed invalid space and object.includes)
     const filteredClasses = allClasses.filter(classItem => {
         const classSection = (classItem.class_section || '').toString().toLowerCase();
-        const classId = (classItem.class_id || '').toString().toLowerCase();  // Added: Search in class ID if needed
+        const classId = (classItem.class_id || '').toString().toLowerCase();  
         
         return classSection.includes(searchTerm) || classId.includes(searchTerm);
     });
@@ -50,12 +47,12 @@ function renderClassTable(classes) {
         return;
     }
     
-    tbody.innerHTML = ''; // Clear existing rows
+    tbody.innerHTML = ''; 
 
     if (!classes || classes.length === 0) {
         const row = document.createElement('tr');
         const cell = document.createElement('td');
-        cell.colSpan = 3;  // Adjusted to match columns (ID, Section, Details)
+        cell.colSpan = 3;  
         cell.textContent = 'No Classes found';
         cell.style.textAlign = 'center';
         row.appendChild(cell);
@@ -73,7 +70,7 @@ function renderClassTable(classes) {
 
         // Class Section cell
         const sectionCell = document.createElement('td');
-        sectionCell.textContent = classItem.class_name || 'N/A';  
+        sectionCell.textContent = classItem.class_section || 'N/A';  
         row.appendChild(sectionCell);
 
         // Details cell with a view link
@@ -100,7 +97,7 @@ function renderClassTable(classes) {
 
             // Get data from the class object
             modalId.innerText = classItem.class_id || 'N/A';
-            modalSection.innerText = classItem.class_name || 'N/A';
+            modalSection.innerText = classItem.class_section || 'N/A';
 
             // Show the modal
             const modal = new bootstrap.Modal(modalElement);
