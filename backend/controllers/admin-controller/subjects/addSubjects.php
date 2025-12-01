@@ -15,7 +15,7 @@ header('Content-Type: application/json');
     $subject_name = $_POST["subject_name"];
 
 
-    require_once('../../db/conn.php');
+    require_once('../../../db/conn.php');
 
     try{
         if($subject_code && $subject_name) {
@@ -25,7 +25,8 @@ header('Content-Type: application/json');
             $subject = $stmt->fetch(PDO::FETCH_ASSOC);
             
             //verify if the subject exist through the subject code
-            if($subject_code == $subject['subject_code']){
+            //also check if the given is array
+            if ($subject && $subject_code == $subject['subject_code']){
                 http_response_code(406);
                 echo json_encode([
                     "message" => "Subject  already exists"
@@ -33,7 +34,7 @@ header('Content-Type: application/json');
                 exit();
             }
             //double verification
-            if($subject_name == $subject['subject_name']){
+            if ($subject && $subject_name == $subject['subject_name']){
                 http_response_code(406);
                 echo json_encode([
                     "message" => "Subject  already exists"
@@ -56,6 +57,7 @@ header('Content-Type: application/json');
 
             http_response_code(201);
             echo json_encode([
+                "success" => true,
                 "message" => "Subject Added Succesfully"
             ]);
             exit();

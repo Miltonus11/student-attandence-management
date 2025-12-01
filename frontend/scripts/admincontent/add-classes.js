@@ -1,49 +1,50 @@
 $(document).ready(function() {
-
     let allStudents = []; 
 
-    // fetch all students once on page load
-    $.getJSON("../../../backend/controllers/Students/getStudents.php", function(res) {
+    // fetch all students once on page load without class
+    $.getJSON("../../../backend/controllers/admin-controller/Students/getStudents.php", function(res) {
         allStudents = res.Students || [];
     });
 
     // Load students when year level changes
     $("#yearLevelFilter").on("change", function () {
-        let level = $(this).val();
+    let level = $(this).val();
 
-        if (level === "") {
-            $("#studentTableBody").html(`<tr><td colspan="5">Please select a Year Level</td></tr>`);
-            return;
-        }
+    let filtered;
+    let unassignedStudents = allStudents.filter(s => s.class_id == 0);
+    // If nothing selected → show ALL students
+    if (level === "") {
+        filtered = unassignedStudents;
+    } else {
+        filtered = allStudents.filter(s => s.year_level == level);
+    }
 
-        let filtered = allStudents.filter(s => s.year_level == level);
+    let html = "";
+    if (filtered.length === 0) {
+        html = `<tr><td colspan="5">No students found</td></tr>`;
+    } else {
+        filtered.forEach(function (row) {
+            html += `
+            <tr>
+                <td><input type="checkbox" name="students[]" class="studentCheckbox" value="${row.student_id}"></td>
+                <td>${row.student_number}</td>
+                <td>${row.first_name} ${row.last_name}</td>
+                <td>${row.year_level}</td>
+                <td>
+                    <a href="#" class="view-link" 
+                        data-id="${row.student_id}"
+                        data-name="${row.first_name} ${row.last_name}"
+                        data-number="${row.student_number}"
+                        data-year="${row.year_level}">
+                        View
+                    </a>
+                </td>
+            </tr>`;
+        });
+    }
 
-        let html = "";
-        if (filtered.length === 0) {
-            html = `<tr><td colspan="5">No students found for this year level</td></tr>`;
-        } else {
-            filtered.forEach(function (row) {
-                html += `
-                <tr>
-                    <td><input type="checkbox" name="students[]" class="studentCheckbox" value="${row.student_id}"></td>
-                    <td>${row.student_number}</td>
-                    <td>${row.first_name} ${row.last_name}</td>
-                    <td>${row.year_level}</td>
-                    <td>
-                        <a href="#" class="view-link" 
-                            data-id="${row.student_id}"
-                            data-name="${row.first_name} ${row.last_name}"
-                            data-number="${row.student_number}"
-                            data-year="${row.year_level}">
-                            View
-                        </a>
-                    </td>
-                </tr>`;
-            });
-        }
-
-        $("#studentTableBody").html(html);
-    });
+    $("#studentTableBody").html(html);
+});
 
     // Search filter
     $("#searchInput").keyup(function () {
@@ -87,8 +88,8 @@ $(document).ready(function() {
 });
 
 // Initialize
-$(document).ready(function() {
-    fetchStudents();
-});
+// $(document).ready(function() {
+//     fetchStudents();
+// });
 
 });

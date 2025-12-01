@@ -5,7 +5,7 @@ let currentStudentId = null;
 // Fetch students from backend
 const fetchStudents = () => {
     $.ajax({
-        url: "../../../backend/controllers/Students/getStudents.php", 
+        url: "../../../backend/controllers/admin-controller/Students/getStudents.php", 
         method: "GET",
         dataType: "json",
         success: function (result) {
@@ -134,11 +134,14 @@ function saveStudent() {
     }
 
     $.ajax({
-        url: "../../../backend/controllers/Students/addStudents.php",
+        url: "../../../backend/controllers/admin-controller/Students/addStudents.php",
         method: "POST",
+        dataType:"json",
         data: studentData,
         success: function (response) {
-            handleResponse(response, 'Student added successfully!', fetchStudents, closeModal);
+            handleResponse(response, 'Student added successfully!');
+            closeModal();
+            fetchStudents()
         },
         error: function (xhr, status, error) {
             console.error("Error saving student:", error);

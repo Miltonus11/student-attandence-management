@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD'] !== 'GET'){
 $class_id = $_GET['class_id'] ?? null;
 
 try {
-    require_once('../../db/conn.php');
+    require_once('../../../db/conn.php');
     
     if($class_id){
        

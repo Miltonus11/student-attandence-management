@@ -19,10 +19,10 @@ $(document).ready(function(e){
                             window.location.href ="admin/admin-dashboard.php";
                             break;
                         case "student":
-                            window.location.href ="student/attendance.php";
+                            window.location.href ="Student/student.php";
                             break;
                         case "instructor":
-                            window.location.href ="teacher/teacher.php";
+                            window.location.href ="Teacher/teacher.php";
                             break;
                         default:
                             window.location.href ="../loginPage.php";
