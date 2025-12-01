@@ -19,7 +19,7 @@
         exit();
     }
 
-    require_once('../../db/conn.php');
+    require_once('../../../db/conn.php');
 
     try {
 

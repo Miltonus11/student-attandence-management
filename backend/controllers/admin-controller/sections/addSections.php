@@ -13,7 +13,7 @@ header('Content-Type: application/json');
     //create a class
     $class_name = $_POST["class_name"];
 
-    require_once('../../db/conn.php');
+    require_once('../../../db/conn.php');
 
     try{
         if($class_name) {

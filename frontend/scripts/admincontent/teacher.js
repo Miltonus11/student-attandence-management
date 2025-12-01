@@ -5,7 +5,7 @@ let currentTeacherId = null;
 // Fetch teachers
 const fetchTeachers = () => {
     $.ajax({
-        url: "../../../backend/controllers/Instructors/getInstructors.php",
+        url: "../../backend/controllers/Instructors/getInstructors.php",
         method: "GET",
         dataType: "json",
         success: (result) => {

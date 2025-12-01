@@ -8,9 +8,10 @@
     }
 
     $class_id = $_POST['class_id'] ?? null;
+    //array of students
     $students = $_POST['students'] ?? null;
 
-    require_once('../../db/conn.php');
+    require_once('../../../db/conn.php');
     try{
         if (!$class_id || !$students || !is_array($students)) {
         http_response_code(400);
