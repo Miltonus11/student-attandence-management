@@ -3,7 +3,7 @@
 // Fetch subjects from the backend and render the table
 const fetchSubjects = () => {
     $.ajax({
-        url: "../../../backend/controllers/subjects/getSubjects.php", 
+        url: "../../backend/controllers/subjects/getSubjects.php", 
         method: "GET",
         dataType: "json",
         success: function (result) {

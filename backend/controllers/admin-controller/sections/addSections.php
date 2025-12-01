@@ -13,7 +13,7 @@ header('Content-Type: application/json');
     //create a class
     $class_name = $_POST["class_name"];
 
-    require_once('../../db/conn.php');
+    require_once('../../../db/conn.php');
 
     try{
         if($class_name) {
@@ -42,9 +42,12 @@ header('Content-Type: application/json');
             //execute
             $stmt -> execute();
 
+            $class_id = $conn -> lastInsertId();
+
             http_response_code(201);
             echo json_encode([
-                "message" => "Section Added Succesfully"
+                "message" => "Section Added Succesfully",
+                "class_id" => $class_id
             ]);
             exit();
         } else {

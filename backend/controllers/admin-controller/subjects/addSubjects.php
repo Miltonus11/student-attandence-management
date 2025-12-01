@@ -24,7 +24,6 @@ header('Content-Type: application/json');
             $stmt -> execute([$subject_code]);
             $subject = $stmt->fetch(PDO::FETCH_ASSOC);
             
-
             //verify if the subject exist through the subject code
             if($subject_code == $subject['subject_code']){
                 http_response_code(406);

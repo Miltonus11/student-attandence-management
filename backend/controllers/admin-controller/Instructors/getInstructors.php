@@ -11,7 +11,7 @@
     $instructor_id = $_GET['inst_id'] ?? null;
 
     if($instructor_id){
-        require_once('../../db/conn.php');
+        require_once('../../../db/conn.php');
         //sql
         $sql = "SELECT * FROM tbl_instructors WHERE id = :id";
 
