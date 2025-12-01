@@ -9,21 +9,13 @@
     </div>
                         
 
-       <div class="sidebar_section">
-                        <div class="sidebar_title">Attendance</div>
-                        <a href="student.php" class="sidebar_item" id="student.php">
-                            <span class="sidebar_item_icon"><i class="fas fa-book"></i></span>
-                            <span class="sidebar_item_text">Attendance</span>
-                            <span class="arrow"><i class="fas fa-chevron-right"></i></span>
-                        </a>
-                    </div>
-
 
                      <div class="sidebar_section">
-                        <div class="sidebar_title">Subject</div>
-                        <a href="subject.php" class="sidebar_item" id="subject.ph">
-                            <span class="sidebar_item_icon"><i class="fas fa-book"></i></span>
-                            <span class="sidebar_item_text">Subject</span>
+                        <div class="sidebar_title">Attendance</div>
+                        <a href="student.php" class="sidebar_item" id="student.php">
+                           <span class="sidebar_item_icon"><i class="fas fa-user-check"></i></span>
+<span class="sidebar_item_text">Attendance</span>
+
                             <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                         </a>
                     </div>
