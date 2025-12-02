@@ -82,7 +82,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
                 <!-- Class List -->
                 <div id="classList">
                     <?php
-                        $stmt = $conn->query("SELECT * FROM tbl_class ORDER BY class_id DESC");
+                        $stmt = $conn->query("SELECT * FROM tbl_class ORDER BY class_id ASC");
                         $classes = $stmt->fetchAll();
 
                         if (!$classes) {
