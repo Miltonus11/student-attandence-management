@@ -300,9 +300,9 @@ $allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <!-- Scripts -->
-    <script src="../../scripts/admincontent/subjects.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script src="../../scripts/admincontent/subject.js"></script>                                 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
    
 </body>
 </html>

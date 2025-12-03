@@ -19,19 +19,20 @@
     require_once('../../db/conn.php');
     try{
         $sql = "SELECT 
-                    t.instructor_id,
-                    t.first_name AS teacher_name,
-                    sub.subject_id,
-                    sub.subject_name,
-                    c.class_id,
-                    c.class_name,
-                    s.student_id,
-                    s.first_name AS student_name
-                FROM tbl_instructors t
-                LEFT JOIN tbl_subjects sub ON t.subject_id = sub.subject_id
-                LEFT JOIN tbl_class c ON c.subject_id = sub.subject_id
-                LEFT JOIN tbl_students s ON s.class_id = c.class_id
-                WHERE t.instructor_id =  :teacher_id";
+                t.instructor_id,
+                t.first_name AS teacher_name,
+                sub.subject_id,
+                sub.subject_name,
+                c.class_id,
+                c.class_name,
+                s.student_id,
+                s.first_name AS student_first_name,
+                s.last_name AS student_last_name
+            FROM tbl_instructors t
+            LEFT JOIN tbl_subjects sub ON t.subject_id = sub.subject_id
+            LEFT JOIN tbl_class c ON c.subject_id = sub.subject_id
+            LEFT JOIN tbl_students s ON s.class_id = c.class_id
+            WHERE t.instructor_id = :teacher_id";
         $stmt = $conn->prepare($sql);
         $stmt -> bindParam(':teacher_id', $teacher_id);
         $stmt -> execute();

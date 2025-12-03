@@ -125,6 +125,20 @@ if (assignInstructorModal) {
     });
 }
 
+//handle the subject details shown in the manage subject
+const getSubjectDetails = (subjectId) => {
+    $.ajax({
+        url: "../../../backend/controllers/admin-controller/subjects/getSubjectDetails.php", 
+        method: "GET",
+        data: {subject_id: subjectId},
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+        },
+        error:() => alert("Failed to load students. Please try again.")
+        
+    });
+}
 // Handle view modal show event
 const viewSubjectModal = document.getElementById('viewSubjectModal');
 if (viewSubjectModal) {
@@ -134,6 +148,7 @@ if (viewSubjectModal) {
         const button = event.relatedTarget;
         currentSubjectId = button.getAttribute('data-subject-id');
         const subjectName = button.getAttribute('data-subject-name');
+        getSubjectDetails(currentSubjectId)
         
         // Set basic subject info
         document.getElementById('viewSubjectId').textContent = currentSubjectId;
@@ -153,7 +168,7 @@ if (viewSubjectModal) {
 
     // Function to fetch and display instructors
     function fetchInstructors(subjectId) {
-        fetch(`../../../backend/controllers/admin-controller/Instructors/getInstructors.php?subject_id=${subjectId}`)
+        fetch(`../../../backend/controllers/admin-controller/subjects/getAssignedInstructor.php?subject_id=${subjectId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -261,39 +276,40 @@ if (viewSubjectModal) {
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Assigning...';
 
         // Send AJAX request to assign instructor
-        fetch('../../../backend/controllers/admin-controller/Instructors/addInstructors.php', {  
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                subject_id: parseInt(subjectId),
-                instructor_id: parseInt(instructorId)
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
 
-            if (data.message || data.success) {
-                // Success
-                alert('Instructor assigned successfully!');
-                
-                // Reset the select
-                document.getElementById('addInstructorSelect').value = '';
-                
-                // Refresh the instructors list
-                fetchInstructors(subjectId);
-            } else {
-                alert('Error: ' + (data.message || 'Failed to assign instructor'));
+        const assignData = {
+            subject_id:parseInt(subjectId),
+            instructor_id:parseInt(instructorId)
+        };
+        console.log(assignData);
+        $.ajax({
+            url: '../../../backend/controllers/admin-controller/subjects/assignInstructor.php',
+            method: 'PUT',
+            dataType:"json",
+            data: JSON.stringify(assignData),
+            success: function(res) {
+                if (res.success) {
+                    alert('Instructor assigned successfully!');
+
+                    // Reset select
+                    $('#addInstructorSelect').val('');
+                    
+                    //
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    // Refresh instructor list
+                    fetchInstructors(subjectId);
+                    
+                } else {
+                    console.log('Error: ' + (res.message || 'Failed to assign instructor'));
+                }
+            },
+
+            error: function(xhr, status, error) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                console.log("AJAX Error: " + error);
             }
-        })
-        .catch(error => {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-            console.error('Error:', error);
-            alert('An error occurred while assigning the instructor. Please try again.');
         });
     }
 
@@ -305,6 +321,7 @@ if (viewSubjectModal) {
     });
 }
 //  OPTIONAL TO DELETED INSTRUCTORS / functions
+
 // function unassignInstructor(subjectId, instructorId) {
 //     if (!confirm('Are you sure you want to unassign this instructor?')) {
 //         return;
