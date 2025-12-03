@@ -1,3 +1,4 @@
+
 // section-details.js
 function getClassIdFromPage(){
     const el = document.getElementById('sectionClassId');
@@ -18,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function(){
             const orig = btn.innerHTML;
             btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Assigning...';
             fetch('../../../backend/controllers/admin-controller/sections/assignSubjectSections.php', {
-                method: 'PUT', headers: {'Content-Type': 'application/json'},
+                method: 'PUT', 
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ class_id: parseInt(classId), subject_id: parseInt(subjectId) })
             }).then(r=>r.json()).then(data=>{
                 btn.disabled = false; btn.innerHTML = orig;
@@ -49,27 +51,56 @@ document.addEventListener('DOMContentLoaded', function(){
     assignBtn && assignBtn.addEventListener('click', assignSelectedStudents);
 });
 
-function loadUnassignedStudents(){
+function loadUnassignedStudents() {
     const tbody = document.getElementById('unassignedStudentsBody');
     tbody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
-    fetch('../../../backend/controllers/admin-controller/sections/getUnassignedStudents.php')
-        .then(res=>res.json())
-        .then(data=>{
-            if (!data.success) { tbody.innerHTML = '<tr><td colspan="4">Failed to load students.</td></tr>'; return; }
+    
+    const cid = document.getElementById('assignStudentsModal').getAttribute('data-class-id');
+    if (!cid) {
+        tbody.innerHTML = '<tr><td colspan="4">Class ID missing.</td></tr>';
+        return;
+    }
+    
+    $.ajax({
+        url: '../../../backend/controllers/admin-controller/sections/getUnassignedStudents.php',
+        method: 'GET',
+        data: { class_id: cid },  // Pass class_id as query param
+        dataType: 'json',
+        success: function(data) {
+            if (!data.success) {
+                tbody.innerHTML = '<tr><td colspan="4">Failed to load students.</td></tr>';
+                return;
+            }
             const students = data.students || [];
-            if (students.length === 0) { tbody.innerHTML = '<tr><td colspan="4">No unassigned students available.</td></tr>'; return; }
+            if (students.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">No unassigned students available.</td></tr>';
+                return;
+            }
             tbody.innerHTML = '';
-            students.forEach(s=>{
+            students.forEach(s => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `\n                    <td><input type="checkbox" class="unassigned-student-checkbox" value="${s.student_id}"></td>\n                    <td>${escapeHtml(s.first_name)} ${escapeHtml(s.last_name)}</td>\n                    <td>${escapeHtml(s.student_number || s.stud_number || '-')}</td>\n                    <td>${escapeHtml(s.year_level || '-')}</td>\n                `;
+                tr.innerHTML = `
+                    <td><input type="checkbox" class="unassigned-student-checkbox" value="${s.student_id}"></td>
+                    <td>${escapeHtml(s.first_name)} ${escapeHtml(s.last_name)}</td>
+                    <td>${escapeHtml(s.student_number || s.stud_number || '-')}</td>
+                    <td>${escapeHtml(s.year_level || '-')}</td>
+                `;
                 tbody.appendChild(tr);
             });
-        }).catch(err=>{ console.error(err); tbody.innerHTML = '<tr><td colspan="4">Error loading students.</td></tr>'; });
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', error);
+            tbody.innerHTML = '<tr><td colspan="4">Error loading students.</td></tr>';
+        }
+    });
 }
+
 
 function assignSelectedStudents(){
     const checked = Array.from(document.querySelectorAll('#unassignedStudentsBody input[type="checkbox"].unassigned-student-checkbox:checked')).map(cb=>cb.value);
-    if (checked.length === 0) { alert('Please select at least one student to assign.'); return; }
+    if (checked.length === 0) {
+         alert('Please select at least one student to assign.'); return; 
+        }
     const modalEl = document.getElementById('assignStudentsModal');
     const cid = modalEl.getAttribute('data-class-id') || getClassIdFromPage();
     if (!cid) { alert('Class ID missing.'); return; }
@@ -78,7 +109,12 @@ function assignSelectedStudents(){
     fetch('../../../backend/controllers/admin-controller/sections/assignStudentSections.php', { method: 'POST', body: formData })
         .then(r=>r.json()).then(data=>{
             btn.disabled=false; btn.innerHTML=orig;
-            if (data.message) { alert(data.message); const modal = bootstrap.Modal.getInstance(modalEl); modal && modal.hide(); setTimeout(()=>location.reload(),600); }
+            if (data.message) { 
+                alert(data.message); 
+                const modal = bootstrap.Modal.getInstance(modalEl); 
+                modal && modal.hide(); 
+                setTimeout(()=>location.reload(),600); 
+            }
             else alert('Unexpected response from server.');
         }).catch(err=>{ console.error(err); btn.disabled=false; btn.innerHTML=orig; alert('Failed to assign students.'); });
 }
