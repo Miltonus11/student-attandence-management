@@ -84,7 +84,7 @@
     </div>
 
     <!-- VIEW TEACHER MODAL -->
-    <div class="modal fade" id="viewTeacherModal" tabindex="-1">
+    <div class="modal fade" id="viewSubjectModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -92,9 +92,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Teacher ID:</strong> <span id="viewTeacherId"></span></p>
-                    <p><strong>Name:</strong> <span id="viewTeacherName"></span></p>
-                    <p><strong>Contact:</strong> <span id="viewTeacherContact"></span></p>
+                    <p><strong>Subject ID:</strong> <span id="viewSubjectId"></span></p>
+                    <p><strong>Subject Code:</strong> <span id="viewSubjectCode"></span></p>
+                    <p><strong>Subject Name:</strong> <span id="viewSubjectName"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

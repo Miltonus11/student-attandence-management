@@ -1,0 +1,105 @@
+
+        .status-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+        .present { color: #012970; }
+        .absent { color: #012970; }
+        .section-header {
+            background: #012970;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(1, 41, 112, 0.05);
+        }
+        .badge.bg-primary {
+            background-color: #012970 !important;
+        }
+        .badge.bg-success {
+            background-color: #012970 !important;
+        }
+        .btn-primary {
+            background-color: #012970;
+            border-color: #012970;
+        }
+        .btn-primary:hover {
+            background-color: #011a4d;
+            border-color: #011a4d;
+        }
+        .btn-outline-success {
+            color: #012970;
+            border-color: #012970;
+        }
+        .btn-outline-success:hover {
+            background-color: #012970;
+            border-color: #012970;
+            color: white;
+        }
+        .btn-success {
+            background-color: #012970;
+            border-color: #012970;
+        }
+        .btn-success:hover {
+            background-color: #011a4d;
+            border-color: #011a4d;
+        }
+        .btn-outline-danger {
+            color: #012970;
+            border-color: #012970;
+        }
+        .btn-outline-danger:hover {
+            background-color: #012970;
+            border-color: #012970;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #012970;
+            border-color: #012970;
+        }
+        .btn-danger:hover {
+            background-color: #011a4d;
+            border-color: #011a4d;
+        }
+        .card.border-success {
+            border-color: #012970 !important;
+        }
+        .card.border-danger {
+            border-color: #012970 !important;
+        }
+        .card.border-primary {
+            border-color: #012970 !important;
+        }
+        .text-success {
+            color: #012970 !important;
+        }
+        .text-danger {
+            color: #012970 !important;
+        }
+        .text-primary {
+            color: #012970 !important;
+        }
+        .bg-success {
+            background-color: #012970 !important;
+        }
+        /* Remove the status icon styling */
+        .status-icon {
+            display: none;
+        }
+        /* Custom checkbox styling */
+        .attendance-checkbox {
+            transform: scale(1.5);
+            cursor: pointer;
+        }
+        .form-check {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+        }
+     
+        .checkbox-label {
+            display: none;
+        }
