@@ -14,8 +14,11 @@
     $input = json_decode(file_get_contents("php://input"),true);
     $subject_id = $input['subject_id'] ?? null;
     $instructor_id = $input['instructor_id'] ??  null;
+    // $subject_id = $_POST['subject_id'];
+    // $instructor_id = $_POST['instructor_id'];
 
-    require_once('../../db/conn.php');
+
+    require_once('../../../db/conn.php');
     try{
         if(!$subject_id || !$instructor_id){
             http_response_code(406);
@@ -32,12 +35,14 @@
 
         http_response_code(200);
         echo json_encode([
+            "success" => true,
             "message" => "Teacher Assigned Succesfully"
         ]);
         exit();
     } catch (PDOException $e) {
         http_response_code(500);
         echo json_encode([
+            "success" => false,
             "message" => "Error" . $e ->getMessage()
         ]);
     }
