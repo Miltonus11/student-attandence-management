@@ -11,7 +11,10 @@ require_once('../../../db/conn.php');
 
 try {
     // Fetch students that are not assigned to any class (class_id IS NULL or 0)
-    $sql = "SELECT student_id, student_number, first_name, middle_initial, last_name, year_level FROM tbl_students WHERE class_id IS NULL OR class_id = 0 ORDER BY last_name ASC, first_name ASC";
+    $sql = "SELECT student_id, student_number, first_name, last_name, year_level 
+            FROM tbl_students WHERE class_id IS NULL OR class_id = 0 
+            ORDER BY last_name ASC, first_name ASC";
+            
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $students = $stmt->fetchAll(PDO::FETCH_ASSOC);

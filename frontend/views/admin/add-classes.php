@@ -12,13 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($class_name === '' || $class_section === '' || $subject_id === 0 || $year_level === 0) {
         $error = "Please fill in Class Name, Section, Subject and Year Level.";
     } else {
-        $insert = $conn->prepare("INSERT INTO tbl_classes (class_section, class_name, subject_id, year_level) 
-                                  VALUES (:section, :name, :subject_id, :year_level)");
+        $insert = $conn->prepare("INSERT INTO tbl_class (class_name, subject_id) 
+                                  VALUES (:name, :subject_id)");
         $insert->execute([
-            ':section' => $class_section,
             ':name' => $class_name,
-            ':subject_id' => $subject_id,
-            ':year_level' => $year_level
+            ':subject_id' => $subject_id
         ]);
         $class_id = $conn->lastInsertId();
 

@@ -313,6 +313,8 @@ if (viewSubjectModal) {
         });
     }
 
+
+
     // Reset view modal when closed
     viewSubjectModal.addEventListener('hidden.bs.modal', function() {
         document.getElementById('viewSubjectId').textContent = '--';
