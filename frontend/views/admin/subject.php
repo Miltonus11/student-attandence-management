@@ -225,22 +225,22 @@ $allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
                         
-                        <div class="mb-3">
-                            <h6 class="text-muted mb-2">Assigned Instructors</h6>
-                            <div id="instructorsList">
-                                <div class="text-center py-4" id="loadingInstructors">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                    <p class="mt-2">Loading instructors...</p>
-                                </div>
-                                <div class="text-center py-4" id="noInstructors" style="display: none;">
-                                    <i class="fas fa-users-slash fa-2x text-muted mb-2"></i>
-                                    <p class="text-muted">No instructors assigned yet</p>
-                                </div>
-                                <div id="instructorsContent" style="display: none;"></div>
-                            </div>
-                        </div>
+                   <div class="mb-3">
+    <h6 class="text-muted mb-2">Assigned Instructor</h6> 
+    <div id="instructorsContainer">
+        <div class="text-center py-4" id="loadingInstructors">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading instructor...</p>
+        </div>
+        <div class="text-center py-4" id="noInstructors" style="display: none;">
+            <i class="fas fa-user-times fa-2x text-muted mb-2"></i>
+            <p class="text-muted">No instructor assigned yet</p>
+        </div>
+        <div id="instructorContent" style="display: none;"></div> 
+    </div>
+</div>
                         
                         <div class="mb-3">
                             <h6 class="text-muted mb-2">Assign New Instructor</h6>
@@ -275,6 +275,23 @@ $allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
+         <!-- Pagination Section -->
+                    <div class="pagination-wrapper">
+                        <div>Showing 1 to 1 of 1 entries</div>
+                        <nav>
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Edit Subject Modal -->
     <div class="modal fade" id="editSubjectModal" tabindex="-1" aria-labelledby="editSubjectModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -303,11 +320,13 @@ $allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
                     <button type="button" class="btn btn-primary" id="updateSubjectBtn">
                         <i class="fas fa-check me-1"></i>Update Subject
                     </button>
-                </div>
+                </div>+
             </div>
         </div>
     </div>
 
+
+    
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../scripts/admincontent/subject.js"></script>

@@ -1,261 +1,251 @@
-// Function to fetch instructor for a subject (now only one)
-function fetchInstructor(subjectId) {
-    if (!subjectId) {
-        console.error('No subject ID provided');
-        return;
-    }
-    
-    const loadingElement = document.getElementById('loadingInstructors');
-    const noInstructorsElement = document.getElementById('noInstructors');
-    const instructorContentElement = document.getElementById('instructorContent');
-    
-    if (loadingElement) loadingElement.style.display = 'block';
-    if (noInstructorsElement) noInstructorsElement.style.display = 'none';
-    if (instructorContentElement) instructorContentElement.style.display = 'none';
-    
-    $.ajax({
-        url: '../../../backend/controllers/admin-controller/Instructors/getInstructor.php',
-        method: 'GET',
-        data: { subject_id: subjectId },
-        dataType: 'json',
-        success: function(data) {
-            if (loadingElement) loadingElement.style.display = 'none';
-            
-            if (data.success && data.instructor) {
-                if (instructorContentElement) {
-                    instructorContentElement.innerHTML = `
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-md-8">
-                                        <h6 class="mb-1">${data.instructor.first_name} ${data.instructor.last_name}</h6>
-                                        <p class="mb-0 text-muted small">ID: ${data.instructor.instructor_id}</p>
-                                        <p class="mb-0 text-muted small">Email: ${data.instructor.email || 'N/A'}</p>
-                                    </div>
-                                    <div class="col-md-4 text-end">
-                                        <button class="btn btn-sm btn-outline-danger" onclick="unassignInstructor(${subjectId}, ${data.instructor.instructor_id})">
-                                            <i class="fas fa-user-times"></i> Remove
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    instructorContentElement.style.display = 'block';
-                }
-                if (noInstructorsElement) noInstructorsElement.style.display = 'none';
-                
-                // Disable assign button if instructor exists
-                const assignBtn = document.getElementById('assignInViewBtn');
-                if (assignBtn) {
-                    assignBtn.disabled = true;
-                    assignBtn.innerHTML = '<i class="fas fa-user-check me-1"></i> Already Assigned';
-                    assignBtn.classList.remove('btn-primary');
-                    assignBtn.classList.add('btn-secondary');
-                }
-            } else {
-                if (noInstructorsElement) {
-                    noInstructorsElement.innerHTML = `
-                        <i class="fas fa-user-plus fa-2x text-muted mb-2"></i>
-                        <p class="text-muted">No instructor assigned yet</p>
-                    `;
-                    noInstructorsElement.style.display = 'block';
-                }
-                if (instructorContentElement) instructorContentElement.style.display = 'none';
-                
-                // Enable assign button if no instructor
-                const assignBtn = document.getElementById('assignInViewBtn');
-                if (assignBtn) {
-                    assignBtn.disabled = false;
-                    assignBtn.innerHTML = '<i class="fas fa-user-plus me-1"></i> Assign';
-                    assignBtn.classList.remove('btn-secondary');
-                    assignBtn.classList.add('btn-primary');
-                }
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching instructor:', error, xhr.responseText);
-            if (loadingElement) loadingElement.style.display = 'none';
-            if (noInstructorsElement) {
-                noInstructorsElement.innerHTML = `
-                    <i class="fas fa-exclamation-triangle fa-2x text-danger mb-2"></i>
-                    <p class="text-danger">Failed to load instructor</p>
-                `;
-                noInstructorsElement.style.display = 'block';
-            }
-        }
-    });
-}
+$(document).ready(function() {
+    let currentSubjectId = null; // Store current subject ID globally
 
-// Assign instructor from view modal
-document.getElementById('assignInViewBtn')?.addEventListener('click', function() {
-    const instructorId = document.getElementById('addInstructorSelect')?.value;
-    const subjectIdElement = document.getElementById('viewSubjectId');
-    const subjectId = subjectIdElement ? subjectIdElement.textContent : '';
-    
-    if (!subjectId) {
-        alert('Cannot identify subject. Please refresh and try again.');
-        return;
-    }
-    
-    if (!instructorId) {
-        alert('Please select an instructor first.');
-        document.getElementById('addInstructorSelect')?.focus();
-        return;
-    }
+    // Function to open the Add Subject modal
+    window.openAddModal = function() {
+        $('#addClassesModal').modal('show');
+    };
 
-    const btn = this;
-    const originalText = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Assigning...';
-
-    const formData = new FormData();
-    formData.append('subject_id', subjectId);
-    formData.append('instructor_id', instructorId);
-
-    $.ajax({
-        url: '../../../backend/controllers/admin-controller/Instructors/addInstructor.php', // Changed to singular
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-
-            try {
-                const response = typeof data === 'string' ? JSON.parse(data) : data;
-                if (response.success || response.message === "Instructor assigned successfully") {
-                    alert('Instructor assigned successfully!');
-                    
-                    // Clear and disable the select
-                    const selectElement = document.getElementById('addInstructorSelect');
-                    if (selectElement) {
-                        selectElement.value = '';
-                        selectElement.disabled = true;
+    // Handle Add Subject form submission
+    $('#saveSubjectBtn').on('click', function() {
+        const formData = new FormData(document.getElementById('addSubjectForm'));
+        
+        $.ajax({
+            url: '../../../backend/subjects/addsubjects.php', 
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        alert(result.message || 'Subject added successfully!');
+                        $('#addClassesModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + (result.error || 'Failed to add subject.'));
                     }
-                    
-                    // Refresh instructor display
-                    fetchInstructor(subjectId);
-                } else {
-                    alert('Error: ' + (response.message || 'Failed to assign instructor'));
-                    if (response.message.includes('already has an assigned instructor')) {
-                        fetchInstructor(subjectId); // Refresh to show current instructor
-                    }
+                } catch (e) {
+                    alert('Invalid response from server.');
                 }
-            } catch (e) {
-                console.error('JSON Parse Error:', e, 'Raw data:', data);
-                alert('An error occurred while processing the response.');
-            }
-        },
-        error: function(xhr, status, error) {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-            console.error('AJAX Error:', status, error, xhr.responseText);
-            alert('An error occurred. Please try again.');
-        }
-    });
-});
-
-// Unassign instructor
-function unassignInstructor(subjectId, instructorId) {
-    if (!subjectId || !instructorId) {
-        alert('Invalid parameters');
-        return;
-    }
-
-    if (!confirm('Are you sure you want to remove this instructor from the subject?')) {
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('subject_id', subjectId);
-    formData.append('instructor_id', instructorId);
-
-    $.ajax({
-        url: '../../../backend/controllers/admin-controller/Instructors/deleteInstructor.php', // Changed to singular
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            try {
-                const response = typeof data === 'string' ? JSON.parse(data) : data;
-                if (response.success || response.message === "Instructor removed successfully") {
-                    alert('Instructor removed successfully!');
-                    
-                    // Enable the select dropdown again
-                    const selectElement = document.getElementById('addInstructorSelect');
-                    if (selectElement) {
-                        selectElement.disabled = false;
-                    }
-                    
-                    // Refresh instructor display
-                    fetchInstructor(subjectId);
-                } else {
-                    alert('Error: ' + (response.message || 'Failed to remove instructor'));
-                }
-            } catch (e) {
-                console.error('JSON Parse Error:', e, 'Raw data:', data);
-                alert('An error occurred while processing the response.');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', status, error, xhr.responseText);
-            alert('An error occurred. Please try again.');
-        }
-    });
-}
-
-// Update the initializePage function to use fetchInstructor instead of fetchInstructors
-function initializePage() {
-    // Handle View button click
-    document.querySelectorAll('.view-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const subjectId = this.getAttribute('data-subject-id');
-            const subjectName = this.getAttribute('data-subject-name');
-            const subjectCode = this.getAttribute('data-subject-code');
-            
-            // Set basic info
-            const viewSubjectIdElement = document.getElementById('viewSubjectId');
-            const viewSubjectNameElement = document.getElementById('viewSubjectName');
-            const viewSubjectCodeElement = document.getElementById('viewSubjectCode');
-            
-            if (viewSubjectIdElement) viewSubjectIdElement.textContent = subjectId;
-            if (viewSubjectNameElement) viewSubjectNameElement.textContent = subjectName;
-            if (viewSubjectCodeElement) viewSubjectCodeElement.textContent = subjectCode;
-            
-            // Reset and show loading
-            const loadingElement = document.getElementById('loadingInstructors');
-            const noInstructorsElement = document.getElementById('noInstructors');
-            const instructorContentElement = document.getElementById('instructorContent');
-            
-            if (loadingElement) loadingElement.style.display = 'block';
-            if (noInstructorsElement) noInstructorsElement.style.display = 'none';
-            if (instructorContentElement) {
-                instructorContentElement.style.display = 'none';
-                instructorContentElement.innerHTML = '';
-            }
-            
-            // Enable select dropdown
-            const selectElement = document.getElementById('addInstructorSelect');
-            if (selectElement) {
-                selectElement.disabled = false;
-                selectElement.value = '';
-            }
-            
-            // Fetch instructor (singular)
-            fetchInstructor(subjectId);
-            
-            // Show modal
-            const viewModalElement = document.getElementById('viewSubjectModal');
-            if (viewModalElement) {
-                const viewModal = new bootstrap.Modal(viewModalElement);
-                viewModal.show();
+            },
+            error: function() {
+                alert('An error occurred while adding the subject.');
             }
         });
     });
-    
-    // ... rest of your initializePage function ...
-}
+
+    // Handle Edit button clicks
+    $(document).on('click', '.edit-btn', function() {
+        const subjectId = $(this).data('subject-id');
+        const subjectName = $(this).data('subject-name');
+        const subjectCode = $(this).data('subject-code');
+
+        $('#editSubjectId').val(subjectId);
+        $('#editSubjectName').val(subjectName);
+        $('#editSubjectCode').val(subjectCode);
+        $('#editSubjectModal').modal('show');
+    });
+
+    // Handle Update Subject
+    $('#updateSubjectBtn').on('click', function() {
+        const formData = new FormData(document.getElementById('editSubjectForm'));
+        
+        $.ajax({
+            url: '../../../backend/subjects/update_subject.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        alert(result.message || 'Subject updated successfully!');
+                        $('#editSubjectModal').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + (result.error || 'Failed to update subject.'));
+                    }
+                } catch (e) {
+                    alert('Invalid response from server.');
+                }
+            },
+            error: function() {
+                alert('An error occurred while updating the subject.');
+            }
+        });
+    });
+
+    // Handle View button clicks
+    $(document).on('click', '.view-btn', function() {
+        const subjectId = $(this).data('subject-id');
+        const subjectName = $(this).data('subject-name');
+        const subjectCode = $(this).data('subject-code');
+
+        currentSubjectId = subjectId; // Store globally
+        
+        $('#viewSubjectId').text(subjectId);
+        $('#viewSubjectName').text(subjectName);
+        $('#viewSubjectCode').text(subjectCode);
+
+        // Reset select dropdown
+        $('#addInstructorSelect').val('');
+
+        // Show loading and hide others
+        $('#loadingInstructors').show();
+        $('#noInstructors').hide();
+        $('#instructorContent').hide();
+
+        // Load assigned instructors
+        loadInstructors(subjectId);
+        
+        $('#viewSubjectModal').modal('show');
+    });
+
+    // Function to load instructors
+    function loadInstructors(subjectId) {
+        $.ajax({
+            url: '../../../backend/subjects/getAssignedInstructor.php', 
+            type: 'GET',
+            data: { subject_id: subjectId },
+            dataType: 'json',
+            success: function(response) {
+                $('#loadingInstructors').hide();
+                if (response.success && response.instructors && response.instructors.length > 0) {
+                    let content = '<ul class="list-group">';
+                    response.instructors.forEach(function(instructor) {
+                        content += `<li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>${instructor.first_name} ${instructor.last_name}</strong><br>
+                                <small class="text-muted">ID: ${instructor.instructor_id}</small>
+                            </div>
+                            <button class="btn btn-sm btn-danger remove-instructor-btn" 
+                                    data-instructor-id="${instructor.instructor_id}">
+                                <i class="fas fa-times"></i> Remove
+                            </button>
+                        </li>`;
+                    });
+                    content += '</ul>';
+                    $('#instructorContent').html(content).show();
+                    $('#noInstructors').hide();
+                } else {
+                    $('#noInstructors').show();
+                    $('#instructorContent').hide();
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#loadingInstructors').hide();
+                $('#noInstructors').show();
+                console.error('Error loading instructors:', error);
+            }
+        });
+    }
+
+    // Handle Assign Instructor
+    $('#assignInViewBtn').on('click', function() {
+        const instructorId = $('#addInstructorSelect').val();
+        
+        if (!instructorId) {
+            alert('Please select an instructor.');
+            return;
+        }
+
+        if (!currentSubjectId) {
+            alert('No subject selected.');
+            return;
+        }
+
+        $.ajax({
+            url: '../../../backend/subjects/assignInstructor.php', // Separate file for POST
+            type: 'POST',
+            data: { 
+                subject_id: currentSubjectId, 
+                instructor_id: instructorId 
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message || 'Instructor assigned successfully!');
+                    // Refresh instructor list
+                    loadInstructors(currentSubjectId);
+                    // Reset dropdown
+                    $('#addInstructorSelect').val('');
+                } else {
+                    alert('Error: ' + (response.error || 'Failed to assign instructor.'));
+                }
+            },
+            error: function() {
+                alert('An error occurred while assigning the instructor.');
+            }
+        });
+    });
+
+    // Handle Remove Instructor
+    $(document).on('click', '.remove-instructor-btn', function(e) {
+        e.preventDefault();
+        
+        const instructorId = $(this).data('instructor-id');
+        
+        if (!confirm('Are you sure you want to remove this instructor from this subject?')) {
+            return;
+        }
+
+        $.ajax({
+            url: '../../../backend/subjects/remove_instructor.php',
+            type: 'POST',
+            data: { 
+                subject_id: currentSubjectId, 
+                instructor_id: instructorId 
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message || 'Instructor removed successfully!');
+                    // Refresh instructor list
+                    loadInstructors(currentSubjectId);
+                } else {
+                    alert('Error: ' + (response.error || 'Failed to remove instructor.'));
+                }
+            },
+            error: function() {
+                alert('An error occurred while removing the instructor.');
+            }
+        });
+    });
+
+    // Search functionality
+    window.performSearch = function() {
+        const query = $('#classSearch').val().toLowerCase().trim();
+        let hasResults = false;
+
+        $('.subject-card').each(function() {
+            const title = $(this).data('title');
+            if (title.includes(query)) {
+                $(this).show();
+                hasResults = true;
+            } else {
+                $(this).hide();
+            }
+        });
+
+        if (query === '') {
+            $('.no-results').hide();
+            $('.subject-card').show();
+        } else if (!hasResults) {
+            $('.no-results').show();
+        } else {
+            $('.no-results').hide();
+        }
+    };
+
+    // Clear search
+    window.clearSearch = function() {
+        $('#classSearch').val('');
+        performSearch();
+    };
+
+    // Initialize search on page load
+    performSearch();
+});
