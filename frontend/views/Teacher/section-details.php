@@ -1,3 +1,7 @@
+<?php
+include __DIR__ . '/../../../backend/db/conn.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

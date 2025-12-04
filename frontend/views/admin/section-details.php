@@ -161,7 +161,7 @@ $students = $stuStmt->fetchAll(PDO::FETCH_ASSOC);
                                 </tr>
                             </thead>
                             <tbody id="unassignedStudentsBody">
-                                <tr><td colspan="4">Loading...</td></tr>
+                                <tr><td colspan="4">Fetching</td></tr>
                             </tbody>
                         </table>
                     </div>
