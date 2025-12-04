@@ -1,421 +1,261 @@
-// Search functionality for classes
-function performSearch() {
-    const searchTerm = document.getElementById('classSearch').value.toLowerCase().trim();
-    const classCards = document.querySelectorAll('.class-card');
-    const noResultsDiv = document.querySelector('.no-results');
-    
-    let hasResults = false;
-    
-    classCards.forEach(card => {
-        const title = card.getAttribute('data-title').toLowerCase();
-        
-        if (searchTerm === '' || title.includes(searchTerm)) {
-            card.style.display = 'block';
-            hasResults = true;
-        } else {
-            card.style.display = 'none';
-        }
-    });
-    
-    // Show/hide no results message
-    if (noResultsDiv) {
-        if (!hasResults && searchTerm !== '') {
-            noResultsDiv.style.display = 'block';
-        } else {
-            noResultsDiv.style.display = 'none';
-        }
+// Function to fetch instructor for a subject (now only one)
+function fetchInstructor(subjectId) {
+    if (!subjectId) {
+        console.error('No subject ID provided');
+        return;
     }
     
-    // Show/hide the grid container
-    const classGrid = document.getElementById('classGrid');
-    if (classGrid) {
-        if (!hasResults && searchTerm !== '') {
-            classGrid.style.display = 'none';
-        } else {
-            classGrid.style.display = 'flex';
-        }
-    }
-}
-
-function clearSearch() {
-    document.getElementById('classSearch').value = '';
-    performSearch();
-}
-
-// Add event listener for Enter key in search
-if (document.getElementById('classSearch')) {
-    document.getElementById('classSearch').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            performSearch();
-        }
-    });
-}
-
-
-
-// Handle assign modal show event to populate form
-const assignInstructorModal = document.getElementById('assignInstructorModal');
-if (assignInstructorModal) {
-    assignInstructorModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const subjectId = button.getAttribute('data-subject-id');
-        document.getElementById('assignSubjectId').value = subjectId;
-    });
-
-    // Assign Instructor Button Click Handler
-    document.getElementById('assignInstructorBtn').addEventListener('click', function() {
-        const subjectId = document.getElementById('assignSubjectId').value;
-        const instructorId = document.getElementById('instructorSelect').value;
-        
-        if (!instructorId) {
-            alert('Please select an instructor first.');
-            return;
-        }
-
-        // Show loading state
-        const btn = this;
-        const originalText = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Assigning...';
-
-        // Send AJAX request to assign instructor
-        fetch('../../../backend/controllers/admin-controller/Instructors/putInstructor.php', // wala pato sa database
-             {  
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                subject_id: parseInt(subjectId),
-                instructor_id: parseInt(instructorId)
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-
-            if (data.message) {
-                // Success
-                alert('Instructor assigned successfully!');
-                
-                // Close modal
-                const modal = bootstrap.Modal.getInstance(assignInstructorModal);
-                modal.hide();
-                
-                // Reload page after 1 second
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-            } else {
-                alert('Error: ' + (data.message || 'Failed to assign instructor'));
-            }
-        })
-        .catch(error => {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-            console.error('Error:', error);
-            alert('An error occurred while assigning the instructor. Please try again.');
-        });
-    });
-
-    // Reset assign form when modal is closed
-    assignInstructorModal.addEventListener('hidden.bs.modal', function() {
-        document.getElementById('assignInstructorForm').reset();
-    });
-}
-
-// Handle view modal show event
-const viewSubjectModal = document.getElementById('viewSubjectModal');
-if (viewSubjectModal) {
-    let currentSubjectId = null; // Store subject ID globally for this modal
+    const loadingElement = document.getElementById('loadingInstructors');
+    const noInstructorsElement = document.getElementById('noInstructors');
+    const instructorContentElement = document.getElementById('instructorContent');
     
-    viewSubjectModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        currentSubjectId = button.getAttribute('data-subject-id');
-        const subjectName = button.getAttribute('data-subject-name');
-        
-        // Set basic subject info
-        document.getElementById('viewSubjectId').textContent = currentSubjectId;
-        document.getElementById('viewSubjectName').textContent = subjectName;
-        
-        // Reset instructor select
-        document.getElementById('addInstructorSelect').value = '';
-        
-        // Show loading state
-        document.getElementById('loadingInstructors').style.display = 'block';
-        document.getElementById('noInstructors').style.display = 'none';
-        document.getElementById('instructorsContent').style.display = 'none';
-        
-        // Fetch subject details and assigned instructors
-        fetchInstructors(currentSubjectId);
-    });
-
-    // Function to fetch and display instructors
-    function fetchInstructors(subjectId) {
-        fetch(`../../../backend/controllers/admin-controller/Instructors/getInstructors.php?subject_id=${subjectId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Hide loading
-                document.getElementById('loadingInstructors').style.display = 'none';
-                
-                if (data.success) {
-                    // Display instructors
-                    const instructorsContent = document.getElementById('instructorsContent');
-                    const noInstructorsDiv = document.getElementById('noInstructors');
-                    
-                    if (data.instructors && data.instructors.length > 0) {
-                        instructorsContent.innerHTML = '';
-                        
-                        data.instructors.forEach(instructor => {
-                            const instructorCard = `
-                                <div class="card mb-2">
-                                    <div class="card-body">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-8">
-                                                <h6 class="mb-1">${instructor.first_name} ${instructor.last_name}</h6>
-                                                <p class="mb-0 text-muted small">ID: ${instructor.instructor_id}</p>
-                                            </div>
-                                            <div class="col-md-4 text-end">
-                                                <button class="btn btn-sm btn-outline-danger" onclick="unassignInstructor(${subjectId}, ${instructor.instructor_id})">
-                                                    <i class="fas fa-user-times"></i> Unassign
-                                                </button>
-                                            </div>
-                                        </div>
+    if (loadingElement) loadingElement.style.display = 'block';
+    if (noInstructorsElement) noInstructorsElement.style.display = 'none';
+    if (instructorContentElement) instructorContentElement.style.display = 'none';
+    
+    $.ajax({
+        url: '../../../backend/controllers/admin-controller/Instructors/getInstructor.php',
+        method: 'GET',
+        data: { subject_id: subjectId },
+        dataType: 'json',
+        success: function(data) {
+            if (loadingElement) loadingElement.style.display = 'none';
+            
+            if (data.success && data.instructor) {
+                if (instructorContentElement) {
+                    instructorContentElement.innerHTML = `
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-md-8">
+                                        <h6 class="mb-1">${data.instructor.first_name} ${data.instructor.last_name}</h6>
+                                        <p class="mb-0 text-muted small">ID: ${data.instructor.instructor_id}</p>
+                                        <p class="mb-0 text-muted small">Email: ${data.instructor.email || 'N/A'}</p>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <button class="btn btn-sm btn-outline-danger" onclick="unassignInstructor(${subjectId}, ${data.instructor.instructor_id})">
+                                            <i class="fas fa-user-times"></i> Remove
+                                        </button>
                                     </div>
                                 </div>
-                            `;
-                            instructorsContent.innerHTML += instructorCard;
-                        });
-                        
-                        instructorsContent.style.display = 'block';
-                        noInstructorsDiv.style.display = 'none';
-                    } else {
-                        instructorsContent.style.display = 'none';
-                        noInstructorsDiv.style.display = 'block';
-                    }
-                } else {
-                    console.error('Error:', data.message);
-                    document.getElementById('noInstructors').innerHTML = `
-                        <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
-                        <p class="text-warning">Error loading instructors</p>
+                            </div>
+                        </div>
                     `;
-                    document.getElementById('noInstructors').style.display = 'block';
+                    
+                    instructorContentElement.style.display = 'block';
                 }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-                document.getElementById('loadingInstructors').style.display = 'none';
-                document.getElementById('noInstructors').innerHTML = `
-                    <i class="fas fa-exclamation-triangle fa-2x text-danger mb-2"></i>
-                    <p class="text-danger">Failed to load data</p>
-                `;
-                document.getElementById('noInstructors').style.display = 'block';
-            });
-    }
-
-    // Handle Assign Instructor button in the modal body
-    document.getElementById('assignInViewBtn').addEventListener('click', function() {
-        const instructorId = document.getElementById('addInstructorSelect').value;
-        
-        if (!instructorId) {
-            alert('Please select an instructor first.');
-            return;
-        }
-
-        if (!currentSubjectId) {
-            alert('Subject ID not found.');
-            return;
-        }
-
-        assignInstructorToSubject(currentSubjectId, instructorId);
-    });
-
-    // Handle the footer Assign Instructor button
-    document.getElementById('viewModalAssignBtn').addEventListener('click', function() {
-        // Show the assign instructor modal
-        const assignModal = new bootstrap.Modal(document.getElementById('assignInstructorModal'));
-        
-        // Set the subject ID in the assign modal
-        document.getElementById('assignSubjectId').value = currentSubjectId;
-        
-        // Show the assign modal
-        assignModal.show();
-        
-        // Close the view modal
-        const viewModal = bootstrap.Modal.getInstance(viewSubjectModal);
-        viewModal.hide();
-    });
-
-    // Function to assign instructor
-    function assignInstructorToSubject(subjectId, instructorId) {
-        // Show loading state
-        const btn = document.getElementById('assignInViewBtn');
-        const originalText = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Assigning...';
-
-        // Send AJAX request to assign instructor
-        fetch('../../../backend/controllers/admin-controller/Instructors/addInstructors.php', {  
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                subject_id: parseInt(subjectId),
-                instructor_id: parseInt(instructorId)
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-
-            if (data.message || data.success) {
-                // Success
-                alert('Instructor assigned successfully!');
+                if (noInstructorsElement) noInstructorsElement.style.display = 'none';
                 
-                // Reset the select
-                document.getElementById('addInstructorSelect').value = '';
-                
-                // Refresh the instructors list
-                fetchInstructors(subjectId);
+                // Disable assign button if instructor exists
+                const assignBtn = document.getElementById('assignInViewBtn');
+                if (assignBtn) {
+                    assignBtn.disabled = true;
+                    assignBtn.innerHTML = '<i class="fas fa-user-check me-1"></i> Already Assigned';
+                    assignBtn.classList.remove('btn-primary');
+                    assignBtn.classList.add('btn-secondary');
+                }
             } else {
-                alert('Error: ' + (data.message || 'Failed to assign instructor'));
+                if (noInstructorsElement) {
+                    noInstructorsElement.innerHTML = `
+                        <i class="fas fa-user-plus fa-2x text-muted mb-2"></i>
+                        <p class="text-muted">No instructor assigned yet</p>
+                    `;
+                    noInstructorsElement.style.display = 'block';
+                }
+                if (instructorContentElement) instructorContentElement.style.display = 'none';
+                
+                // Enable assign button if no instructor
+                const assignBtn = document.getElementById('assignInViewBtn');
+                if (assignBtn) {
+                    assignBtn.disabled = false;
+                    assignBtn.innerHTML = '<i class="fas fa-user-plus me-1"></i> Assign';
+                    assignBtn.classList.remove('btn-secondary');
+                    assignBtn.classList.add('btn-primary');
+                }
             }
-        })
-        .catch(error => {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-            console.error('Error:', error);
-            alert('An error occurred while assigning the instructor. Please try again.');
-        });
-    }
-
-    // Reset view modal when closed
-    viewSubjectModal.addEventListener('hidden.bs.modal', function() {
-        document.getElementById('viewSubjectId').textContent = '--';
-        document.getElementById('viewSubjectName').textContent = '--';
-        currentSubjectId = null;
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching instructor:', error, xhr.responseText);
+            if (loadingElement) loadingElement.style.display = 'none';
+            if (noInstructorsElement) {
+                noInstructorsElement.innerHTML = `
+                    <i class="fas fa-exclamation-triangle fa-2x text-danger mb-2"></i>
+                    <p class="text-danger">Failed to load instructor</p>
+                `;
+                noInstructorsElement.style.display = 'block';
+            }
+        }
     });
 }
-//  OPTIONAL TO DELETED INSTRUCTORS / functions
-// function unassignInstructor(subjectId, instructorId) {
-//     if (!confirm('Are you sure you want to unassign this instructor?')) {
-//         return;
-//     }
 
-//     // Show confirmation dialog
-//     if (!confirm('This will remove the instructor from this subject. Continue?')) {
-//         return;
-//     }
+// Assign instructor from view modal
+document.getElementById('assignInViewBtn')?.addEventListener('click', function() {
+    const instructorId = document.getElementById('addInstructorSelect')?.value;
+    const subjectIdElement = document.getElementById('viewSubjectId');
+    const subjectId = subjectIdElement ? subjectIdElement.textContent : '';
+    
+    if (!subjectId) {
+        alert('Cannot identify subject. Please refresh and try again.');
+        return;
+    }
+    
+    if (!instructorId) {
+        alert('Please select an instructor first.');
+        document.getElementById('addInstructorSelect')?.focus();
+        return;
+    }
 
-//     fetch('../../../backend/controllers/admin-controller/Instructors/deleteInstructors.php', {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             subject_id: subjectId,
-//             instructor_id: instructorId
-//         })
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         if (data.success) {
-//             alert('Instructor unassigned successfully!');
-            
-//             // Close the modal
-//             const modal = bootstrap.Modal.getInstance(viewSubjectModal);
-//             modal.hide();
-            
-//             // Reload the page after 1 second
-//             setTimeout(() => {
-//                 location.reload();
-//             }, 1000);
-//         } else {
-//             alert('Error: ' + (data.message || 'Failed to unassign instructor'));
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         alert('An error occurred. Please try again.');
-//     });
-// }
+    const btn = this;
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Assigning...';
 
-// Handle edit modal show event to populate form
-const editSubjectModal = document.getElementById('editSubjectModal');
-if (editSubjectModal) {
-    editSubjectModal.addEventListener('show.bs.modal', function (event) {
-        const button = event.relatedTarget;
-        const subjectId = button.getAttribute('data-subject-id');
-        const subjectName = button.getAttribute('data-subject-name');
+    const formData = new FormData();
+    formData.append('subject_id', subjectId);
+    formData.append('instructor_id', instructorId);
 
-        document.getElementById('editSubjectId').value = subjectId;
-        document.getElementById('editSubjectName').value = subjectName;
-    });
-
-    // Update Subject Button Click Handler
-    document.getElementById('updateSubjectBtn').addEventListener('click', function() {
-        const subjectId = document.getElementById('editSubjectId').value;
-        const subjectName = document.getElementById('editSubjectName').value.trim();
-        
-        if (!subjectName) {
-            alert('Please enter a subject name.');
-            return;
-        }
-
-        // Show loading state
-        const btn = this;
-        const originalText = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Updating...';
-
-        // Send AJAX request to update subject
-        fetch('../../../backend/controllers/admin-controller/subjects/updateSubject.php', {  
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                subject_id: parseInt(subjectId),
-                subject_name: subjectName
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
+    $.ajax({
+        url: '../../../backend/controllers/admin-controller/Instructors/addInstructor.php', // Changed to singular
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
             btn.disabled = false;
             btn.innerHTML = originalText;
 
-            if (data.success) {
-                // Success
-                alert('Subject updated successfully!');
-                
-                // Close modal
-                const modal = bootstrap.Modal.getInstance(editSubjectModal);
-                modal.hide();
-                
-                // Reload page to reflect changes
-                location.reload();
-            } else {
-                alert('Error: ' + (data.message || 'Failed to update subject'));
+            try {
+                const response = typeof data === 'string' ? JSON.parse(data) : data;
+                if (response.success || response.message === "Instructor assigned successfully") {
+                    alert('Instructor assigned successfully!');
+                    
+                    // Clear and disable the select
+                    const selectElement = document.getElementById('addInstructorSelect');
+                    if (selectElement) {
+                        selectElement.value = '';
+                        selectElement.disabled = true;
+                    }
+                    
+                    // Refresh instructor display
+                    fetchInstructor(subjectId);
+                } else {
+                    alert('Error: ' + (response.message || 'Failed to assign instructor'));
+                    if (response.message.includes('already has an assigned instructor')) {
+                        fetchInstructor(subjectId); // Refresh to show current instructor
+                    }
+                }
+            } catch (e) {
+                console.error('JSON Parse Error:', e, 'Raw data:', data);
+                alert('An error occurred while processing the response.');
             }
-        })
-        .catch(error => {
+        },
+        error: function(xhr, status, error) {
             btn.disabled = false;
             btn.innerHTML = originalText;
-            console.error('Error:', error);
-            alert('An error occurred while updating the subject. Please try again.');
+            console.error('AJAX Error:', status, error, xhr.responseText);
+            alert('An error occurred. Please try again.');
+        }
+    });
+});
+
+// Unassign instructor
+function unassignInstructor(subjectId, instructorId) {
+    if (!subjectId || !instructorId) {
+        alert('Invalid parameters');
+        return;
+    }
+
+    if (!confirm('Are you sure you want to remove this instructor from the subject?')) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('subject_id', subjectId);
+    formData.append('instructor_id', instructorId);
+
+    $.ajax({
+        url: '../../../backend/controllers/admin-controller/Instructors/deleteInstructor.php', // Changed to singular
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            try {
+                const response = typeof data === 'string' ? JSON.parse(data) : data;
+                if (response.success || response.message === "Instructor removed successfully") {
+                    alert('Instructor removed successfully!');
+                    
+                    // Enable the select dropdown again
+                    const selectElement = document.getElementById('addInstructorSelect');
+                    if (selectElement) {
+                        selectElement.disabled = false;
+                    }
+                    
+                    // Refresh instructor display
+                    fetchInstructor(subjectId);
+                } else {
+                    alert('Error: ' + (response.message || 'Failed to remove instructor'));
+                }
+            } catch (e) {
+                console.error('JSON Parse Error:', e, 'Raw data:', data);
+                alert('An error occurred while processing the response.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error, xhr.responseText);
+            alert('An error occurred. Please try again.');
+        }
+    });
+}
+
+// Update the initializePage function to use fetchInstructor instead of fetchInstructors
+function initializePage() {
+    // Handle View button click
+    document.querySelectorAll('.view-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const subjectId = this.getAttribute('data-subject-id');
+            const subjectName = this.getAttribute('data-subject-name');
+            const subjectCode = this.getAttribute('data-subject-code');
+            
+            // Set basic info
+            const viewSubjectIdElement = document.getElementById('viewSubjectId');
+            const viewSubjectNameElement = document.getElementById('viewSubjectName');
+            const viewSubjectCodeElement = document.getElementById('viewSubjectCode');
+            
+            if (viewSubjectIdElement) viewSubjectIdElement.textContent = subjectId;
+            if (viewSubjectNameElement) viewSubjectNameElement.textContent = subjectName;
+            if (viewSubjectCodeElement) viewSubjectCodeElement.textContent = subjectCode;
+            
+            // Reset and show loading
+            const loadingElement = document.getElementById('loadingInstructors');
+            const noInstructorsElement = document.getElementById('noInstructors');
+            const instructorContentElement = document.getElementById('instructorContent');
+            
+            if (loadingElement) loadingElement.style.display = 'block';
+            if (noInstructorsElement) noInstructorsElement.style.display = 'none';
+            if (instructorContentElement) {
+                instructorContentElement.style.display = 'none';
+                instructorContentElement.innerHTML = '';
+            }
+            
+            // Enable select dropdown
+            const selectElement = document.getElementById('addInstructorSelect');
+            if (selectElement) {
+                selectElement.disabled = false;
+                selectElement.value = '';
+            }
+            
+            // Fetch instructor (singular)
+            fetchInstructor(subjectId);
+            
+            // Show modal
+            const viewModalElement = document.getElementById('viewSubjectModal');
+            if (viewModalElement) {
+                const viewModal = new bootstrap.Modal(viewModalElement);
+                viewModal.show();
+            }
         });
     });
-
-    // Reset edit form when modal is closed
-    editSubjectModal.addEventListener('hidden.bs.modal', function() {
-        document.getElementById('editSubjectForm').reset();
-    });
+    
+    // ... rest of your initializePage function ...
 }
