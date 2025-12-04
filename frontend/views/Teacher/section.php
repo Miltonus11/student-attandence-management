@@ -6,7 +6,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Manage Classes</title>
+    <title>Manage Subject</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
                     <div class="d-flex align-items-center gap-3 flex-wrap">
                         <div>
                             <h2 class="mb-0">
-                                <i class="fas fa-chalkboard-teacher text-primary"></i> Section List
+                                <i class="fas fa-chalkboard-teacher text-primary"></i> Manage Subject
                             </h2>
                             <span class="class-count">
                                 <?php

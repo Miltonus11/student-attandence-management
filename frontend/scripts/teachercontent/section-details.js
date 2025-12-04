@@ -1,21 +1,14 @@
+
 $(document).ready(function() {
-    
-    // Function to set status/icon based on checkbox state and update counts
+    // Default: all students are absent initially
     function initializeAttendance() {
         $('#attendanceTable tbody tr').each(function() {
             const checkbox = $(this).find('.attendance-checkbox');
             const statusBadge = $(this).find('td:last-child .badge');
-            const statusIcon = statusBadge.find('i');
             
-            // This ensures the status/icon matches the unchecked state from PHP
             if (!checkbox.prop('checked')) {
-                statusBadge.removeClass('bg-success bg-primary bg-danger').addClass('bg-secondary').text('Absent');
-                statusIcon.removeClass('fa-circle-check').addClass('fa-circle-xmark');
-            } else {
-                statusBadge.removeClass('bg-secondary bg-danger').addClass('bg-primary').text('Present');
-                statusIcon.removeClass('fa-circle-xmark').addClass('fa-circle-check');
+                statusBadge.removeClass('bg-success').addClass('bg-danger').text('Absent');
             }
-            statusBadge.prepend(statusIcon);
         });
         updateAttendanceCounts();
     }
@@ -28,19 +21,13 @@ $(document).ready(function() {
         const checkbox = $(this);
         const row = checkbox.closest('tr');
         const statusBadge = row.find('td:last-child .badge');
-        const statusIcon = statusBadge.find('i');
         const isPresent = checkbox.prop('checked');
         
-        statusBadge.text(isPresent ? 'Present' : 'Absent');
-        
         if (isPresent) {
-            statusBadge.removeClass('bg-secondary bg-danger').addClass('bg-primary');
-            statusIcon.removeClass('fa-circle-xmark').addClass('fa-circle-check');
+            statusBadge.removeClass('bg-danger').addClass('bg-success').text('Present');
         } else {
-            statusBadge.removeClass('bg-primary bg-success').addClass('bg-secondary');
-            statusIcon.removeClass('fa-circle-check').addClass('fa-circle-xmark');
+            statusBadge.removeClass('bg-success').addClass('bg-danger').text('Absent');
         }
-        statusBadge.prepend(statusIcon);
         
         updateAttendanceCounts();
     });
@@ -50,9 +37,7 @@ $(document).ready(function() {
         $('.attendance-checkbox').prop('checked', true).trigger('change');
     });
     
-    const markAllAbsentButton = $('<button class="btn btn-sm btn-light border action-btn" id="markAllAbsent"><i class="fa-solid fa-xmark-double me-1"></i> Mark All as Absent</button>');
-    $('.card-header > div').prepend(markAllAbsentButton);
-
+    // Mark all as absent
     $('#markAllAbsent').click(function() {
         $('.attendance-checkbox').prop('checked', false).trigger('change');
     });
@@ -72,11 +57,12 @@ $(document).ready(function() {
             });
         });
         
-        // Simulating AJAX call success
+        // Here you would typically send this data to the server via AJAX
         console.log('Attendance data to save:', attendanceData);
         
-        // Show success message with SweetAlert
+        // Show success message with SweetAlert or Bootstrap modal
         if (typeof Swal !== 'undefined') {
+            // Using SweetAlert if available
             Swal.fire({
                 title: 'Success!',
                 text: 'Attendance saved successfully!',
@@ -85,26 +71,20 @@ $(document).ready(function() {
                 confirmButtonText: 'OK'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Clear all checkboxes and trigger change to reset status to Absent
-                    $('.attendance-checkbox').prop('checked', false).trigger('change'); 
-                    
                     // Redirect to section.php
-                    window.location.href = 'section.php'; 
+                    window.location.href = 'section.php';
                 }
             });
         } else {
             // Fallback to native alert
-            if (confirm('Attendance saved successfully! Click OK to go back to sections.')) {
-                // Clear all checkboxes and trigger change
-                $('.attendance-checkbox').prop('checked', false).trigger('change'); 
-
+            if (confirm('Attendance saved successfully!\n\nClick OK to go back to sections.')) {
                 // Redirect to section.php
                 window.location.href = 'section.php';
             }
         }
     });
     
-    // Update attendance counts in the information panel
+    // Update attendance counts
     function updateAttendanceCounts() {
         const total = $('#attendanceTable tbody tr').length;
         const present = $('#attendanceTable tbody tr .attendance-checkbox:checked').length;
@@ -115,6 +95,6 @@ $(document).ready(function() {
         $('#totalCount').text(total);
     }
     
-    // Ensure counts are initialized when the page is ready
+    // Initialize counts
     updateAttendanceCounts();
 });
