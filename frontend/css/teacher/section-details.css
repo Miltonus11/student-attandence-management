@@ -1,0 +1,38 @@
+.info-card, .analytics-card {
+    border-radius: 0.5rem;
+}
+
+.text-darkblue {
+    color: #012970 !important;
+}
+
+.text-red {
+    color: #dc3545 !important;
+}
+
+.text-blue {
+    color: #0d6efd !important;
+}
+
+.btn-darkblue {
+    background-color: #012970;
+    color: #fff;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    transition: background 0.3s;
+}
+
+.btn-darkblue:hover {
+    background-color: #011f50;
+    color: #fff;
+}
+
+.status-badge.present {
+    background-color: #012970;
+    color: #fff;
+}
+
+.status-badge.absent {
+    background-color: #dc3545;
+    color: #fff;
+}
