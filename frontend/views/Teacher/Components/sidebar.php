@@ -35,14 +35,6 @@
                         </a>
                     </div>
                    
-                    <div class="sidebar_section">
-                        <div class="sidebar_title">Settings</div>
-                        <a href="settings.php" class="sidebar_item" id="settings.php">
-                            <span class="sidebar_item_icon"><i class="fas fa-gears"></i></span>
-                            <span class="sidebar_item_text">Settings</span>
-                            <span class="arrow"><i class="fas fa-chevron-right"></i></span>
-                        </a>            
-                    </div> 
 
                              <div class="sidebar_item">
                         <span class="sidebar_item_icon"><i class="fas fa-sign-out-alt"></i></span>
