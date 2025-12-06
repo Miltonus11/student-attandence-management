@@ -86,7 +86,8 @@
         </div>
     </div>
 
-    <!-- Add Student Modal -->
+    
+<!-- Add Student Modal -->
     <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -176,20 +177,6 @@
                 </div>
 
                 <div class="modal-body">
-                    <form id="editStudentForm">
-                        <input type="hidden" id="edit_student_id">
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label for="edit_student_number" class="form-label">Student ID No.</label>
-                                <input type="text" class="form-control" id="edit_student_number" required>
-                            </div>
-                            
-                            <div class="col-md-2">
-                                <label for="edit_year_level" class="form-label">Year Level</label>
-                                <input type="text" class="form-control" id="edit_year_level" required>
-                            </div>
-                        </div> 
-
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label for="edit_first_name" class="form-label">First Name</label>
