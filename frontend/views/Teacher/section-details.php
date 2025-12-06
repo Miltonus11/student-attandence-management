@@ -1,3 +1,11 @@
+<?php
+    require_once('../../../backend/controllers/auth/teacher-auth-check.php');
+    $teacher_id = $_SESSION['instructor_id'];
+    $first_name = $_SESSION['first_name'];
+    $last_name = $_SESSION['last_name'];
+
+    echo $teacher_id;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +23,7 @@
     <link rel="stylesheet" href="../../css/sidebar.css">
     <link rel="stylesheet" href="../../css/modal.css">
     <link rel="stylesheet" href="../../css/teacher/section-details.css"> 
-    <!-- <link rel="stylesheet" href="css/style.css">  -->
+   
 </head>
 <body>
 
@@ -32,6 +40,7 @@
                 <i class="fas fa-users" style="color: #012970;"></i> Class Information
             </h2>
 
+        
             <div class="row g-4">
                 <!-- Section Information Card -->
                 <div class="col-md-6">
@@ -70,8 +79,11 @@
                 </div>
             </div>
 
+             
             <!-- Student Table -->
             <div class="card shadow-sm mt-4">
+
+             
                 <!-- Card header with Title, Search, and Buttons -->
                 <div class="card-header bg-white">
                     <div class="d-flex justify-content-between align-items-center">
@@ -109,7 +121,13 @@
                             <button class="btn btn-darkblue btn-primary" id="saveAttendance" aria-label="Save attendance data">
                                 <i class="fas fa-floppy-disk me-1"></i> Save Attendance
                             </button>
+
+                            <button class="btn btn-danger me-2" id="downloadPDF" aria-label="Download attendance as PDF">
+                               <i class="fas fa-file-pdf me-1"></i> Download PDF
+                            </button>
+
                         </div>
+
                     </div>
                 </div>
 
@@ -138,7 +156,72 @@
     </div>
 </div>
 
+<!-- Simple Summary Modal -->
+    <div class="modal fade" id="summaryModal" tabindex="-1" aria-labelledby="summaryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="summaryModalLabel">
+                        <i class="fas fa-chart-bar me-2"></i>Attendance Summary
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   
+                    <!-- Present Students -->
+                    <div class="mb-4">
+                        <h5 class="mb-3 text-success">
+                            <i class="fas fa-check-circle me-2"></i>Present Students (720)
+                        </h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm" id="presentTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Student ID</th>
+                                        <th>Name</th>
+                                        <th>Section</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="presentStudentsBody">
+                                    <!-- Present students will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Absent Students -->
+                    <div class="mb-4">
+                        <h5 class="mb-3 text-danger">
+                            <i class="fas fa-times-circle me-2"></i>Absent Students (130)
+                        </h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm" id="absentTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Student ID</th>
+                                        <th>Name</th>
+                                        <th>Section</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="absentStudentsBody">
+                                    <!-- Absent students will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 <!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../../scripts/teachercontent/section-details.js"></script>

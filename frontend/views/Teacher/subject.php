@@ -4,10 +4,7 @@
     $first_name = $_SESSION['first_name'];
     $last_name = $_SESSION['last_name'];
 
-    // debug purposes
     echo $teacher_id;
-    echo $first_name;
-    echo $last_name;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -107,6 +104,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../../scripts/teachercontent/subject.js"></script>
+    <script src="../../scripts/logout.js"></script>
 
 </body>
 </html>
