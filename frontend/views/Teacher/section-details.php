@@ -90,7 +90,6 @@
                                 <th width="90">Action</th>
                                 <th>Student ID No.</th>
                                 <th>Student Name</th>
-                                <th>Section</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
