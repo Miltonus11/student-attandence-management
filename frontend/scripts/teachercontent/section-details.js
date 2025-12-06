@@ -7,39 +7,44 @@ $(document).ready(function () {
     $("#tableLoading").hide();
     tableContainer.show();
     tableFooter.show();
+    
+    // BACKEND: load students from server
+    $.ajax({
+        url: '../../../backend/controllers/teacher-controller/getSectionDetails.php',
+        method: 'GET',
+        data: { section_id: section.id },
+        success: function(res) {
+            // Populate table
+            console.log(res);
+             $("#sectionName").text(res.section.class_name);
+            $("#subjectText").text(res.section.subject_name);
+            $("#teacherText").text(res.section.teacher_name);
 
-    // Mock students for frontend testing
-    const mockStudents = [
-        { id: "23101000", name: "William Sy", section: "3B", present: null },
-        { id: "23101001", name: "Cristalyn De Dios", section: "3B", present: null },
-        { id: "23101002", name: "Amihan Devas", section: "3B", present: null },
-        { id: "23101003", name: "Armea Lireo", section: "3B", present: null },
-        { id: "23101004", name: "Kruk Kruk", section: "3B", present: null },
-        { id: "23101005", name: "Ina Merz", section: "3B", present: null }
-    ];
+            const tbody = $("#attendanceTable tbody");
+                tbody.empty();
 
-    $("#sectionName").text(section.name);
-    $("#subjectText").text(section.subject);
-    $("#teacherText").text(section.teacherName);
+                res.students.forEach(st => {
+                    tbody.append(`
+                        <tr data-student-id="${st.student_id}">
+                            <td class="text-center">
+                                <input class="form-check-input attendance-checkbox" type="checkbox" aria-label="Mark ${st.student_name} as present">
+                            </td>
+                            <td><strong>${st.student_number}</strong></td>
+                            <td>${st.student_name}</td>
+                            <td><span class="badge status-badge"></span></td>
+                        </tr>
+                    `);
+                });
 
-    const tbody = $("#attendanceTable tbody");
-    tbody.empty();
-
-    mockStudents.forEach(st => {
-        tbody.append(`
-            <tr data-student-id="${st.id}">
-                <td class="text-center">
-                    <input class="form-check-input attendance-checkbox" type="checkbox" aria-label="Mark ${st.name} as present">
-                </td>
-                <td><strong>${st.id}</strong></td>
-                <td>${st.name}</td>
-                <td><span class="section-text">${st.section}</span></td>
-                <td><span class="badge status-badge"></span></td>
-            </tr>
-        `);
+                updateCounts();
+                    }
+        
     });
+    
 
-    updateCounts();
+   
+
+    
 
     //TO DO: 'DI SURE LOGIC
     // Checkbox logic
@@ -94,17 +99,7 @@ $(document).ready(function () {
     });
 
     //TO DO:
-    /*
-    // BACKEND: load students from server
-    $.ajax({
-        url: '../../../backend/controllers/teacher-controller/getTeacherClass.php',
-        method: 'GET',
-        data: { sectionId: section.id },
-        success: function(response) {
-            // Populate table
-        }
-    });
-    */
+    
 });
 
 // Analytics 

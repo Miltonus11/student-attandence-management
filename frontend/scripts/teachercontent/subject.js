@@ -3,7 +3,6 @@ function fetchSubjects(teacherId) {
     $.ajax({
         url: "../../../backend/controllers/teacher-controller/getTeacherSubjects.php",
         method: "GET",
-        data: { teacher_id: teacherId }, // dynamically send teacher_id
         dataType: "json",
         success: function (res) {
             if (res.success) {

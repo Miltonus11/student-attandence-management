@@ -22,7 +22,7 @@ $(document).ready(function(e){
                             window.location.href ="Student/student.php";
                             break;
                         case "instructor":
-                            window.location.href ="Teacher/teacher.php";
+                            window.location.href ="Teacher/section.php";
                             break;
                         default:
                             window.location.href ="../loginPage.php";
