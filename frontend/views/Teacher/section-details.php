@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../../css/sidebar.css">
     <link rel="stylesheet" href="../../css/modal.css">
     <link rel="stylesheet" href="../../css/teacher/section-details.css"> 
-    <link rel="stylesheet" href="css/style.css"> 
+    <!-- <link rel="stylesheet" href="css/style.css">  -->
 </head>
 <body>
 
@@ -142,7 +142,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../../scripts/teachercontent/section-details.js"></script>
-<script src="scripts/script.js"></script> 
+<!-- <script src="scripts/script.js"></script>  -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../scripts/logout.js"></script>
 
