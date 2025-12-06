@@ -1,127 +1,53 @@
-<?php
-include __DIR__ . '/../../../backend/db/conn.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Manage Subject</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>My Section</title>
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Font Awesome -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Page CSS -->
-    <link rel="stylesheet" href="../../css/admin/section.css">
-
-    <!-- Global CSS -->
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
-    <link rel="stylesheet" href="../../css/modal.css">
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../../css/teacher/section.css"> 
 </head>
-
 <body>
 
-    <!-- Header -->
-    <?php include 'components/header.php'; ?>
+<?php include 'components/header.php'; ?>
 
-    <!-- Main Container -->
-    <div class="container-fluid">
-        <div class="row">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 p-0">
+            <?php include 'components/sidebar.php'; ?>
+        </div>
 
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 p-0">
-                <?php include 'components/sidebar.php'; ?>
-            </div>
+        <div class="col-md-9 col-lg-10 p-4">
+            <h2 class="mb-4 section-header">
+                <i class="fas fa-users" style="color: #012970;"></i> Assigned Section
+            </h2>
 
-            <!-- Main Content -->
-            <div class="col-md-9 col-lg-10 p-4">
+            <!-- Section Button Container -->
+            <div id="sectionContainer" class="row g-3"></div> 
 
-                <!-- Title + Search + Add Button -->
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-
-                    <!-- Left: Title + Search Bar -->
-                    <div class="d-flex align-items-center gap-3 flex-wrap">
-                        <div>
-                            <h2 class="mb-0">
-                                <i class="fas fa-chalkboard-teacher text-primary"></i> Manage Subject
-                            </h2>
-                            <span class="class-count">
-                                <?php
-                                    $stmt = $conn->query("SELECT COUNT(*) AS count FROM tbl_class");
-                                    $count = $stmt->fetch()['count'];
-                                    echo "Total Classes: {$count}";
-                                ?>
-                            </span>
-                        </div>
-
-
-                </div>
-
-                <!-- Class List -->
-                <div id="classList">
-                    <?php
-                        $stmt = $conn->query("SELECT * FROM tbl_class ORDER BY class_id ASC");
-                        $classes = $stmt->fetchAll();
-
-                        if (!$classes) {
-                            echo '
-                                <div class="alert alert-info text-center">
-                                    <i class="fas fa-info-circle"></i> No classes yet. Add one to get started!
-                                </div>
-                            ';
-                        } else {
-                            echo '<div class="row" id="classGrid">';
-
-                            foreach ($classes as $c) {
-                                $title = htmlspecialchars($c['class_name']);
-                                $year = isset($c['year_level']) && $c['year_level'] !== null
-                                    ? "<span class='badge bg-secondary ms-2'>Year {$c['year_level']}</span>"
-                                    : "";
-
-                                echo "
-                                    <div class='col-md-12 col-lg-12 mb-3 class-card' data-title='{$title}'>
-                                        <div class='card h-100'>
-                                            <div class='card-body d-flex justify-content-between align-items-center'>
-                                                <h5 class='card-title mb-0'>
-                                                    <i class='fas fa-graduation-cap text-primary me-2'></i>
-                                                    {$title}{$year}
-                                                </h5>
-                                                <button class='btn btn-primary'
-                                                    onclick=\"window.location.href='section-details.php?class_id={$c['class_id']}'\">
-                                                    <i class='fas fa-eye'></i> View
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ";
-                            }
-
-                            echo '</div>';
-
-                            echo '
-                                <div class="no-results alert alert-warning text-center">
-                                    <i class="fas fa-search-minus"></i> No classes match your search.
-                                </div>
-                            ';
-                        }
-                    ?>
-                </div>
-
+            <!-- Fallback for No Sections -->
+            <div id="noSectionsMessage" class="text-center d-none">
+                <i class="fas fa-info-circle fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No sections assigned yet. Check back later or contact your administrator.</p>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Scripts -->
-    <script src="../../scripts/admincontent/add-classes.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../scripts/teachercontent/section.js"></script>
 
 </body>
 </html>

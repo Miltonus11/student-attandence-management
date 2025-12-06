@@ -1,0 +1,100 @@
+.section-header {
+    color: #012970;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.section-btn-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); 
+    padding: 1.5rem 2rem; 
+    border-radius: 0.75rem; 
+    border: 1px solid #dee2e6; 
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden; 
+}
+
+.section-btn-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.section-btn-card:hover::before {
+    left: 100%;
+}
+
+.section-btn-card:hover {
+    transform: translateY(-4px) scale(1.02); 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+}
+
+.section-btn-card .section-name {
+    font-size: 1.375rem; 
+    font-weight: 600;
+    color: #012970; 
+    margin: 0;
+}
+
+.section-btn-card .btn-view {
+    background-color: #012970;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    font-weight: 500;
+}
+
+.section-btn-card .btn-view:hover {
+    background-color: #001f54;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.section-btn-card .btn-view:focus {
+    outline: 2px solid #012970;
+    outline-offset: 2px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .section-btn-card {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    .section-btn-card .section-name {
+        font-size: 1.125rem;
+    }
+    .section-btn-card .btn-view {
+        align-self: flex-end;
+    }
+}
+
+#loadingSpinner {
+    margin-top: 2rem;
+}
+
+#noSectionsMessage {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

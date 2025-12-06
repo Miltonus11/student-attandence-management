@@ -1,95 +1,82 @@
-// Modal Functions for Section
-// Storing all Classes for filtering
-let allClasses = [];
+$(document).ready(function () {
+    const container = $("#sectionContainer");
 
-// Fetch sections from the backend and render the table
-const fetchClasses = () => {
+    // Mock data for testing
+    const mockTeacherSection = {
+        teacherId: 99,
+        section: {
+            id: "3B",
+            name: "BSIT 3B",
+            subject: "IT 101 - Introduction to Computing 1",
+            teacherName: "Boss Olen"
+        }
+    };
+
+    const section = mockTeacherSection.section;
+
+    //  card for section
+    const card = $(`
+        <div class="section-btn-card">
+            <div class="section-name"><i class="fa-solid fa-chalkboard"></i> ${section.name}</div>
+            <button class="btn-view"><i class="fas fa-eye"></i> View</button>
+        </div>
+    `);
+
+    container.append(card);
+
+    // Save for section-details.php
+    localStorage.setItem("teacherSection", JSON.stringify(section));
+
+    // Redirect when clicking the view button
+    card.find(".btn-view").click(() => {
+        window.location.href = "section-details.php?section=" + section.id;
+    });
+
+
+    //TODO: SESSION
+    
+    // BACKEND CONN
+     // Example POST request 
+        /*
+        $.ajax({
+            url: '../../../backend/controllers/teacher-controller/saveAttendance.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                sectionId: section.id,
+                attendance: attendanceData
+            }),
+            success: function(response) {
+                Swal.fire({
+                    icon: "success",
+                    title: response.message || "Attendance Saved!",
+                    confirmButtonColor: "#012970"
+                }).then(() => {
+                    window.location.href = "section.php";
+                });
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error saving attendance",
+                    text: xhr.responseText || "Something went wrong!",
+                    confirmButtonColor: "#012970"
+                });
+            }
+        });
+        */
+
+    /*
+    // 
     $.ajax({
-        url: "../../../backend/controllers/sections/getSections.php", 
-        method: "GET",
-        dataType: "json",
-        success: function (result) {
-            // Fixed: Simplified data access (removed redundancy)
-            allClasses = result.classes || [];
-            renderClassTable(allClasses);  
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching classes:", error);
-            alert("Failed to load classes. Please try again.");
+        url: '../../../backend/controllers/teacher-controller/getTeacherClass.php',
+        method: 'GET',
+        data: { teacherId: 99 },
+        success: function(response) {
+            container.show();
+            const section = response.section;
+            localStorage.setItem("teacherSection", JSON.stringify(section));
         }
     });
-};
-
-
-
-// Render the class table
-function renderClassTable(classes) {
-    const tbody = document.getElementById('classTableBody');
-    if (!tbody) {
-        console.error("Table body element not found");
-        return;
-    }
-    
-    tbody.innerHTML = ''; // Clear existing rows
-
-    if (!classes || classes.length === 0) {
-        const row = document.createElement('tr');
-        const cell = document.createElement('td');
-        cell.colSpan = 3;  // Adjusted to match columns (ID, Section, Details)
-        cell.textContent = 'No Classes found';
-        cell.style.textAlign = 'center';
-        row.appendChild(cell);
-        tbody.appendChild(row);
-        return;
-    }
-
-    classes.forEach(classItem => {
-        const row = document.createElement('tr');
-
-        // Class ID No. cell
-        const idCell = document.createElement('td');
-        idCell.textContent = classItem.class_id || classItem.id || 'N/A';  
-        row.appendChild(idCell);
-
-        // Class Section cell
-        const sectionCell = document.createElement('td');
-        sectionCell.textContent = classItem.class_section || 'N/A';  
-        row.appendChild(sectionCell);
-
-        // Details cell with a view link
-        const detailsCell = document.createElement('td');
-        const viewLink = document.createElement('a');
-        viewLink.textContent = 'View';
-        viewLink.className = 'view-link';
-        viewLink.href = '#';
-        viewLink.style.cursor = 'pointer';
-
-        // Event listener for opening the modal
-        viewLink.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            // Added: Check for modal elements before setting content
-            const modalId = document.getElementById("viewClassId");
-            const modalSection = document.getElementById("viewClassSection");
-            const modalElement = document.getElementById("viewClassModal");
-
-            if (!modalId || !modalSection || !modalElement) {
-                console.error('One or more view modal elements not found!');
-                return;
-            }
-
-            // Get data from the class object
-            modalId.innerText = classItem.class_id || 'N/A';
-            modalSection.innerText = classItem.class_section || 'N/A';
-
-            // Show the modal
-            const modal = new bootstrap.Modal(modalElement);
-            modal.show();
-        });
-
-        detailsCell.appendChild(viewLink);
-        row.appendChild(detailsCell);
-        tbody.appendChild(row);
-    });
-}
-
+    */
+});

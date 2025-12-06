@@ -1,100 +1,120 @@
+$(document).ready(function () {
+    const section = JSON.parse(localStorage.getItem("teacherSection"));
 
-$(document).ready(function() {
-    // Default: all students are absent initially
-    function initializeAttendance() {
-        $('#attendanceTable tbody tr').each(function() {
-            const checkbox = $(this).find('.attendance-checkbox');
-            const statusBadge = $(this).find('td:last-child .badge');
-            
-            if (!checkbox.prop('checked')) {
-                statusBadge.removeClass('bg-success').addClass('bg-danger').text('Absent');
-            }
-        });
-        updateAttendanceCounts();
-    }
-    
-    // Initialize attendance on page load
-    initializeAttendance();
-    
-    // Handle checkbox change
-    $('.attendance-checkbox').change(function() {
-        const checkbox = $(this);
-        const row = checkbox.closest('tr');
-        const statusBadge = row.find('td:last-child .badge');
-        const isPresent = checkbox.prop('checked');
-        
-        if (isPresent) {
-            statusBadge.removeClass('bg-danger').addClass('bg-success').text('Present');
+    const tableContainer = $("#tableContainer");
+    const tableFooter = $("#tableFooter");
+
+    $("#tableLoading").hide();
+    tableContainer.show();
+    tableFooter.show();
+
+    // Mock students for frontend testing
+    const mockStudents = [
+        { id: "23101000", name: "William Sy", section: "3B", present: null },
+        { id: "23101001", name: "Cristalyn De Dios", section: "3B", present: null },
+        { id: "23101002", name: "Amihan Devas", section: "3B", present: null },
+        { id: "23101003", name: "Armea Lireo", section: "3B", present: null },
+        { id: "23101004", name: "Kruk Kruk", section: "3B", present: null },
+        { id: "23101005", name: "Ina Merz", section: "3B", present: null }
+    ];
+
+    $("#sectionName").text(section.name);
+    $("#subjectText").text(section.subject);
+    $("#teacherText").text(section.teacherName);
+
+    const tbody = $("#attendanceTable tbody");
+    tbody.empty();
+
+    mockStudents.forEach(st => {
+        tbody.append(`
+            <tr data-student-id="${st.id}">
+                <td class="text-center">
+                    <input class="form-check-input attendance-checkbox" type="checkbox" aria-label="Mark ${st.name} as present">
+                </td>
+                <td><strong>${st.id}</strong></td>
+                <td>${st.name}</td>
+                <td><span class="section-text">${st.section}</span></td>
+                <td><span class="badge status-badge"></span></td>
+            </tr>
+        `);
+    });
+
+    updateCounts();
+
+    //TO DO: 'DI SURE LOGIC
+    // Checkbox logic
+    $(document).on("change", ".attendance-checkbox", function () {
+        const badge = $(this).closest("tr").find(".status-badge");
+
+        if ($(this).is(":checked")) {
+            badge
+                .removeClass("bg-secondary bg-danger")
+                .addClass("present") 
+                .text("Present");
         } else {
-            statusBadge.removeClass('bg-success').addClass('bg-danger').text('Absent');
+            badge
+                .removeClass("bg-secondary present")
+                .addClass("absent") 
+                .text("Absent");
         }
-        
-        updateAttendanceCounts();
+
+        updateCounts();
     });
-    
-    // Mark all as present
-    $('#markAllPresent').click(function() {
-        $('.attendance-checkbox').prop('checked', true).trigger('change');
+
+    // Mark all present
+    $("#markAllPresent").click(() => {
+        $(".attendance-checkbox").each(function () {
+            $(this).prop("checked", true).trigger("change");
+        });
     });
-    
-    // Mark all as absent
-    $('#markAllAbsent').click(function() {
-        $('.attendance-checkbox').prop('checked', false).trigger('change');
-    });
-    
+
     // Save attendance
-    $('#saveAttendance').click(function() {
+    $("#saveAttendance").click(() => {
         const attendanceData = [];
-        
-        $('#attendanceTable tbody tr').each(function() {
-            const studentId = $(this).data('student-id');
-            const checkbox = $(this).find('.attendance-checkbox');
-            const isPresent = checkbox.prop('checked');
-            
+
+        $("#attendanceTable tbody tr").each(function () {
+            const id = $(this).data("student-id");
+            const checked = $(this).find(".attendance-checkbox").is(":checked");
+
             attendanceData.push({
-                id: studentId,
-                present: isPresent ? 1 : 0
+                id,
+                present: checked ? 1 : 0
             });
         });
-        
-        // Here you would typically send this data to the server via AJAX
-        console.log('Attendance data to save:', attendanceData);
-        
-        // Show success message with SweetAlert or Bootstrap modal
-        if (typeof Swal !== 'undefined') {
-            // Using SweetAlert if available
-            Swal.fire({
-                title: 'Success!',
-                text: 'Attendance saved successfully!',
-                icon: 'success',
-                confirmButtonColor: '#012970',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Redirect to section.php
-                    window.location.href = 'section.php';
-                }
-            });
-        } else {
-            // Fallback to native alert
-            if (confirm('Attendance saved successfully!\n\nClick OK to go back to sections.')) {
-                // Redirect to section.php
-                window.location.href = 'section.php';
-            }
+
+        console.log("Saved Attendance:", attendanceData);
+
+        Swal.fire({
+            icon: "success",
+            title: "Attendance Saved!",
+            confirmButtonColor: "#012970"
+        }).then(() => {
+            window.location.href = "section.php";
+        });
+    });
+
+    //TO DO:
+    /*
+    // BACKEND: load students from server
+    $.ajax({
+        url: '../../../backend/controllers/teacher-controller/getTeacherClass.php',
+        method: 'GET',
+        data: { sectionId: section.id },
+        success: function(response) {
+            // Populate table
         }
     });
-    
-    // Update attendance counts
-    function updateAttendanceCounts() {
-        const total = $('#attendanceTable tbody tr').length;
-        const present = $('#attendanceTable tbody tr .attendance-checkbox:checked').length;
-        const absent = total - present;
-        
-        $('#presentCount').text(present);
-        $('#absentCount').text(absent);
-        $('#totalCount').text(total);
-    }
-    
-    // Initialize counts
-    updateAttendanceCounts();
+    */
 });
+
+// Analytics 
+function updateCounts() {
+    const total = $("#attendanceTable tbody tr").length;
+    const present = $(".attendance-checkbox:checked").length;
+    const absent = total - present;
+
+    $("#presentCount").text(present);
+    $("#absentCount").text(absent);
+    $("#totalCount2").text(total);
+    $("#totalCount").text(total);
+}
