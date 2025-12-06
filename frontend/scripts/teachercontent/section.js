@@ -62,41 +62,7 @@ $(document).ready(function () {
 });
 
 
-    //TODO: SESSION
-    
+    //TODO: 
     // BACKEND CONN
-     // Example POST request 
-        /*
-        $.ajax({
-            url: '../../../backend/controllers/teacher-controller/saveAttendance.php',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                sectionId: section.id,
-                attendance: attendanceData
-            }),
-            success: function(response) {
-                Swal.fire({
-                    icon: "success",
-                    title: response.message || "Attendance Saved!",
-                    confirmButtonColor: "#012970"
-                }).then(() => {
-                    window.location.href = "section.php";
-                });
-            },
-            error: function(xhr, status, error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error saving attendance",
-                    text: xhr.responseText || "Something went wrong!",
-                    confirmButtonColor: "#012970"
-                });
-            }
-        });
-        */
-
-    /*
-    // 
-    
-    */
+     
 });

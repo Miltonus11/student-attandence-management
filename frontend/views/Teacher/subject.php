@@ -29,10 +29,10 @@
     <link rel="stylesheet" href="../../css/modal.css"> 
 </head>
 <body>
+
     <!-- Header -->
     <?php include 'components/header.php'; ?>
 
-    <!-- Main Container with Sidebar and Content -->
     <div class="container-fluid">
         <div class="row">
             
@@ -43,16 +43,6 @@
             
             <!-- Main Content -->
             <div class="main-content">
-                
-                <!-- Header Section with Search and Add Button -->
-                <div class="content-header">
-                    
-   <div class="search-bar">
-    <span class="search-icon">🔍</span>
-    <input type="text" placeholder="Search" id="teacherSearch">
-    <button class="btn btn-primary me-1 search-btn" onclick="performSearch()">Search</button>
-</div>
-</div>
 
                 <!-- Content Area -->
                 <div class="content-area">
@@ -65,15 +55,14 @@
                                 <tr>
                                     <th>Subject Code</th>
                                     <th>Subject Name</th>
-                               <th>Number of Students</th>
-                                       <th>Details</th> 
+                                    <th>Number of Students</th>
+                                    <th>Details</th>
                                 </tr>
                             </thead>
                             <tbody id="subjectTableBody">
-                                <!-- Render Dynamically -->
-                                    <tr>
-                                  <td colspan="5" class="text-center">Loading subject...</td>
-                              </tr>
+                                <tr>
+                                    <td colspan="5" class="text-center">Loading subject...</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -116,7 +105,7 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../../scripts/teachercontent/subject.js"></script>
 
 </body>

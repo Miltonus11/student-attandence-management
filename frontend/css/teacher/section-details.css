@@ -36,3 +36,18 @@
     background-color: #dc3545;
     color: #fff;
 }
+
+.custom-date-input {
+    width: 140px; 
+    max-width: 140px;
+    height: 40px;
+    font-size: 0.875rem; 
+}
+
+#searchInput {
+    padding-right: 2.5rem; 
+}
+
+.analytics-icon {
+    color: #012970;
+}
