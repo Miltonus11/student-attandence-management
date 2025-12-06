@@ -20,10 +20,6 @@ if (!isset($_GET['subject_id'])) {
 $subjectId = intval($_GET['subject_id']);
 
 try {
-    // Assuming:
-    // - tbl_instructors: instructor_id (primary key), first_name, last_name, etc.
-    // - tbl_subject_instructors: subject_id, instructor_id (junction table for assignments)
-    // Adjust table/column names if your schema differs (e.g., if "instructor table" is the junction table).
     $sql = "
         SELECT i.instructor_id, i.first_name, i.last_name
         FROM tbl_instructors i

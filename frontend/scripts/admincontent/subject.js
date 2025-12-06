@@ -11,20 +11,18 @@ $(document).ready(function() {
         const formData = new FormData(document.getElementById('addSubjectForm'));
         
         $.ajax({
-            url: '../../../backend/subjects/addsubjects.php', 
+            url: '../../../backend/controllers/admin-controller/subjects/addSubjects.php', 
             type: 'POST',
+            dataType:"json",
             data: formData,
-            processData: false,
-            contentType: false,
             success: function(response) {
                 try {
-                    const result = JSON.parse(response);
-                    if (result.success) {
-                        alert(result.message || 'Subject added successfully!');
+                    if (response.success) {
+                        alert( 'Subject added successfully!');
                         $('#addClassesModal').modal('hide');
                         location.reload();
                     } else {
-                        alert('Error: ' + (result.error || 'Failed to add subject.'));
+                        alert('Error: ' + (reponse.error || 'Failed to add subject.'));
                     }
                 } catch (e) {
                     alert('Invalid response from server.');
@@ -107,7 +105,7 @@ $(document).ready(function() {
     // Function to load instructors
     function loadInstructors(subjectId) {
         $.ajax({
-            url: '../../../backend/subjects/getAssignedInstructor.php', 
+            url: '../../../backend/controllers/admin-controller/subjects/getAssignedInstructor.php', 
             type: 'GET',
             data: { subject_id: subjectId },
             dataType: 'json',
@@ -158,7 +156,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: '../../../backend/subjects/assignInstructor.php', // Separate file for POST
+            url: '../../../backend/controllers/admin-controller/subjects/assignInstructor.php', // Separate file for POST
             type: 'POST',
             data: { 
                 subject_id: currentSubjectId, 
