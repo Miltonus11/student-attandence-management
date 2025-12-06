@@ -158,10 +158,9 @@ function editTeacher(teacher) {
     
     document.getElementById('edit_teacher_id').value = currentTeacherId;
     document.getElementById('edit_teacher_number').value = teacher.instructor_number || teacher.teacher_number || '';
-    document.getElementById('edit_first_name').value = teacher.first_name || '';
-    document.getElementById('edit_middle_name').value = teacher.middle_name || '';
+    document.getElementById('edit_first_name').value = teacher.first_name || ''
     document.getElementById('edit_last_name').value = teacher.last_name || '';
-    document.getElementById('edit_contact').value = teacher.contact || '';
+    console.log('editTeacher called:', { teacher, currentTeacherId });
     
     new bootstrap.Modal(document.getElementById("editTeacherModal")).show();
 }
@@ -173,10 +172,10 @@ function updateTeacher() {
         id: teacherId,
         instructor_number: document.getElementById('edit_teacher_number').value.trim(),
         first_name: document.getElementById('edit_first_name').value.trim(),
-        middle_name: document.getElementById('edit_middle_name').value.trim(),
         last_name: document.getElementById('edit_last_name').value.trim(),
-        contact: document.getElementById('edit_contact').value.trim(),
     };
+
+    console.log('updateTeacher payload:', teacherData);
 
     if (!teacherId) {
         alert('Teacher ID is missing. Please try again.');
@@ -189,18 +188,20 @@ function updateTeacher() {
     }
 
     $.ajax({
-        url: "../../../backend/controllers/Instructors/updateInstructors.php",
+        url: "../../../backend/controllers/admin-controller/Instructors/updateInstructors.php",
         method: "POST",
+        dataType: "JSON",
         data: teacherData,
         success: function (response) {
-            handleResponse(response, 'Teacher updated successfully!', fetchTeachers, 
+            console.log('update response:', response);
+            handleResponse(response, 'Teacher updated successfully!', fetchTeachers,
                 () => {
                     const modal = bootstrap.Modal.getInstance(document.getElementById("editTeacherModal"));
                     if (modal) modal.hide();
                 });
         },
         error: function (xhr, status, error) {
-            console.error("Error updating teacher:", error);
+            console.error("Error updating teacher:", error, 'responseText:', xhr.responseText);
             alert("Failed to update teacher. Please try again.");
         }
     });
@@ -229,7 +230,7 @@ function confirmDelete() {
     }
 
     $.ajax({
-        url: "../../../backend/controllers/Instructors/deleteInstructors.php",
+        url: "../../../backend/controllers/admin-controller/Instructors/deleteInstructors.php",
         method: "POST",
         data: { id: currentTeacherId },
         success: function (response) {
@@ -241,7 +242,7 @@ function confirmDelete() {
             });
         },
         error: function (xhr, status, error) {
-            console.error("Error deleting teacher:", error);
+            console.error("Error deleting teacher:", error, 'responseText:', xhr.responseText);
             alert("Failed to delete teacher. Please try again.");
         }
     });
