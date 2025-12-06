@@ -3,8 +3,6 @@
     $teacher_id = $_SESSION['instructor_id'];
     $first_name = $_SESSION['first_name'];
     $last_name = $_SESSION['last_name'];
-
-    echo $teacher_id;
 ?>
 <!DOCTYPE html>
 <html lang="en">

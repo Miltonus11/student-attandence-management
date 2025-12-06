@@ -4,10 +4,6 @@
     $first_name = $_SESSION['first_name'];
     $last_name = $_SESSION['last_name'];
 
-    // debug purposes
-    echo $teacher_id;
-    echo $first_name;
-    echo $last_name;
 ?>
 <!DOCTYPE html>
 <html lang="en">
