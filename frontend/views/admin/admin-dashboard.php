@@ -92,45 +92,6 @@
                     </div>
                 </div>
 
-                <!-- Attendance Section -->
-                <div class="row mt-4">
-                    <div class="col-12 report-header">
-                        <h3 class="mb-0">Today's Attendance</h3>
-                    </div>
-                    
-                    <!-- Today's Attendance Card -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="dashboard_card card-today-present">
-                            <div class="card_content">
-                                <div class="card_label">Present</div>
-                                <div class="card_value" id="todayPresent">0</div>
-                                <div class="card_subtext">
-                                    <span id="todayDate"><?php echo date('M d, Y'); ?></span> 
-                                </div>
-                            </div>
-                            <div class="card_icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Today's Absent Card -->
-                    <div class="col-md-6 col-lg-3">
-                        <div class="dashboard_card card-today-absent">
-                            <div class="card_content">
-                                <div class="card_label">Absent</div>
-                                <div class="card_value" id="todayAbsent">0</div>
-                                <div class="card_subtext">
-                                    Total Students: <span id="totalStudents">0</span>
-                                </div>
-                            </div>
-                            <div class="card_icon">
-                                <i class="fas fa-times-circle"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Weekly Attendance Chart -->
                 <div class="row mt-4">
                     <div class="col-12">
@@ -169,25 +130,29 @@
                     <!-- Summary Statistics -->
                     <div class="summary-stats">
                         <div class="row text-center">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <h5 class="text-muted">Total Students</h5>
-                                <h3 id="summaryTotal">850</h3>
+                                <h3 id="summaryTotal">0</h3>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <h5 class="text-success">Present</h5>
-                                <h3 id="summaryPresent">720</h3>
+                                <h3 id="summaryPresent">0</h3>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <h5 class="text-danger">Absent</h5>
-                                <h3 id="summaryAbsent">130</h3>
+                                <h3 id="summaryAbsent">0</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <h5 class="text-info">Attendance %</h5>
+                                <h3 id="summaryPercentage">0%</h3>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Present Students -->
                     <div class="mb-4">
-                        <h5 class="mb-3 text-success">
-                            <i class="fas fa-check-circle me-2"></i>Present Students (720)
+                        <h5 class="mb-3 text-success" id="presentStudentsHeader">
+                            <i class="fas fa-check-circle me-2"></i>Present Students (0)
                         </h5>
                         <div class="table-responsive">
                             <table class="table table-sm" id="presentTable">
@@ -208,8 +173,8 @@
                     
                     <!-- Absent Students -->
                     <div class="mb-4">
-                        <h5 class="mb-3 text-danger">
-                            <i class="fas fa-times-circle me-2"></i>Absent Students (130)
+                        <h5 class="mb-3 text-danger" id="absentStudentsHeader">
+                            <i class="fas fa-times-circle me-2"></i>Absent Students (0)
                         </h5>
                         <div class="table-responsive">
                             <table class="table table-sm" id="absentTable">

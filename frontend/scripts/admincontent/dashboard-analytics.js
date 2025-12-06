@@ -13,25 +13,35 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeDashboard() {
-    // Mock data - Replace with actual API calls
-    const dashboardData = {
-        teachers: 45,
-        sections: 12,
-        students: 850,
-        subjects: 25,
-        todayPresent: 720,
-        todayAbsent: 130
-    };
-    
-    // Update counts sa apat na card to sa dashboard for analytics 
-    document.getElementById('teachersCount').textContent = dashboardData.teachers;
-    document.getElementById('sectionsCount').textContent = dashboardData.sections;
-    document.getElementById('studentsCount').textContent = dashboardData.students;
-    document.getElementById('subjectsCount').textContent = dashboardData.subjects;
-    
-    // Update attendance
-    document.getElementById('todayPresent').textContent = dashboardData.todayPresent;
-    document.getElementById('todayAbsent').textContent = dashboardData.todayAbsent;
+    // Fetch data from backend APIs
+    Promise.all([
+        fetch('http://localhost/dev/student-attandence-management/backend/controllers/admin-controller/Instructors/getInstructors.php')
+            .then(res => res.json())
+            .catch(err => { console.error('Error fetching instructors:', err); return { Instructors: [] }; }),
+        fetch('http://localhost/dev/student-attandence-management/backend/controllers/admin-controller/sections/getSections.php')
+            .then(res => res.json())
+            .catch(err => { console.error('Error fetching sections:', err); return { classes: [] }; }),
+        fetch('http://localhost/dev/student-attandence-management/backend/controllers/admin-controller/Students/getStudents.php')
+            .then(res => res.json())
+            .catch(err => { console.error('Error fetching students:', err); return { Students: [] }; }),
+        fetch('http://localhost/dev/student-attandence-management/backend/controllers/Subjects/getSubjects.php')
+            .then(res => res.json())
+            .catch(err => { console.error('Error fetching subjects:', err); return { subjects: [] }; })
+    ]).then(([instructorsData, sectionsData, studentsData, subjectsData]) => {
+        // Update counts with real data - using correct key names from API responses
+        const teachersCount = instructorsData.Instructors ? instructorsData.Instructors.length : 0;
+        const sectionsCount = sectionsData.classes ? sectionsData.classes.length : 0;
+        const studentsCount = studentsData.Students ? studentsData.Students.length : 0;
+        const subjectsCount = subjectsData.subjects ? subjectsData.subjects.length : 0;
+        
+        document.getElementById('teachersCount').textContent = teachersCount;
+        document.getElementById('sectionsCount').textContent = sectionsCount;
+        document.getElementById('studentsCount').textContent = studentsCount;
+        document.getElementById('subjectsCount').textContent = subjectsCount;
+    }).catch(err => {
+        console.error('Error initializing dashboard:', err);
+        // Keep default values if all requests fail
+    });
 }
 
 function loadAttendanceChart() {
@@ -115,72 +125,98 @@ function openSummaryModal() {
 function loadSummaryData() {
     const selectedDate = document.getElementById('summaryDate').value;
     
-    // Mock data - Replace with actual API calls
-    const summaryData = {
-        total: 850,
-        present: 720,
-        absent: 130,
-        presentStudents: [
-            { id: 'S001', name: 'John Smith', section: '10-A' },
-            { id: 'S002', name: 'Emily Johnson', section: '10-A' },
-            { id: 'S003', name: 'Michael Brown', section: '10-B' },
-            { id: 'S004', name: 'Sarah Davis', section: '10-B' },
-            { id: 'S005', name: 'David Wilson', section: '11-A' },
-            { id: 'S009', name: 'Matthew Thomas', section: '12-A' },
-            { id: 'S010', name: 'Jennifer Garcia', section: '12-A' }
-        ],
-        absentStudents: [
-            { id: 'S006', name: 'Jessica Martinez', section: '11-A' },
-            { id: 'S007', name: 'Christopher Anderson', section: '11-B' },
-            { id: 'S008', name: 'Amanda Taylor', section: '11-B' }
-        ]
-    };
+    if (!selectedDate) {
+        showToast('Please select a date', 'error');
+        return;
+    }
     
-    // Store the data globally for PDF generation
-    currentSummaryData = summaryData;
-    currentSummaryData.date = selectedDate;
-    
-    // Update summary stats
-    document.getElementById('summaryTotal').textContent = summaryData.total;
-    document.getElementById('summaryPresent').textContent = summaryData.present;
-    document.getElementById('summaryAbsent').textContent = summaryData.absent;
-    
-    // Update present students table headers
-    document.querySelector('#presentTable h5').innerHTML = `
-        <i class="fas fa-check-circle me-2"></i>Present Students (${summaryData.present})
-    `;
-    
-    // Update absent students table headers
-    document.querySelector('#absentTable h5').innerHTML = `
-        <i class="fas fa-times-circle me-2"></i>Absent Students (${summaryData.absent})
-    `;
-    
-    // Update present students table
-    const presentBody = document.getElementById('presentStudentsBody');
-    presentBody.innerHTML = '';
-    summaryData.presentStudents.forEach((student, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${student.id}</td>
-            <td>${student.name}</td>
-            <td>${student.section}</td>
+    // Fetch real attendance data from backend
+    fetch('http://localhost/dev/student-attandence-management/backend/controllers/admin-controller/getAttendanceSummary.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ date: selectedDate })
+    })
+    .then(res => res.json())
+    .then(summaryData => {
+        if (!summaryData.success) {
+            showToast('Error: ' + (summaryData.message || 'Unable to load attendance data'), 'error');
+            console.error('API Error:', summaryData);
+            return;
+        }
+        
+        // Store the data globally for PDF generation
+        currentSummaryData = summaryData;
+        currentSummaryData.date = selectedDate;
+        
+        // Update summary stats
+        document.getElementById('summaryTotal').textContent = summaryData.total;
+        document.getElementById('summaryPresent').textContent = summaryData.present;
+        document.getElementById('summaryAbsent').textContent = summaryData.absent;
+        document.getElementById('summaryPercentage').textContent = summaryData.attendancePercentage + '%';
+        
+        // Update present students table headers
+        document.getElementById('presentStudentsHeader').innerHTML = `
+            <i class="fas fa-check-circle me-2"></i>Present Students (${summaryData.present})
         `;
-        presentBody.appendChild(row);
-    });
-    
-    // Update absent students table
-    const absentBody = document.getElementById('absentStudentsBody');
-    absentBody.innerHTML = '';
-    summaryData.absentStudents.forEach((student, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${student.id}</td>
-            <td>${student.name}</td>
-            <td>${student.section}</td>
+        
+        // Update absent students table headers
+        document.getElementById('absentStudentsHeader').innerHTML = `
+            <i class="fas fa-times-circle me-2"></i>Absent Students (${summaryData.absent})
         `;
-        absentBody.appendChild(row);
+        
+        // Update present students table
+        const presentBody = document.getElementById('presentStudentsBody');
+        presentBody.innerHTML = '';
+        
+        if (summaryData.presentStudents && summaryData.presentStudents.length > 0) {
+            summaryData.presentStudents.forEach((student, index) => {
+                const row = document.createElement('tr');
+                const fullName = `${student.first_name} ${student.last_name}`;
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${student.id}</td>
+                    <td>${fullName}</td>
+                    <td>${student.class_name || 'N/A'}</td>
+                `;
+                presentBody.appendChild(row);
+            });
+        } else {
+            presentBody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center text-muted">No present students for this date</td>
+                </tr>
+            `;
+        }
+        
+        // Update absent students table
+        const absentBody = document.getElementById('absentStudentsBody');
+        absentBody.innerHTML = '';
+        
+        if (summaryData.absentStudents && summaryData.absentStudents.length > 0) {
+            summaryData.absentStudents.forEach((student, index) => {
+                const row = document.createElement('tr');
+                const fullName = `${student.first_name} ${student.last_name}`;
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${student.id}</td>
+                    <td>${fullName}</td>
+                    <td>${student.class_name || 'N/A'}</td>
+                `;
+                absentBody.appendChild(row);
+            });
+        } else {
+            absentBody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center text-muted">No absent students for this date</td>
+                </tr>
+            `;
+        }
+    })
+    .catch(err => {
+        console.error('Error loading summary data:', err);
+        showToast('Error loading attendance data', 'error');
     });
 }
 
@@ -366,9 +402,10 @@ function createStudentTable(doc, students, startY) {
         
         doc.setTextColor(33, 37, 41);
         doc.text((index + 1).toString(), 25, y + 5);
-        doc.text(student.id, 40, y + 5);
-        doc.text(student.name, 80, y + 5);
-        doc.text(student.section, 140, y + 5);
+        doc.text(student.id.toString(), 40, y + 5);
+        const fullName = `${student.first_name} ${student.last_name}`;
+        doc.text(fullName, 80, y + 5);
+        doc.text(student.class_name || 'N/A', 140, y + 5);
         
         y += 7;
     });
