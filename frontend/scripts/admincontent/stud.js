@@ -186,15 +186,16 @@ function updateStudent() {
     }
 
     $.ajax({
-        url: "../../../backend/controllers/Students/updateStudents.php",
+        url: "../../../backend/controllers/admin-controller/Students/updateStudents.php",
         method: "POST",
+        dataType: "JSON",
         data: studentData,
         success: function (response) {
             handleResponse(response, 'Student updated successfully!', fetchStudents, 
                 () => bootstrap.Modal.getInstance(document.getElementById("editStudentModal")).hide());
         },
         error: function (xhr, status, error) {
-            console.error("Error updating student:", error);
+            console.error("Error updating student:", error, 'responseText:', xhr.responseText);
             alert("Failed to update student. Please try again.");
         }
     });
@@ -223,7 +224,7 @@ function confirmDelete() {
     }
 
     $.ajax({
-        url: "../../../backend/controllers/Students/deleteStudents.php",
+        url: "../../../backend/controllers/admin-controller/Students/deleteStudents.php",
         method: "POST",
         data: { id: currentStudentId },
         success: function (response) {
