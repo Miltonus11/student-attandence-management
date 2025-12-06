@@ -17,7 +17,7 @@
     try{
         //create user 
         if(isset($instructor_number) && isset($first_name) && isset($last_name)){
-        $password = random_int(1000,9000);
+        $password = password_hash('password', PASSWORD_BCRYPT);
 
         $sql = "INSERT INTO tbl_users (username, password, user_role, status) 
                 VALUES (:username, :password, 'student', 1)";

@@ -18,7 +18,7 @@
     try{
         //create user 
         if($student_number && $first_name && $last_name && $year_level){
-        $password = random_int(1000,9000);
+        $password = password_hash('password', PASSWORD_BCRYPT);
 
         //check student number if it exist
         $sql = "SELECT * from tbl_students WHERE student_number = :student_number";
