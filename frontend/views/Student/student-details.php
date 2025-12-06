@@ -1,3 +1,11 @@
+<?php
+    require_once('../../../backend/controllers/auth/student-auth-check.php');
+    $student_id = $_SESSION['student_id'];
+    $first_name = $_SESSION['first_name'];
+    $last_name = $_SESSION['last_name'];
+
+    echo $student_id;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -126,7 +134,9 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../scripts/studentcontent/attendance-details.js"></script>
+<script src="../../scripts/studentcontent/student-details.js"></script>
+<script src="../../scripts/logout.js"></script>
+
 
 </body>
 </html>
