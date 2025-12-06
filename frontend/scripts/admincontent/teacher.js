@@ -11,7 +11,6 @@ const fetchTeachers = () => {
         success: (result) => {
             allTeachers = result.Instructors || result.teachers || [];
             renderTeacherTable(allTeachers);
-            // console.log(result)
         },
         error: () => alert("Failed to load instructors. Please try again.")
     });
@@ -242,7 +241,7 @@ function confirmDelete() {
             });
         },
         error: function (xhr, status, error) {
-            console.error("Error deleting teacher:", error, 'responseText:', xhr.responseText);
+        console.error("Error deleting teacher:", error, 'responseText:', xhr.responseText);
             alert("Failed to delete teacher. Please try again.");
         }
     });

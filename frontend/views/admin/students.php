@@ -69,7 +69,6 @@
         </tbody>
     </table>
 </div>
-
                     <!-- Pagination Section -->
                     <div class="pagination-wrapper">
                         <div>Showing 1 to 1 of 1 entries</div>
@@ -116,21 +115,9 @@
                                 <input type="text" class="form-control" id="first_name" required>
                             </div>
 
-                            <div class="col-md-2">
-                                <label for="middle_name" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="middle_name">
-                            </div>
-
                             <div class="col-md-4">
                                 <label for="last_name" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="last_name" required>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="contact" class="form-label">Contact</label>
-                                <input type="text" class="form-control" id="contact" required>
                             </div>
                         </div>
                     </form>
@@ -177,29 +164,29 @@
                 </div>
 
                 <div class="modal-body">
-                        <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label for="edit_first_name" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="edit_first_name" required>
-                            </div>
-
-                            <div class="col-md-2">
-                                <label for="edit_middle_name" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="edit_middle_name">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="edit_last_name" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="edit_last_name" required>
-                            </div>
+                    <div class="row mb-3">
+                        <input type="hidden" id="edit_student_id">
+                        <div class="col-md-1">
+                            <label for="edit_student_number" class="form-label">Student ID No.</label>
+                            <input type="text" class="form-control" id="edit_student_number" readonly>
+                        </div>
+                        <div style="margin-left:20px" class="col-md-2">
+                            <label for="edit_year_level" class="form-label">Year Level</label>
+                            <input type="text" class="form-control" id="edit_year_level" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label for="edit_first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="edit_first_name" required>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="edit_contact" class="form-label">Contact</label>
-                                <input type="text" class="form-control" id="edit_contact" required>
-                            </div>
+                        <div class="col-md-4">
+                            <label for="edit_last_name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="edit_last_name" required>
                         </div>
+                    </div>
+
                     </form>
                 </div>
 
