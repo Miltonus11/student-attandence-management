@@ -107,18 +107,8 @@
                                 <input type="text" class="form-control" id="first_name" required>
                             </div>
                             <div class="col-md-4">
-                                <label for="middle_name" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="middle_name">
-                            </div>
-                            <div class="col-md-4">
                                 <label for="last_name" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="last_name" required>
-                            </div>
-                        </div>
-                      
-                            <div class="col-md-6">
-                                <label for="instructor_contact" class="form-label">Contact</label>
-                                <input type="text" class="form-control" id="instructor_contact" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -178,18 +168,8 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label for="edit_middle_name" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="edit_middle_name">
-                            </div>
-
-                            <div class="col-md-4">
                                 <label for="edit_last_name" class="form-label">Last Name</label>
                                 <input type="text" class="form-control" id="edit_last_name" required>
-                            </div>
-                        </div>
-                            <div class="col-md-6">
-                                <label for="edit_instructor_contact" class="form-label">Contact</label>
-                                <input type="text" class="form-control" id="edit_instructor_contact" required>
                             </div>
                         </div>
                     </form>
