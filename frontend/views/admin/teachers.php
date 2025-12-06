@@ -98,7 +98,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="teacher_id" class="form-label">Teacher ID No.</label>
-                                <input type="text" class="form-control" id="teacher_id" required>
+                                <input maxlength="8" type="text" class="form-control" id="teacher_id" required>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -157,7 +157,7 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="edit_teacher_number" class="form-label">Teacher ID No.</label>
-                                <input type="text" class="form-control" id="edit_teacher_number" required>
+                                <input maxlength="8" type="text" class="form-control" id="edit_teacher_number" required>
                             </div>
                         </div> 
 

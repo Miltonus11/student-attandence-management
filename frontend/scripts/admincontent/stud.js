@@ -46,7 +46,7 @@ function renderStudentTable(students) {
     if (students.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No Students found</td></tr>';
         return;
-    }
+}
 
     students.forEach(student => {
         const row = document.createElement('tr');
@@ -152,16 +152,14 @@ function saveStudent() {
 
 // Edit student
 function editStudent(student) {
-    currentStudentId = student.id || student.student_id || student.student_id_number;
+    currentStudentId = student.id || student.student_id;
     
     document.getElementById('edit_student_id').value = currentStudentId;
-    document.getElementById('edit_student_number').value = student.student_number || student.stud_num || '';
+    document.getElementById('edit_student_number').value = student.student_number || student.stud_number || '';
     document.getElementById('edit_year_level').value = student.year_level || '';
     document.getElementById('edit_first_name').value = student.first_name || '';
-    document.getElementById('edit_middle_name').value = student.middle_name || '';
     document.getElementById('edit_last_name').value = student.last_name || '';
-    document.getElementById('edit_contact').value = student.contact || '';
-    
+    console.log('editStudent called:', { student, currentStudentId });
     new bootstrap.Modal(document.getElementById("editStudentModal")).show();
 }
 
@@ -174,9 +172,7 @@ function updateStudent() {
         student_number: document.getElementById('edit_student_number').value.trim(),
         year_level: document.getElementById('edit_year_level').value.trim(),
         first_name: document.getElementById('edit_first_name').value.trim(),
-        middle_name: document.getElementById('edit_middle_name').value.trim(),
         last_name: document.getElementById('edit_last_name').value.trim(),
-        contact: document.getElementById('edit_contact').value.trim()
     };
 
     if (!studentId) {
