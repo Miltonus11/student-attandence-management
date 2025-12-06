@@ -11,18 +11,20 @@ $(document).ready(function() {
         const formData = new FormData(document.getElementById('addSubjectForm'));
         
         $.ajax({
-            url: '../../../backend/controllers/admin-controller/subjects/addSubjects.php', 
+            url: '../../../backend/controllers/admin-controller/subjects/addSubjects.php',
             type: 'POST',
-            dataType:"json",
+            dataType: 'json',
             data: formData,
+            processData: false,
+            contentType: false,
             success: function(response) {
                 try {
                     if (response.success) {
-                        alert( 'Subject added successfully!');
+                        alert(response.message || 'Subject added successfully!');
                         $('#addClassesModal').modal('hide');
                         location.reload();
                     } else {
-                        alert('Error: ' + (reponse.error || 'Failed to add subject.'));
+                        alert('Error: ' + (response.message || 'Failed to add subject.'));
                     }
                 } catch (e) {
                     alert('Invalid response from server.');
@@ -51,20 +53,20 @@ $(document).ready(function() {
         const formData = new FormData(document.getElementById('editSubjectForm'));
         
         $.ajax({
-            url: '../../../backend/subjects/update_subject.php',
+            url: '../../../backend/controllers/admin-controller/subjects/updateSubject.php',
             type: 'POST',
+            dataType: 'json',
             data: formData,
             processData: false,
             contentType: false,
-            success: function(response) {
+            success: function(result) {
                 try {
-                    const result = JSON.parse(response);
                     if (result.success) {
                         alert(result.message || 'Subject updated successfully!');
                         $('#editSubjectModal').modal('hide');
                         location.reload();
                     } else {
-                        alert('Error: ' + (result.error || 'Failed to update subject.'));
+                        alert('Error: ' + (result.message || 'Failed to update subject.'));
                     }
                 } catch (e) {
                     alert('Invalid response from server.');
@@ -156,12 +158,10 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: '../../../backend/controllers/admin-controller/subjects/assignInstructor.php', // Separate file for POST
-            type: 'POST',
-            data: { 
-                subject_id: currentSubjectId, 
-                instructor_id: instructorId 
-            },
+            url: '../../../backend/controllers/admin-controller/subjects/assignInstructor.php',
+            type: 'PUT',
+            data: JSON.stringify({ subject_id: currentSubjectId, instructor_id: instructorId }),
+            contentType: 'application/json',
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
@@ -171,11 +171,13 @@ $(document).ready(function() {
                     // Reset dropdown
                     $('#addInstructorSelect').val('');
                 } else {
-                    alert('Error: ' + (response.error || 'Failed to assign instructor.'));
+                    alert('Error: ' + (response.message || 'Failed to assign instructor.'));
                 }
             },
-            error: function() {
-                alert('An error occurred while assigning the instructor.');
+            error: function(xhr) {
+                let msg = 'An error occurred while assigning the instructor.';
+                if (xhr && xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                alert(msg);
             }
         });
     });
@@ -191,12 +193,9 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: '../../../backend/subjects/remove_instructor.php',
+            url: '../../../backend/controllers/admin-controller/subjects/removeInstructor.php',
             type: 'POST',
-            data: { 
-                subject_id: currentSubjectId, 
-                instructor_id: instructorId 
-            },
+            data: { subject_id: currentSubjectId, instructor_id: instructorId },
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
@@ -204,11 +203,13 @@ $(document).ready(function() {
                     // Refresh instructor list
                     loadInstructors(currentSubjectId);
                 } else {
-                    alert('Error: ' + (response.error || 'Failed to remove instructor.'));
+                    alert('Error: ' + (response.message || 'Failed to remove instructor.'));
                 }
             },
-            error: function() {
-                alert('An error occurred while removing the instructor.');
+            error: function(xhr) {
+                let msg = 'An error occurred while removing the instructor.';
+                if (xhr && xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                alert(msg);
             }
         });
     });
