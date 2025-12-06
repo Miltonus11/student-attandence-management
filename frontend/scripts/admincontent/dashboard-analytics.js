@@ -250,8 +250,7 @@ async function downloadSimplePDF() {
         // Add date
         doc.setFontSize(12);
         doc.setTextColor(108, 117, 125);
-        doc.text(`Date: ${formattedDate}`, 105, 30, null, null, 'center');
-        
+        doc.text(`Date: ${formattedDate}`, 105, 30, null, null, 'center');     
         // Add summary box
         doc.setDrawColor(0, 123, 255);
         doc.setFillColor(248, 249, 250);
