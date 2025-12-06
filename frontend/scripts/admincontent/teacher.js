@@ -1,34 +1,64 @@
 // Global variables
 let allTeachers = [];
 let currentTeacherId = null;
+let searchTimeout = null;
 
-// Fetch teachers
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetchTeachers();
+    
+    // Setup search functionality with auto-search
+    const searchInput = document.getElementById('teacherSearch');
+    
+    if (searchInput) {
+        // Clear any existing timeout when user types
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            
+            // Debounce the search to avoid too many rapid calls
+            searchTimeout = setTimeout(() => {
+                performSearch(this.value.trim());
+            }, 300); // 300ms delay
+        });
+        
+        // Clear search when user clears input
+        searchInput.addEventListener('change', function() {
+            if (this.value === '') {
+                performSearch('');
+            }
+        });
+    }
+});
+
+// Fetch teachers from backend
 const fetchTeachers = () => {
     $.ajax({
-        url: "../../../backend/controllers/admin-controller/Instructors/getInstructors.php",
+        url: "../../../backend/controllers/admin-controller/Instructors/getInstructors.php", 
         method: "GET",
         dataType: "json",
-        success: (result) => {
-            allTeachers = result.Instructors || result.teachers || [];
+        success: function (result) {
+            // Check both capital and lowercase keys
+            allTeachers = result.Instructors || result.teachers || result || [];
             renderTeacherTable(allTeachers);
-            // console.log(result)
         },
-        error: () => alert("Failed to load instructors. Please try again.")
+        error: (xhr, status, error) => {
+            console.error("Error loading teachers:", error);
+            alert("Failed to load teachers. Please try again.");
+        }
     });
 };
 
 // Search function
-function performSearch() {
-    const searchTerm = document.getElementById('teacherSearch').value.trim().toLowerCase();
-    
-    if (searchTerm === '') {
-        renderTeacherTable(allTeachers);
-        return;
+function performSearch(searchTerm = '') {
+    if (searchTerm === '' && document.getElementById('teacherSearch')) {
+        searchTerm = document.getElementById('teacherSearch').value.trim().toLowerCase();
+    } else {
+        searchTerm = searchTerm.toLowerCase();
     }
     
     const filteredTeachers = allTeachers.filter(teacher => {
         const fullName = `${teacher.first_name || ''} ${teacher.middle_name || ''} ${teacher.last_name || ''}`.toLowerCase().trim();
-        const teacherNumber = (teacher.instructor_number || teacher.teacher_number || '').toString().toLowerCase();
+        const teacherNumber = (teacher.instructor_number || teacher.instructor_id || teacher.teacher_number || '').toString().toLowerCase();
         
         return fullName.includes(searchTerm) || teacherNumber.includes(searchTerm);
     });
@@ -44,13 +74,13 @@ function renderTeacherTable(teachers) {
     tbody.innerHTML = '';
 
     if (teachers.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No Teachers found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No Teachers found</td></tr>';
         return;
     }
 
     teachers.forEach(teacher => {
         const row = document.createElement('tr');
-        const teacherNumber = teacher.instructor_number || teacher.teacher_number || 'N/A';
+        const teacherNumber = teacher.instructor_number || teacher.instructor_id || teacher.teacher_number || 'N/A';
         const fullName = `${teacher.first_name || ''} ${teacher.middle_name || ''} ${teacher.last_name || ''}`.trim() || 'N/A';
 
         row.innerHTML = `
@@ -87,13 +117,14 @@ function renderTeacherTable(teachers) {
 
 // Show teacher details
 function showTeacherDetails(teacher) {
-    currentTeacherId = teacher.id || teacher.instructor_id;
+    currentTeacherId = teacher.instructor_id || teacher.id || teacher.userid;
     
-    document.getElementById("viewTeacherId").textContent = teacher.instructor_number || teacher.teacher_number || '';
+    document.getElementById("viewTeacherId").textContent = teacher.instructor_number || teacher.instructor_id || 'N/A';
     document.getElementById("viewTeacherName").textContent = `${teacher.first_name || ''} ${teacher.middle_name || ''} ${teacher.last_name || ''}`.trim() || 'N/A';
-    document.getElementById("viewTeacherContact").textContent = teacher.contact || 'N/A';
+    document.getElementById("viewTeacherContact").textContent = teacher.contact || teacher.instructor_contact || 'N/A';
 
-    new bootstrap.Modal(document.getElementById("viewTeacherModal")).show();
+    const modal = new bootstrap.Modal(document.getElementById("viewTeacherModal"));
+    modal.show();
 }
 
 // Open add teacher modal
@@ -101,14 +132,18 @@ function openModal() {
     const modalElement = document.getElementById('addTeacherModal');
     const form = modalElement.querySelector('form');
     if (form) form.reset();
-    new bootstrap.Modal(modalElement).show();
+    
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
 }
 
 // Close add teacher modal
 function closeModal() {
     const modalElement = document.getElementById('addTeacherModal');
-    const modal = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-    modal.hide();
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) {
+        modal.hide();
+    }
     
     const form = modalElement.querySelector('form');
     if (form) form.reset();
@@ -116,29 +151,24 @@ function closeModal() {
 
 // Save teacher
 function saveTeacher() {
-    const instructor_number = document.getElementById('teacher_id').value.trim()
-    const first_name = document.getElementById('first_name').value.trim()
-    const last_name = document.getElementById('last_name').value.trim()
-
     const teacherData = {
-        instructor_number: instructor_number,
-        first_name: first_name,
-        // middle_name: document.getElementById('middle_name').value.trim(),
-        last_name: last_name
-        // contact: document.getElementById('contact').value.trim(),
+        instructor_number: document.getElementById('teacher_id').value.trim(),
+        first_name: document.getElementById('first_name').value.trim(),
+        middle_name: document.getElementById('middle_name').value.trim(),
+        last_name: document.getElementById('last_name').value.trim(),
+        instructor_contact: document.getElementById('instructor_contact').value.trim()
     };
-
-    console.log(first_name)
+    
     // Validation
-    if (!teacherData.instructor_number || !teacherData.first_name || !teacherData.last_name) {
-        alert('Please fill in all required fields (Teacher ID, First Name, Last Name).');
+    if (!teacherData.instructor_number || !teacherData.first_name || !teacherData.last_name || !teacherData.instructor_contact) {
+        alert('Please fill in all required fields.');
         return;
     }
 
     $.ajax({
         url: "../../../backend/controllers/admin-controller/Instructors/addInstructors.php",
         method: "POST",
-        dataType: "JSON",
+        dataType: "json",
         data: teacherData,
         success: function (response) {
             handleResponse(response, 'Teacher added successfully!');
@@ -154,16 +184,17 @@ function saveTeacher() {
 
 // Edit teacher
 function editTeacher(teacher) {
-    currentTeacherId = teacher.id || teacher.instructor_id;
+    currentTeacherId = teacher.instructor_id || teacher.id || teacher.userid;
     
     document.getElementById('edit_teacher_id').value = currentTeacherId;
-    document.getElementById('edit_teacher_number').value = teacher.instructor_number || teacher.teacher_number || '';
+    document.getElementById('edit_teacher_number').value = teacher.instructor_number || teacher.instructor_id || '';
     document.getElementById('edit_first_name').value = teacher.first_name || '';
     document.getElementById('edit_middle_name').value = teacher.middle_name || '';
     document.getElementById('edit_last_name').value = teacher.last_name || '';
-    document.getElementById('edit_contact').value = teacher.contact || '';
+    document.getElementById('edit_instructor_contact').value = teacher.contact || teacher.instructor_contact || '';
     
-    new bootstrap.Modal(document.getElementById("editTeacherModal")).show();
+    const modal = new bootstrap.Modal(document.getElementById("editTeacherModal"));
+    modal.show();
 }
 
 // Update teacher 
@@ -171,11 +202,12 @@ function updateTeacher() {
     const teacherId = document.getElementById('edit_teacher_id').value;
     const teacherData = {
         id: teacherId,
+        instructor_id: teacherId,
         instructor_number: document.getElementById('edit_teacher_number').value.trim(),
         first_name: document.getElementById('edit_first_name').value.trim(),
         middle_name: document.getElementById('edit_middle_name').value.trim(),
         last_name: document.getElementById('edit_last_name').value.trim(),
-        contact: document.getElementById('edit_contact').value.trim(),
+        instructor_contact: document.getElementById('edit_instructor_contact').value.trim()
     };
 
     if (!teacherId) {
@@ -183,21 +215,27 @@ function updateTeacher() {
         return;
     }
 
-    if (!teacherData.instructor_number || !teacherData.first_name || !teacherData.last_name) {
+    if (!teacherData.instructor_number || !teacherData.first_name || !teacherData.last_name || !teacherData.instructor_contact) {
         alert('Please fill in all required fields.');
         return;
     }
 
     $.ajax({
-        url: "../../../backend/controllers/Instructors/updateInstructors.php",
+        url: "../../../backend/controllers/admin-controller/Instructors/updateInstructors.php",
         method: "POST",
         data: teacherData,
         success: function (response) {
-            handleResponse(response, 'Teacher updated successfully!', fetchTeachers, 
-                () => {
-                    const modal = bootstrap.Modal.getInstance(document.getElementById("editTeacherModal"));
-                    if (modal) modal.hide();
-                });
+            handleResponse(response, 'Teacher updated successfully!');
+            
+            // Hide the modal
+            const modalElement = document.getElementById("editTeacherModal");
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) {
+                modal.hide();
+            }
+            
+            // Refresh the teacher list
+            fetchTeachers();
         },
         error: function (xhr, status, error) {
             console.error("Error updating teacher:", error);
@@ -208,17 +246,18 @@ function updateTeacher() {
 
 // Delete teacher
 function deleteTeacher(teacher) {
-    currentTeacherId = teacher.id || teacher.instructor_id;
+    currentTeacherId = teacher.instructor_id || teacher.id || teacher.userid;
     
     if (!currentTeacherId) {
         alert('Cannot delete: Teacher ID is missing.');
         return;
     }
     
-    document.getElementById('deleteTeacherId').textContent = teacher.instructor_number || teacher.teacher_number || 'N/A';
+    document.getElementById('deleteTeacherId').textContent = teacher.instructor_number || teacher.instructor_id || 'N/A';
     document.getElementById('deleteTeacherName').textContent = `${teacher.first_name || ''} ${teacher.middle_name || ''} ${teacher.last_name || ''}`.trim() || 'N/A';
     
-    new bootstrap.Modal(document.getElementById("deleteTeacherModal")).show();
+    const modal = new bootstrap.Modal(document.getElementById("deleteTeacherModal"));
+    modal.show();
 }
 
 // Confirm delete
@@ -229,16 +268,22 @@ function confirmDelete() {
     }
 
     $.ajax({
-        url: "../../../backend/controllers/Instructors/deleteInstructors.php",
+        url: "../../../backend/controllers/admin-controller/Instructors/deleteInstructors.php",
         method: "POST",
-        data: { id: currentTeacherId },
+        data: { id: currentTeacherId, instructor_id: currentTeacherId },
         success: function (response) {
-            handleResponse(response, 'Teacher deleted successfully!', () => {
-                const modal = bootstrap.Modal.getInstance(document.getElementById("deleteTeacherModal"));
-                if (modal) modal.hide();
-                currentTeacherId = null;
-                fetchTeachers();
-            });
+            handleResponse(response, 'Teacher deleted successfully!');
+            
+            // Hide the delete modal
+            const modalElement = document.getElementById("deleteTeacherModal");
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) {
+                modal.hide();
+            }
+            
+            // Reset currentTeacherId and refresh list
+            currentTeacherId = null;
+            fetchTeachers();
         },
         error: function (xhr, status, error) {
             console.error("Error deleting teacher:", error);
@@ -248,43 +293,22 @@ function confirmDelete() {
 }
 
 // Helper function to handle API responses
-function handleResponse(response, successMessage, onSuccess, onSuccessCallback) {
+function handleResponse(response, successMessage) {
     try {
         const result = typeof response === 'string' ? JSON.parse(response) : response;
         
-        if (result.message && result.message.toLowerCase().includes("success")) {
+        if (result.success || (result.message && result.message.toLowerCase().includes("success"))) {
             alert(successMessage);
-            if (onSuccessCallback) onSuccessCallback();
-            if (onSuccess) onSuccess();
         } else {
             alert(result.error || result.message || 'Operation failed.');
         }
     } catch (e) {
         console.error("Parse error:", e);
-        alert('Unexpected response from server.');
+        // Check if response is already a success message
+        if (typeof response === 'string' && response.includes('success')) {
+            alert(successMessage);
+        } else {
+            alert('Unexpected response from server.');
+        }
     }
 }
-
-// Initialize event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    fetchTeachers();
-    
-    const searchInput = document.getElementById('teacherSearch');
-    const searchButton = document.querySelector('.search-btn');
-    
-    if (searchInput) {
-        searchInput.addEventListener('keypress', (e) => e.key === 'Enter' && performSearch());
-    }
-    
-    if (searchButton) {
-        searchButton.addEventListener('click', performSearch);
-    }
-
-    // Auto-reset modals when closed
-    document.querySelectorAll('.modal').forEach(modalEl => {
-        modalEl.addEventListener('hidden.bs.modal', () => { 
-            const form = modalEl.querySelector('form'); 
-            if (form) form.reset();
-        });
-    });
-});

@@ -16,10 +16,18 @@ if (!$class) {
     die("Class not found.");
 }
 
-// Fetch subject info
-$subStmt = $conn->prepare("SELECT * FROM tbl_subjects WHERE subject_id = ?");
-$subStmt->execute([$class['subject_id']]);
-$subject = $subStmt->fetch(PDO::FETCH_ASSOC);
+// Initialize subject_id if not exists
+if (!isset($class['subject_id'])) {
+    $class['subject_id'] = null;
+}
+
+// Fetch subject info only if subject_id exists
+$subject = null;
+if ($class['subject_id']) {
+    $subStmt = $conn->prepare("SELECT * FROM tbl_subjects WHERE subject_id = ?");
+    $subStmt->execute([$class['subject_id']]);
+    $subject = $subStmt->fetch(PDO::FETCH_ASSOC);
+}
 
 // Fetch all available subjects
 $allSubjectsStmt = $conn->prepare("SELECT * FROM tbl_subjects ORDER BY subject_name ASC");
@@ -215,74 +223,9 @@ $students = $stuStmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
-    <!-- JavaScript for Assign Subject -->
-    <script>
-        const classId = <?= $class_id ?>;
+    
 
-        // Assign Subject Button Click Handler
-        document.getElementById('assignSubjectBtn').addEventListener('click', function() {
-            const subjectId = document.getElementById('subjectSelect').value;
-            
-            if (!subjectId) {
-                alert('Please select a subject first.');
-                return;
-            }
-
-            // Show loading state
-            const btn = this;
-            const originalText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Assigning...';
-
-            // Send AJAX request to assign subject
-            fetch('../../../backend/controllers/admin-controller/sections/assignSubjectSections.php', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    class_id: classId,
-                    subject_id: parseInt(subjectId)
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-
-                if (data.message) {
-                    // Success
-                    alert('Subject assigned successfully!');
-                    
-                    // Update the displayed subject
-                    const selectedOption = document.getElementById('subjectSelect').options[document.getElementById('subjectSelect').selectedIndex];
-                    document.getElementById('currentSubject').innerHTML = selectedOption.text;
-                    
-                    // Close modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('assignSubjectModal'));
-                    modal.hide();
-                    
-                    // Reload page after 1 second
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1000);
-                } else {
-                    alert('Error: ' + (data.message || 'Failed to assign subject'));
-                }
-            })
-            .catch(error => {
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-                console.error('Error:', error);
-                alert('An error occurred while assigning the subject. Please try again.');
-            });
-        });
-
-        // Reset form when modal is closed
-        document.getElementById('assignSubjectModal').addEventListener('hidden.bs.modal', function() {
-            document.getElementById('assignSubjectForm').reset();
-        });
-    </script>
+      <script src="../../scripts/logout.js"></script>
 
 </body>
 </html>

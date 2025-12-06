@@ -153,6 +153,8 @@ include __DIR__ . '/../../../backend/db/conn.php';
     <!-- Scripts -->
     <script src="../../scripts/admincontent/add-classes.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+       <script src="../../scripts/logout.js"></script>
+        <script src="../../scripts/admincontent/section-details.js"></script>
 </body>
 </html>
+

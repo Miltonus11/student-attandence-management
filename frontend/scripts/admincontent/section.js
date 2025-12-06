@@ -1,3 +1,4 @@
+
 // Modal Functions for Section
 // Storing all Classes for filtering
 let allClasses = [];
@@ -135,3 +136,5 @@ document.addEventListener('DOMContentLoaded', function() {
         console.warn('Search button not found; search may not work.');
     }
 });
+
+

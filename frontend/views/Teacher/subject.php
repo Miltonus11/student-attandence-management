@@ -1,112 +1,193 @@
+<?php
+include __DIR__ . '/../../../backend/db/conn.php';
+
+// Fetch all available instructors for the assign modal
+$allInstructorsStmt = $conn->prepare("SELECT * FROM tbl_instructors ORDER BY last_name ASC, first_name ASC");
+$allInstructorsStmt->execute();
+$allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Subject</title>
-    
+    <meta charset="utf-8">
+    <title>Manage Subject</title>
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
+
+    <!-- Page CSS -->
+    <link rel="stylesheet" href="../../css/admin/section.css">
+
+    <!-- Global CSS -->
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
-    <link rel="stylesheet" href="../../css/modal.css"> 
+    <link rel="stylesheet" href="../../css/modal.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
+
     <!-- Header -->
     <?php include 'components/header.php'; ?>
 
-    <!-- Main Container with Sidebar and Content -->
+    <!-- Main Container -->
     <div class="container-fluid">
         <div class="row">
-            
+
             <!-- Sidebar -->
             <div class="col-md-3 col-lg-2 p-0">
                 <?php include 'components/sidebar.php'; ?>
             </div>
-            
+
             <!-- Main Content -->
-            <div class="main-content">
-                
-                <!-- Header Section with Search and Add Button -->
-                <div class="content-header">
-                    
-   <div class="search-bar">
-    <span class="search-icon">🔍</span>
-    <input type="text" placeholder="Search" id="teacherSearch">
-    <button class="btn btn-primary me-1 search-btn" onclick="performSearch()">Search</button>
-</div>
-</div>
+            <div class="col-md-9 col-lg-10 p-4">
 
-                <!-- Content Area -->
-                <div class="content-area">
-                    <h2 class="section-title">Subject List</h2>
-
-                    <!-- Table Section -->
-                    <div class="table-container">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Subject Code</th>
-                                    <th>Subject Name</th>
-                               <th>Number of Students</th>
-                                       <th>Details</th> 
-                                </tr>
-                            </thead>
-                            <tbody id="subjectTableBody">
-                                <!-- Render Dynamically -->
-                                    <tr>
-                                  <td colspan="5" class="text-center">Loading subject...</td>
-                              </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Pagination Section -->
-                    <div class="pagination-wrapper">
-                        <div>Showing 1 to 1 of 1 entries</div>
-                        <nav>
-                            <ul class="pagination pagination-sm mb-0">
-                                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                            </ul>
-                        </nav>
+                <!-- Title Section -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h2 class="mb-1">
+                            Subject List
+                        </h2>
+                        <span class="subject-count text-muted">
+                            <?php
+                                $stmt = $conn->query("SELECT COUNT(*) AS count FROM tbl_subjects");
+                                $count = $stmt->fetch()['count'];
+                                echo "Total Subjects: {$count}";
+                            ?>
+                        </span>
                     </div>
                 </div>
+
+              <!-- Search Bar Section -->
+              <div class="d-flex align-items-center mb-4">
+                <div class="input-group" style="max-width: 400px;">
+                    <input type="text" 
+                           class="form-control" 
+                           id="classSearch" 
+                           placeholder="Search subjects..."
+                           onkeyup="performSearch()">
+                    <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+              </div>
+
+
+                <!-- Subject List -->
+                <div id="subjectList">
+                    <?php
+                        $stmt = $conn->query("SELECT * FROM tbl_subjects ORDER BY subject_id ASC");
+                        $subjects = $stmt->fetchAll();
+
+                        if (!$subjects) {
+                            echo '
+                                <div class="alert alert-info text-center">
+                                    <i class="fas fa-info-circle"></i> No subjects yet. Add one to get started!
+                                </div>
+                            ';
+                        } else {
+                            echo '<div class="row" id="subjectGrid">';
+
+                            foreach ($subjects as $subject) {
+                                $title = htmlspecialchars($subject['subject_name']);
+                                $subjectCode = htmlspecialchars($subject['subject_code'] ?? '');
+                                $yearLevel = isset($subject['year_level']) && $subject['year_level'] !== null
+                                    ? "<span class='badge bg-secondary ms-2'>Year {$subject['year_level']}</span>"
+                                    : "";
+                                
+                                echo "
+                                    <div class='col-md-12 col-lg-12 mb-3 subject-card' data-title='" . strtolower($title) . "'>
+                                        <div class='card h-100'>
+                                            <div class='card-body d-flex justify-content-between align-items-center'>
+                                                <div>
+                                                    <h5 class='card-title mb-0'>
+                                                        <i class='fas fa-graduation-cap text-primary me-2'></i>
+                                                        {$title}{$yearLevel}
+                                                    </h5>
+                                                    <p class='text-muted mb-0 small'>{$subjectCode}</p>
+                                                </div>
+                                                <div>
+                                                    <button class='btn btn-sm btn-info me-2 view-btn' data-subject-id='{$subject['subject_id']}' data-subject-name='{$title}' data-subject-code='{$subjectCode}'>
+                                                        <i class='fas fa-eye'></i> View
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ";
+                            }
+
+                            echo '</div>';
+
+                            echo '
+                                <div class="no-results alert alert-warning text-center" style="display: none;">
+                                    <i class="fas fa-search-minus"></i> No subjects match your search.
+                                </div>
+                            ';
+                        }
+                    ?>
+                </div>
+
             </div>
         </div>
     </div>
 
-    <!-- VIEW TEACHER MODAL -->
-    <div class="modal fade" id="viewSubjectModal" tabindex="-1">
+    <!-- View Subject Modal -->
+    <div class="modal fade" id="viewSubjectModal" tabindex="-1" aria-labelledby="viewSubjectModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Teacher Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header" style="background:#012970; color:white;">
+                    <h5 class="modal-title" id="viewSubjectModalLabel">
+                        <i class="fas fa-eye me-2"></i>Subject Details
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Subject ID:</strong> <span id="viewSubjectId"></span></p>
-                    <p><strong>Subject Code:</strong> <span id="viewSubjectCode"></span></p>
-                    <p><strong>Subject Name:</strong> <span id="viewSubjectName"></span></p>
+                    <div class="subject-details">
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-2">Subject Information</h6>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-1"><strong>Subject ID:</strong></p>
+                                            <p class="mb-3" id="viewSubjectId">--</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-1"><strong>Subject Code:</strong></p>
+                                            <p class="mb-3" id="viewSubjectCode">--</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-1"><strong>Subject Name:</strong></p>
+                                            <p class="mb-3" id="viewSubjectName">--</p>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <p class="mb-1"><strong>Number of Students:</strong></p>
+                                            <p class="mb-3" id="viewSubjectStudent">--</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../scripts/teachercontent/subject.js"></script>
-
+    <script src="../../scripts/logout.js"></script>
 </body>
 </html>

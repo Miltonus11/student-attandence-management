@@ -1,5 +1,12 @@
 <?php
-include __DIR__ . '/../../../backend/db/conn.php';
+session_start();
+include __DIR__ . '/../../../backend/db/conn.php'; //pwede tabggalin to if my backend na
+
+// Check if user is logged in (add your authentication logic here)
+// if (!isset($_SESSION['user_id'])) {
+//     header('Location: ../login.php');
+//     exit();
+// }
 ?>
 
 <!DOCTYPE html>
@@ -14,10 +21,6 @@ include __DIR__ . '/../../../backend/db/conn.php';
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Page CSS -->
-    <link rel="stylesheet" href="../../css/admin/section.css">
-
-    <!-- Global CSS -->
     <link rel="stylesheet" href="../../css/main.css">
     <link rel="stylesheet" href="../../css/header.css">
     <link rel="stylesheet" href="../../css/sidebar.css">
@@ -44,16 +47,18 @@ include __DIR__ . '/../../../backend/db/conn.php';
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 p-4">
 
-                <!-- Title + Search + Add Button -->
+                <!-- Title  -->
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
 
-                    <!-- Left: Title + Search Bar -->
                     <div class="d-flex align-items-center gap-3 flex-wrap">
                         <div>
                             <h2 class="mb-0">
                                 <i class="fas fa-chalkboard-teacher text-primary"></i> Subject List
                             </h2>
                             <span class="class-count">
+
+                            <!-- dto makikita mo kung ilang count yung subject sa database optional lang to
+                             pero pwede lagyan sa backend  -->
                                 <?php
                                     $stmt = $conn->query("SELECT COUNT(*) AS count FROM tbl_class");
                                     $count = $stmt->fetch()['count'];
@@ -61,67 +66,37 @@ include __DIR__ . '/../../../backend/db/conn.php';
                                 ?>
                             </span>
                         </div>
-
-
+                    
                 </div>
-
-                <!-- Class List -->
+                <!-- Class List Container -->
                 <div id="classList">
-                    <?php
-                        $stmt = $conn->query("SELECT * FROM tbl_class ORDER BY class_id ASC");
-                        $classes = $stmt->fetchAll();
-
-                        if (!$classes) {
-                            echo '
-                                <div class="alert alert-info text-center">
-                                    <i class="fas fa-info-circle"></i> No classes yet. Add one to get started!
-                                </div>
-                            ';
-                        } else {
-                            echo '<div class="row" id="classGrid">';
-
-                            foreach ($classes as $c) {
-                                $title = htmlspecialchars($c['class_name']);
-                                $year = isset($c['year_level']) && $c['year_level'] !== null
-                                    ? "<span class='badge bg-secondary ms-2'>Year {$c['year_level']}</span>"
-                                    : "";
-
-                                echo "
-                                    <div class='col-md-12 col-lg-12 mb-3 class-card' data-title='{$title}'>
-                                        <div class='card h-100'>
-                                            <div class='card-body d-flex justify-content-between align-items-center'>
-                                                <h5 class='card-title mb-0'>
-                                                    <i class='fas fa-graduation-cap text-primary me-2'></i>
-                                                    {$title}{$year}
-                                                </h5>
-                                                <button class='btn btn-primary'
-                                                    onclick=\"window.location.href='student-details.php?class_id={$c['class_id']}'\">
-                                                    <i class='fas fa-eye'></i> View
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ";
-                            }
-
-                            echo '</div>';
-
-                            echo '
-                                <div class="no-results alert alert-warning text-center">
-                                    <i class="fas fa-search-minus"></i> No classes match your search.
-                                </div>
-                            ';
-                        }
-                    ?>
+                    <!-- dynamic na to -->
                 </div>
 
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="../../scripts/admincontent/add-classes.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+     <!-- Pagination Section -->
+            <div class="pagination-wrapper">
+                <div id="paginationInfo">Showing 1 to 8 of 8 entries</div>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
 
+    <!-- Scripts -->
+    <script src="../../scripts/studentcontent/student.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../scripts/logout.js"></script>
+    
+  
 </body>
 </html>

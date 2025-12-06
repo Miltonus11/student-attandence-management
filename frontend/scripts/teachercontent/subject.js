@@ -1,58 +1,85 @@
-// Fetch subjects from backend
-function fetchSubjects(teacherId) {
-    $.ajax({
-        url: "../../../backend/controllers/teacher-controller/getTeacherSubjects.php",
-        method: "GET",
-        data: { teacher_id: teacherId }, // dynamically send teacher_id
-        dataType: "json",
-        success: function (res) {
-            if (res.success) {
-                renderSubjectTable(res.subjects);
-            } else {
-                alert("Failed to load subjects: " + (res.message || "Unknown error"));
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Error fetching subjects:", error, xhr.responseText);
-        }
+$(document).ready(function() {
+    let currentSubjectId = null;
+
+    // Handle View button clicks
+    $(document).on('click', '.view-btn', function() {
+        const subjectId = $(this).data('subject-id');
+        const subjectName = $(this).data('subject-name');
+        const subjectCode = $(this).data('subject-code');
+
+        currentSubjectId = subjectId;
+        
+        $('#viewSubjectId').text(subjectId);
+        $('#viewSubjectName').text(subjectName);
+        $('#viewSubjectCode').text(subjectCode);
+        
+        // Set to loading initially
+        $('#viewSubjectStudent').text('Loading...');
+
+        // Load number of students
+        loadStudentCount(subjectId);
+
+        $('#viewSubjectModal').modal('show');
     });
-}
 
-// Render table
-function renderSubjectTable(subjects) {
-    const tbody = document.getElementById('subjectTableBody');
-    tbody.innerHTML = '';
-
-    if (!subjects || subjects.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center">No subjects found.</td></tr>`;
-        return;
+    // Load student count for a subject
+    function loadStudentCount(subjectId) {
+        $.ajax({
+            url: '../../../backend/subjects/get_student_count.php', // Updated path
+            type: 'GET',
+            data: { 
+                subject_id: subjectId
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    $('#viewSubjectStudent').text(response.student_count);
+                } else {
+                    $('#viewSubjectStudent').text('0');
+                    console.error('Error loading student count:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#viewSubjectStudent').text('N/A');
+                console.error('AJAX Error:', error);
+                console.error('Response:', xhr.responseText);
+            }
+        });
     }
 
-    subjects.forEach(subject => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${subject.subject_code}</td>
-            <td>${subject.subject_name}</td>
-            <td>${subject.num_students || 0}</td>
-            <td><a href="#" class="view-link">View</a></td>
-        `;
+    // Search function
+    window.performSearch = function() {
+        const searchTerm = $('#classSearch').val().toLowerCase().trim();
+        const subjectCards = $('.subject-card');
+        let visibleCount = 0;
 
-        tr.querySelector('.view-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('viewSubjectId').innerText = subject.subject_id;
-            document.getElementById('viewSubjectCode').innerText = subject.subject_code;
-            document.getElementById('viewSubjectName').innerText = subject.subject_name;
+        if (searchTerm === '') {
+            subjectCards.show();
+            $('.no-results').hide();
+            return;
+        }
 
-            const modal = new bootstrap.Modal(document.getElementById('viewSubjectModal'));
-            modal.show();
+        subjectCards.each(function() {
+            const title = $(this).data('title') || '';
+            const cardText = $(this).text().toLowerCase();
+            
+            if (title.includes(searchTerm) || cardText.includes(searchTerm)) {
+                $(this).show();
+                visibleCount++;
+            } else {
+                $(this).hide();
+            }
         });
 
-        tbody.appendChild(tr);
-    });
-}
+        if (visibleCount === 0) {
+            $('.no-results').show();
+        } else {
+            $('.no-results').hide();
+        }
+    };
 
-// Fetch subjects on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const teacherId = 1; 
-    fetchSubjects(teacherId);
+    window.clearSearch = function() {
+        $('#classSearch').val('');
+        performSearch();
+    };
 });

@@ -51,7 +51,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
                     <div class="d-flex align-items-center gap-3 flex-wrap">
                         <div>
                             <h2 class="mb-0">
-                                <i class="fas fa-chalkboard-teacher text-primary"></i> Manage Subject
+                                </i> Manage Subject
                             </h2>
                             <span class="class-count">
                                 <?php
@@ -121,6 +121,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
 
     <!-- Scripts -->
     <script src="../../scripts/admincontent/add-classes.js"></script>
+     <script src="../../scripts/logout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
