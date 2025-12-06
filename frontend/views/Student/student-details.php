@@ -4,7 +4,7 @@
     $first_name = $_SESSION['first_name'];
     $last_name = $_SESSION['last_name'];
 
-    echo $student_id;
+    echo "<script>var studentId = $student_id;</script>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="../../css/modal.css">
     <link rel="stylesheet" href="../../css/section-details.css">
     <link rel="stylesheet" href="../../css/attendance-details.css">
+
 </head>
 <body>
 
@@ -35,33 +36,20 @@
         </div>
 
         <div class="col-md-9 col-lg-10 p-4">
-            
-            <!-- Section Header -->
-            <div class="section-header">
-                <!-- Section name will be populated by JavaScript -->
-                <h1 class="mb-3" id="sectionName">Loading...</h1>
-                <h2 class="h4 mb-4">Section Information</h2>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <p class="mb-2"><strong>Subject</strong></p>
-                        <!-- Subject will be populated by JavaScript -->
-                        <h4 id="subjectInfo">Loading...</h4>
-                    </div>
-                    <div class="col-md-6">
-                        <p class="mb-2"><strong>Teacher</strong></p>
-                        <!-- Teacher name will be populated by JavaScript -->
-                        <h4 id="teacherName">Loading...</h4>
-                    </div>
-                </div>
-            </div>
 
             <div class="calendar-container">
                 <!-- Calendar Section -->
                 <div class="calendar-section">
-                    <div class="calendar-grid" id="calendarGrid">
-                        <!-- Calendar months will be dynamically generated here -->
+                    <div class="calendar-nav d-flex justify-content-between align-items-center">
+                        <button id="prevYear" class="btn btn-outline-secondary"><i class="fas fa-angle-double-left"></i> Prev Year</button>
+                        <div class="d-flex align-items-center">
+                            <button id="prevMonth" class="btn btn-outline-primary me-2"><i class="fas fa-chevron-left"></i> Previous</button>
+                            <h3 id="currentMonthYear" class="mx-3">Loading...</h3>
+                            <button id="nextMonth" class="btn btn-outline-primary ms-2">Next <i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <button id="nextYear" class="btn btn-outline-secondary">Next Year <i class="fas fa-angle-double-right"></i></button>
                     </div>
+                    <div id="calendarGrid" class="fade-in"></div>
                 </div>
                 
                 <!-- Stats and Reminder Section -->
@@ -91,18 +79,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Pagination Section -->
-            <div class="pagination-wrapper">
-                <div id="paginationInfo">Showing 1 to 8 of 8 entries</div>
-                <nav>
-                    <ul class="pagination pagination-sm mb-0">
-                        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
-            </div>
         </div>
     </div>
 </div>
@@ -116,9 +92,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="taskList" class="task-list">
-                    <!-- Tasks will be displayed here -->
-                </div>
+                <div id="taskList" class="task-list"></div>
                 <div class="mt-3">
                     <form id="taskForm">
                         <div class="mb-3">
@@ -136,7 +110,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../scripts/studentcontent/student-details.js"></script>
 <script src="../../scripts/logout.js"></script>
-
 
 </body>
 </html>

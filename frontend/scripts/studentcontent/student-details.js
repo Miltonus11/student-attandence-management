@@ -1,76 +1,112 @@
-// Mock data for section information 
-const mockSectionData = {
-    sectionName: "Section A - Morning",
-    subjectInfo: "Mathematics 101",
-    teacherName: "Dr. Smith"
-};
+let currentMonth = new Date().getMonth(); 
+let currentYear = new Date().getFullYear();
+const startYear = 2025;
+const startMonth = 7; 
+let subjectName = '';
 
-// Mock attendance data
-const mockAttendance = {
-    present: 67,
-    absent: 2,
-    totalDays: 100,
-    attendanceRate: 97.0
-};
+// Task storage (dynamic per subject)
+let tasks = {};
 
-// Task storage with mock initial tasks
-let tasks = JSON.parse(localStorage.getItem('calendarTasks')) || {
-    "2025-08-15": ["Math Homework", "Physics Lab Report"],
-    "2025-08-20": ["Computer Science Project"],
-    "2025-09-01": ["Study for Midterms"],
-    "2025-09-10": ["Submit Assignment"],
-    "2025-10-05": ["Group Meeting"],
-    "2025-11-15": ["Final Project Due"]
-};
-
-// jQuery version with mock data
+// jQuery ready
 $(document).ready(function() {
-    // Function to load section data (mocked)
-    function loadSectionData() {
-        // Show loading state
-        $('#sectionName').text('Loading...');
-        $('#subjectInfo').text('Loading...');
-        $('#teacherName').text('Loading...');
-        
-        // Simulate API delay
-        setTimeout(function() {
-            // Populate the data with the single section
-            $('#sectionName').text(mockSectionData.sectionName);
-            $('#subjectInfo').text(mockSectionData.subjectInfo);
-            $('#teacherName').text(mockSectionData.teacherName);
-            
-            // Update page title
-            document.title = mockSectionData.sectionName + " - Attendance";
-            
-            console.log('Section data loaded:', mockSectionData);
-        }, 300); // 300ms delay to simulate API call
-    }
-
-    // Error handling function (just in case)
-    function showError(message) {
-        $('#sectionName').text('Error');
-        $('#subjectInfo').text(message);
-        $('#teacherName').text('N/A');
-        
-        console.error(message);
-    }
-
-    // Load data when page loads
     loadSectionData();
-    
-    // Initialize calendar and attendance stats
     initializeCalendar();
 });
 
-// Initialize calendar and attendance
+// Load section data dynamically
+function loadSectionData() {
+    $('#sectionName').text('Loading...');
+    $('#subjectInfo').text('Loading...');
+    $('#teacherName').text('Loading...');
+
+    $.ajax({
+        url: '../../../backend/getStudentSubject.php',
+        method: 'GET',
+        data: { user_id: studentId },
+        success: function(response) {
+            if (response.success) {
+                const data = response.data;
+                $('#sectionName').text(data.class_name || 'N/A');
+                $('#subjectInfo').text(data.subject_name || 'N/A');
+                $('#teacherName').text((data.teacher_first_name && data.teacher_last_name) ? `${data.teacher_first_name} ${data.teacher_last_name}` : 'N/A');
+                subjectName = data.subject_name || 'General';
+                document.title = (data.class_name || 'Section') + " - Attendance";
+                
+                loadSubjectTasks();
+                updateAttendanceStats(); 
+                showToast('Data loaded successfully!', 'success');
+            } else {
+                showError(response.message || 'Failed to load data');
+            }
+        },
+        error: function() {
+        }
+    });
+}
+
+function loadSubjectTasks() {
+    const taskKey = `tasks_${subjectName}`;
+    tasks = JSON.parse(localStorage.getItem(taskKey)) || getDefaultTasksForSubject(subjectName);
+    localStorage.setItem(taskKey, JSON.stringify(tasks));
+}
+
+function getDefaultTasksForSubject(subject) {
+    const defaults = {
+        'Math': { "2025-08-15": ["Algebra Homework"], "2025-09-01": ["Geometry Assignment"] },
+        'Science': { "2025-08-20": ["Lab Report"], "2025-10-05": ["Physics Experiment"] },
+        'Foreign Language': { "2025-09-10": ["Vocabulary Quiz"], "2025-11-15": ["Conversation Practice"] },
+    };
+    return defaults[subject] || { "2025-08-15": ["General Task"] };
+}
+
+function showError(message) {
+    $('#sectionName').text('Error');
+    $('#subjectInfo').text(message);
+    $('#teacherName').text('N/A');
+    console.error(message);
+    showToast(message, 'error');
+}
+
+// Initialize calendar
 function initializeCalendar() {
-    const start = new Date(2025, 7, 1); // August 1, 2025
-    const end = new Date(2025, 11, 31); // December 31, 2025
-    const today = new Date();
-    
-    generateCalendar(start, end, today);
-    updateAttendanceStats();
-    
+    if (currentYear < startYear || (currentYear === startYear && currentMonth < startMonth)) {
+        currentMonth = startMonth;
+        currentYear = startYear;
+    }
+
+    generateCalendar();
+    updateNavButtons();
+
+    $('#prevMonth').on('click', function() {
+        if (currentMonth === startMonth && currentYear === startYear) return;
+        currentMonth--;
+        if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+        generateCalendar();
+        updateNavButtons();
+    });
+
+    $('#nextMonth').on('click', function() {
+        currentMonth++;
+        if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+        generateCalendar();
+        updateNavButtons();
+    });
+
+    // Added handlers for year navigation
+    $('#prevYear').on('click', function() {
+        if (currentYear > startYear) {
+            currentYear--;
+            generateCalendar();
+            updateNavButtons();
+        }
+    });
+
+    $('#nextYear').on('click', function() {
+        currentYear++;
+        generateCalendar();
+        updateNavButtons();
+    });
+
     // Task form submission
     $('#taskForm').on('submit', function(e) {
         e.preventDefault();
@@ -82,15 +118,9 @@ function initializeCalendar() {
             addTask(date, text);
             input.val('');
             refreshTaskList(date);
-            updateCalendarTasks();
-            
-            // Show success message
+            generateCalendar();
             showToast('Task added successfully!', 'success');
-            
-            // Close modal after adding task
-            setTimeout(() => {
-                $('#taskModal').modal('hide');
-            }, 1000);
+            setTimeout(() => $('#taskModal').modal('hide'), 1000);
         } else {
             showToast('Please enter a task description', 'warning');
             input.focus();
@@ -98,92 +128,60 @@ function initializeCalendar() {
     });
 }
 
-function generateCalendar(start, end, today) {
+function updateNavButtons() {
+    $('#prevMonth').prop('disabled', currentMonth === startMonth && currentYear === startYear);
+    $('#nextMonth').prop('disabled', false); 
+    $('#prevYear').prop('disabled', currentYear <= startYear);
+    $('#nextYear').prop('disabled', false); 
+    $('#currentMonthYear').text(`${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][currentMonth]} ${currentYear}`);
+}
+
+function generateCalendar() {
     const grid = $('#calendarGrid');
-    if (!grid.length) return;
-    
     grid.empty();
-    
-    let current = new Date(start);
-    const months = [];
-    
-    while (current <= end) {
-        const year = current.getFullYear();
-        const month = current.getMonth();
-        if (!months.some(m => m.year === year && m.month === month)) {
-            months.push({year, month});
-        }
-        current.setMonth(current.getMonth() + 1);
-    }
-    
-    months.forEach(m => grid.append(createMonthCalendar(m.year, m.month, today)));
+    grid.append(createMonthCalendar(currentYear, currentMonth, new Date()));
 }
 
 function createMonthCalendar(year, month, today) {
-    const months = ["January", "February", "March", "April", "May", "June",
-                   "July", "August", "September", "October", "November", "December"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     
     const $div = $('<div>').addClass('month-calendar');
-    
-    const $header = $('<div>').addClass('month-header').text(`${months[month]} ${year}`);
-    $div.append($header);
+    $div.append($('<div>').addClass('month-header').text(`${months[month]} ${year}`));
     
     const $table = $('<table>').addClass('calendar-table');
-    
-    // Header row 
     const $thead = $('<thead>');
     const $headerRow = $('<tr>');
-    ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(day => {
-        $headerRow.append($('<th>').text(day));
-    });
+    ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(day => $headerRow.append($('<th>').text(day)));
     $thead.append($headerRow);
     $table.append($thead);
     
-    // Body
     const $tbody = $('<tbody>');
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-    const startDay = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const startDay = firstDay.getDay();
     const daysInMonth = lastDay.getDate();
     
     let date = 1;
-    
-    // Create 6 weeks (rows)
     for (let week = 0; week < 6; week++) {
         const $row = $('<tr>');
-        
-        // 7 days per week
         for (let day = 0; day < 7; day++) {
             const $cell = $('<td>');
-            
-            // Calculate if this cell should have a date
             if ((week === 0 && day < startDay) || date > daysInMonth) {
-                // Empty cell
                 $cell.addClass('empty-cell');
             } else {
                 $cell.text(date);
                 const cellDate = new Date(year, month, date);
                 const dateStr = formatDate(cellDate);
                 
-                // Check if today
-                const isToday = year === today.getFullYear() && 
-                               month === today.getMonth() && 
-                               date === today.getDate();
-                
-                if (isToday) {
+                if (year === today.getFullYear() && month === today.getMonth() && date === today.getDate()) {
                     $cell.addClass('today');
                 }
                 
-                // Check for tasks
                 if (tasks[dateStr]?.length > 0) {
                     $cell.addClass('has-task');
-                    const $indicator = $('<div>')
-                        .addClass('task-indicator')
-                        .text(tasks[dateStr].length);
-                    $cell.append($indicator);
+                    $cell.append($('<div>').addClass('task-indicator').text(tasks[dateStr].length));
                 }
                 
-                // Add click event
                 $cell.on('click', () => openTaskModal(cellDate));
                 date++;
             }
@@ -195,22 +193,18 @@ function createMonthCalendar(year, month, today) {
     
     $table.append($tbody);
     $div.append($table);
-    return $div[0];
+    return $div;
 }
 
 function openTaskModal(date) {
     const dateStr = formatDate(date);
-    const formatted = date.toLocaleDateString('en-US', { 
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-    });
+    const formatted = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     
     $('#selectedDate').text(formatted);
     $('#selectedDate').data('date', dateStr);
     $('#taskInput').val('').focus();
     
     refreshTaskList(dateStr);
-    
-    // Show modal
     $('#taskModal').modal('show');
 }
 
@@ -221,8 +215,7 @@ function refreshTaskList(dateStr) {
     if (tasks[dateStr]?.length > 0) {
         tasks[dateStr].forEach((task, i) => {
             const $item = $('<div>').addClass('task-item d-flex justify-content-between align-items-center mb-2 p-2 border rounded');
-            
-            const $text = $('<span>').text(task);
+                        const $text = $('<span>').text(task);
             
             const $actions = $('<div>');
             
@@ -232,7 +225,7 @@ function refreshTaskList(dateStr) {
                 .on('click', () => {
                     deleteTask(dateStr, i);
                     refreshTaskList(dateStr);
-                    updateCalendarTasks();
+                    generateCalendar();
                     showToast('Task deleted', 'info');
                 });
             
@@ -263,14 +256,8 @@ function deleteTask(date, index) {
 }
 
 function saveTasks() {
-    localStorage.setItem('calendarTasks', JSON.stringify(tasks));
-}
-
-function updateCalendarTasks() {
-    const start = new Date(2025, 7, 1); 
-    const end = new Date(2025, 11, 31); 
-    const today = new Date();
-    generateCalendar(start, end, today);
+    const taskKey = `tasks_${subjectName}`;
+    localStorage.setItem(taskKey, JSON.stringify(tasks));
 }
 
 function formatDate(date) {
@@ -278,16 +265,14 @@ function formatDate(date) {
 }
 
 function updateAttendanceStats() {
-    //  mock attendance data
+    const mockAttendance = { present: 67, absent: 2, attendanceRate: 97.0 };
     const present = mockAttendance.present;
     const absent = mockAttendance.absent;
     const attendanceRate = mockAttendance.attendanceRate;
     
-    //  DOM elements
     $('#daysPresent').text(present);
     $('#daysAbsent').text(absent);
     
-    // Uattendance message
     let msg = '';
     let colorClass = '';
     
@@ -311,7 +296,6 @@ function updateAttendanceStats() {
     `);
 }
 
-// Helper function to show toast notifications
 function showToast(message, type = 'info') {
     const bgClass = {
         'success': 'bg-success',
@@ -340,7 +324,6 @@ function showToast(message, type = 'info') {
         </div>
     `;
     
-    // Create toast container if it doesn't exist
     if (!$('.toast-container').length) {
         $('body').append('<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;"></div>');
     }
@@ -351,21 +334,9 @@ function showToast(message, type = 'info') {
     toast.show();
 }
 
-// Initialize mock data on page load
+// Initialize on load
 $(window).on('load', function() {
-    console.log('Mock data initialized:', {
-        section: mockSectionData,
-        attendance: mockAttendance,
-        tasks: tasks
-    });
-    
-    // Add some sample tasks if localStorage is empty
-    if (localStorage.getItem('calendarTasks') === null) {
-        localStorage.setItem('calendarTasks', JSON.stringify(tasks));
-    }
-    
-    // Show welcome message
     setTimeout(() => {
-        showToast('Welcome to Attendance Details!', 'success');
+        showToast('Welcome back!', 'success');
     }, 1000);
 });
