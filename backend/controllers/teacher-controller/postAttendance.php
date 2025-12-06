@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // TEMPORARY - FOR TESTING ONLY (Remove after testing)
-$_SESSION['instructor_id'] = 1;
-$_SESSION['subject_id'] = 1;
-// END TEMPORARY
+// $_SESSION['instructor_id'] = 1;
+// $_SESSION['subject_id'] = 1;
+// // END TEMPORARY
 
 // Get JSON input
 $input = json_decode(file_get_contents('php://input'), true);
