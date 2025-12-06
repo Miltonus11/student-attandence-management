@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="../../css/sidebar.css">
     <link rel="stylesheet" href="../../css/modal.css">
     <link rel="stylesheet" href="../../css/teacher/section-details.css"> 
-    <!-- <link rel="stylesheet" href="css/style.css">  -->
+   
 </head>
 <body>
 
