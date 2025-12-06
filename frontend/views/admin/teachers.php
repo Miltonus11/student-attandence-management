@@ -33,18 +33,14 @@
             <!-- Main Content -->
             <div class="main-content">
                 
-                <!-- Header Section with Search and Add Button -->
-                <div class="content-header">
-                    
-   <div class="search-bar">
-    <span class="search-icon">🔍</span>
-    <input type="text" placeholder="Search" id="teacherSearch">
-    <button class="btn btn-primary me-1 search-btn" onclick="performSearch()">Search</button>
-</div>
-
+                <!-- Only show the modified search bar section -->
+<div class="content-header">
+    <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search teachers by name ..." id="teacherSearch">
+    </div>
     <button class="btn btn-primary me-2" onclick="openModal()">+ Add Teacher</button>
 </div>
-
                 <!-- Content Area -->
                 <div class="content-area">
                     <h2 class="section-title">Teacher List</h2>
@@ -152,56 +148,53 @@
         </div>
     </div>
 
-     <!-- EDIT TEACHER MODAL -->
-    <div class="modal fade" id="editTeacherModal" tabindex="-1" aria-labelledby="editTeacherModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editTeacherModalLabel">Edit Teacher</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <form id="editTeacherForm">
-                        <input type="hidden" id="edit_teacher_id">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="edit_teacher_number" class="form-label">Teacher ID No.</label>
-                                <input type="text" class="form-control" id="edit_teacher_number" required>
-                            </div>
-                        </div> 
-
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="edit_first_name" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="edit_first_name" required>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="edit_middle_name" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="edit_middle_name">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="edit_last_name" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="edit_last_name" required>
-                            </div>
+    <!-- EDIT TEACHER MODAL -->
+<div class="modal fade" id="editTeacherModal" tabindex="-1" aria-labelledby="editTeacherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editTeacherModalLabel">Edit Teacher</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editTeacherForm">
+                    <input type="hidden" id="edit_teacher_id">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit_teacher_number" class="form-label">Teacher ID No.</label>
+                            <input type="text" class="form-control" id="edit_teacher_number" required>
                         </div>
-                            <div class="col-md-6">
-                                <label for="edit_instructor_contact" class="form-label">Contact</label>
-                                <input type="text" class="form-control" id="edit_instructor_contact" required>
-                            </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="edit_first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="edit_first_name" required>
                         </div>
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="updateTeacher()">Update Teacher</button>
-                </div>
+                        <div class="col-md-4">
+                            <label for="edit_middle_name" class="form-label">Middle Name</label>
+                            <input type="text" class="form-control" id="edit_middle_name">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="edit_last_name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="edit_last_name" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="edit_instructor_contact" class="form-label">Contact</label>
+                            <input type="text" class="form-control" id="edit_instructor_contact" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="updateTeacher()">Update Teacher</button>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- DELETE CONFIRMATION MODAL -->
     <div class="modal fade delete-modal" id="deleteTeacherModal" tabindex="-1" aria-labelledby="deleteTeacherModalLabel" aria-hidden="true">

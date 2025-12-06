@@ -1,5 +1,4 @@
 
-
 <div class="col-md-3 col-lg-2 p-0">
     <div class="sidebar">
         <!-- Profile Section - Now Dynamic  need  the backend/sidebar.php-->

@@ -94,7 +94,7 @@ include __DIR__ . '/../../../backend/db/conn.php'; //pwede tabggalin to if my ba
     <!-- Scripts -->
     <script src="../../scripts/studentcontent/student.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../scripts/logout.js"></script>
+ <script src="../../scripts/logout.js"></script>
     
   
 </body>

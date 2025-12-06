@@ -1,6 +1,35 @@
 // Modal Functions for Student
 let allStudents = [];
 let currentStudentId = null;
+let searchTimeout = null; 
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    fetchStudents();
+    
+    // Setup search functionality with auto-search
+    const searchInput = document.getElementById('studentSearch');
+    
+    if (searchInput) {
+        // Clear any existing timeout when user types
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            
+            // Debounce the search to avoid too many rapid calls
+            searchTimeout = setTimeout(() => {
+                performSearch(this.value.trim());
+            }, 300); // 300ms delay
+        });
+        
+        // Clear search when user clears input
+        searchInput.addEventListener('change', function() {
+            if (this.value === '') {
+                performSearch('');
+            }
+        });
+    }
+});
+
 
 // Fetch students from backend
 const fetchStudents = () => {
@@ -18,12 +47,11 @@ const fetchStudents = () => {
 };
 
 // Search function
-function performSearch() {
-    const searchTerm = document.getElementById('studentSearch').value.trim().toLowerCase();
-    
-    if (searchTerm === '') {
-        renderStudentTable(allStudents);
-        return;
+function performSearch(searchTerm = '') {
+  if (searchTerm === '' && document.getElementById('studentSearch')) {
+        searchTerm = document.getElementById('studentSearch').value.trim().toLowerCase();
+    } else {
+        searchTerm = searchTerm.toLowerCase();
     }
     
     const filteredStudents = allStudents.filter(student => {
@@ -162,7 +190,8 @@ function editStudent(student) {
     document.getElementById('edit_last_name').value = student.last_name || '';
     document.getElementById('edit_contact').value = student.contact || '';
     
-    new bootstrap.Modal(document.getElementById("editStudentModal")).show();
+    const modal = new bootstrap.Modal(document.getElementById("editStudentModal"));
+    modal.show();
 }
 
 // Update student 
