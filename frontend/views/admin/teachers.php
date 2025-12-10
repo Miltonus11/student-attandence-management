@@ -98,7 +98,15 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="teacher_id" class="form-label">Teacher ID No.</label>
-                                <input maxlength="8" type="text" class="form-control" id="teacher_id" required>
+                                <input 
+                                    type="text" 
+                                    maxlength="8" 
+                                    pattern="\d{1,8}" 
+                                    class="form-control" 
+                                    id="teacher_id" 
+                                    name="teacher_id"
+                                    placeholder="Enter up to 8 digits"
+                                    required>
                             </div>
                         </div>
                         <div class="row mb-3">
