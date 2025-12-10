@@ -25,7 +25,7 @@ $(document).ready(function(e){
                             window.location.href ="Teacher/section.php";
                             break;
                         default:
-                            window.location.href ="../loginPage.php";
+                            window.location.href ="../views/loginPage.php";
                             break;
                     }
                 }else{

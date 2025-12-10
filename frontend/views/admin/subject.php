@@ -225,23 +225,24 @@ $allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
                         
-                   <div class="mb-3">
-    <h6 class="text-muted mb-2">Assigned Instructor</h6> 
-    <div id="instructorsContainer">
-        <div class="text-center py-4" id="loadingInstructors">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-2">Loading instructor...</p>
-        </div>
-        <div class="text-center py-4" id="noInstructors" style="display: none;">
-            <i class="fas fa-user-times fa-2x text-muted mb-2"></i>
-            <p class="text-muted">No instructor assigned yet</p>
-        </div>
-        <div id="instructorContent" style="display: none;"></div> 
-    </div>
-</div>
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-2">Assigned Instructor</h6> 
+                                <div id="instructorsContainer">
+                                <div class="text-center py-4" id="loadingInstructors">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-2">Loading instructor...</p>
+                                </div>
+                                <div class="text-center py-4" id="noInstructors" style="display: none;">
+                                    <i class="fas fa-user-times fa-2x text-muted mb-2"></i>
+                                    <p class="text-muted">No instructor assigned yet</p>
+                                </div>
+                                <div id="instructorContent" style="display: none;"></div> 
+                            </div>
+                        </div>
                         
+                        <!-- Must be javascript here , render dynamically -->
                         <div class="mb-3">
                             <h6 class="text-muted mb-2">Assign New Instructor</h6>
                             <div class="card">
@@ -250,11 +251,8 @@ $allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="col-md-8">
                                             <select class="form-select form-select-sm" id="addInstructorSelect">
                                                 <option value="">-- Select an Instructor --</option>
-                                                <?php foreach ($allInstructors as $i): ?>
-                                                    <option value="<?= $i['instructor_id'] ?>">
-                                                        <?= htmlspecialchars($i['first_name'] . ' ' . $i['last_name']) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
+                                                <!-- Insert dynamic rendering of Js here -->
+                                                
                                             </select>
                                         </div>
                                         <div class="col-md-4 text-end">
