@@ -20,7 +20,7 @@
         $password = password_hash('password', PASSWORD_BCRYPT);
 
         $sql = "INSERT INTO tbl_users (username, password, user_role, status) 
-                VALUES (:username, :password, 'student', 1)";
+                VALUES (:username, :password, 'instructor', 1)";
         $stmt = $conn -> prepare($sql);
         $stmt -> bindParam(':username', $instructor_number);
         $stmt -> bindParam(':password', $password);
@@ -29,7 +29,7 @@
         //once user is created, get the ID of the user (user_id)
         $user_id = $conn->lastInsertId();
         
-        // sql statement for student creation
+        // sql statement for instructor creation
         $sql = "INSERT INTO tbl_instructors (user_id ,instructor_number, first_name, last_name) 
                 VALUES (:user_id, :instructor_number, :first_name, :last_name)";
         $stmt = $conn ->prepare($sql);

@@ -81,55 +81,8 @@ include __DIR__ . '/../../../backend/db/conn.php';
 
                 <!-- Class List -->
                 <div id="classList">
-                    <?php
-                        $stmt = $conn->query("SELECT * FROM tbl_class ORDER BY class_id ASC");
-                        $classes = $stmt->fetchAll();
-
-                        if (!$classes) {
-                            echo '
-                                <div class="alert alert-info text-center">
-                                    <i class="fas fa-info-circle"></i> No classes yet. Add one to get started!
-                                </div>
-                            ';
-                        } else {
-                            echo '<div class="row" id="classGrid">';
-
-                            foreach ($classes as $c) {
-                                $title = htmlspecialchars($c['class_name']);
-                                $year = isset($c['year_level']) && $c['year_level'] !== null
-                                    ? "<span class='badge bg-secondary ms-2'>Year {$c['year_level']}</span>"
-                                    : "";
-
-                                echo "
-                                    <div class='col-md-12 col-lg-12 mb-3 class-card' data-title='{$title}'>
-                                        <div class='card h-100'>
-                                            <div class='card-body d-flex justify-content-between align-items-center'>
-                                                <h5 class='card-title mb-0'>
-                                                    <i class='fas fa-graduation-cap text-primary me-2'></i>
-                                                    {$title}{$year}
-                                                </h5>
-                                                <button class='btn btn-primary'
-                                                    onclick=\"window.location.href='section-details.php?class_id={$c['class_id']}'\">
-                                                    <i class='fas fa-eye'></i> View
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ";
-                            }
-
-                            echo '</div>';
-
-                            echo '
-                                <div class="no-results alert alert-warning text-center">
-                                    <i class="fas fa-search-minus"></i> No classes match your search.
-                                </div>
-                            ';
-                        }
-                    ?>
+                    <!-- Render Class Dynamicaly -->
                 </div>
-
-            </div>
         </div>
     </div>
 
@@ -151,7 +104,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
 
 
     <!-- Scripts -->
-    <script src="../../scripts/admincontent/add-classes.js"></script>
+    <script src="../../scripts/admincontent/section.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

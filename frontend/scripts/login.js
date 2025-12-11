@@ -10,7 +10,6 @@ $(document).ready(function(e){
                 password: $('#password').val()
             },
             success: function(res){
-                console.log(res)
                 if(res.status == "success"){
                     // redirect to a website
                     const userLevel = res.user_level
@@ -25,7 +24,7 @@ $(document).ready(function(e){
                             window.location.href ="Teacher/section.php";
                             break;
                         default:
-                            window.location.href ="../loginPage.php";
+                            window.location.href ="../views/loginPage.php";
                             break;
                     }
                 }else{

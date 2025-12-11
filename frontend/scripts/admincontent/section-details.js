@@ -21,10 +21,15 @@ document.addEventListener('DOMContentLoaded', function(){
             fetch('../../../backend/controllers/admin-controller/sections/assignSubjectSections.php', {
                 method: 'PUT', 
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ class_id: parseInt(classId), subject_id: parseInt(subjectId) })
+                body: JSON.stringify({ 
+                    class_id: parseInt(classId), 
+                    subject_id: parseInt(subjectId) 
+                })
             }).then(r=>r.json()).then(data=>{
                 btn.disabled = false; btn.innerHTML = orig;
-                if (data.message) { alert(data.message); location.reload(); }
+                if (data.message) {
+                     alert(data.message); location.reload(); 
+                }
                 else alert('Failed to assign subject');
             }).catch(e=>{btn.disabled=false;btn.innerHTML=orig;console.error(e);alert('Error assigning subject');});
         });
