@@ -10,7 +10,6 @@ $(document).ready(function(e){
                 password: $('#password').val()
             },
             success: function(res){
-                console.log(res)
                 if(res.status == "success"){
                     // redirect to a website
                     const userLevel = res.user_level

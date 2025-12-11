@@ -252,7 +252,7 @@ $allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
                                             <select class="form-select form-select-sm" id="addInstructorSelect">
                                                 <option value="">-- Select an Instructor --</option>
                                                 <!-- Insert dynamic rendering of Js here -->
-                                                
+
                                             </select>
                                         </div>
                                         <div class="col-md-4 text-end">

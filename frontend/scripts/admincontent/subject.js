@@ -143,6 +143,35 @@ $(document).ready(function() {
         });
     }
 
+    //Handle get Unassigned Instructor
+    $(document).ready(function(){
+        $.ajax({
+            url:'../../../backend/controllers/admin-controller/subjects/getUnassignedInstructor.php',
+            method:'GET',
+            dataType:"json",
+            success: function(res){
+                if(res.success){
+                    let select = $('#addInstructorSelect');
+                    res.teachers.forEach(ins => {
+                        select.append(`
+                            <option value="${ins.instructor_id}">
+                                ${ins.first_name} ${ins.last_name}
+                            </option>
+                            `);
+                    });
+                    
+                }
+            },
+            error: function(xhr, status, error) {
+                $('#loadingInstructors').hide();
+                $('#noInstructors').show();
+                console.error('Error loading instructors:', error);
+            }
+
+        })
+    });
+
+
     // Handle Assign Instructor
     $('#assignInViewBtn').on('click', function() {
         const instructorId = $('#addInstructorSelect').val();
@@ -170,6 +199,8 @@ $(document).ready(function() {
                     loadInstructors(currentSubjectId);
                     // Reset dropdown
                     $('#addInstructorSelect').val('');
+                    //reload
+                    location.reload();
                 } else {
                     alert('Error: ' + (response.message || 'Failed to assign instructor.'));
                 }
