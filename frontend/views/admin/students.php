@@ -1,3 +1,6 @@
+<?php
+    require_once('../../../backend/controllers/auth/admin-auth-check.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

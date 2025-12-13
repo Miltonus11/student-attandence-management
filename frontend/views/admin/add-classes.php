@@ -1,4 +1,8 @@
 <?php
+    require_once('../../../backend/controllers/auth/admin-auth-check.php');
+?>
+<?php
+
 include __DIR__ . '/../../../backend/db/conn.php';
 
 // Handle form submission

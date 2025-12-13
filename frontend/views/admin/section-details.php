@@ -1,4 +1,7 @@
 <?php
+    require_once('../../../backend/controllers/auth/admin-auth-check.php');
+?>
+<?php
 include __DIR__ . '/../../../backend/db/conn.php';
 
 if (!isset($_GET['class_id'])) {

@@ -1,4 +1,7 @@
 <?php
+    require_once('../../../backend/controllers/auth/admin-auth-check.php');
+?>
+<?php
 include __DIR__ . '/../../../backend/db/conn.php';
 
 // Fetch all available instructors for the assign modal
@@ -328,5 +331,6 @@ $allInstructors = $allInstructorsStmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../scripts/admincontent/subject.js"></script>
+    <script src="../../scripts/logout.js"></script>
 </body>
 </html>
