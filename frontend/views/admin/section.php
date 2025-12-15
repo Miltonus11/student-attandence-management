@@ -1,4 +1,7 @@
 <?php
+    require_once('../../../backend/controllers/auth/admin-auth-check.php');
+?>
+<?php
 include __DIR__ . '/../../../backend/db/conn.php';
 ?>
 
@@ -106,6 +109,7 @@ include __DIR__ . '/../../../backend/db/conn.php';
     <!-- Scripts -->
     <script src="../../scripts/admincontent/section.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../scripts/logout.js"></script>
 
 </body>
 </html>

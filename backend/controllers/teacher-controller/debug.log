@@ -1,0 +1,24 @@
+2025-12-15 15:53:42 - Script started
+2025-12-15 15:53:42 - Raw input: {"attendance_date":"2025-12-15","attendance":[{"student_id":1,"present":1}],"section_id":1}
+2025-12-15 15:53:42 - Decoded input: {"attendance_date":"2025-12-15","attendance":[{"student_id":1,"present":1}],"section_id":1}
+2025-12-15 15:53:42 - Session: instructor_id=, subject_id=
+2025-12-15 15:53:42 - DB connection loaded
+2025-12-15 15:53:42 - Entered try block
+2025-12-15 15:53:42 - Verify result: 0
+2025-12-15 15:53:42 - Access denied
+2025-12-15 15:54:00 - Script started
+2025-12-15 15:54:00 - Raw input: {"attendance_date":"2025-12-15","attendance":[{"student_id":1,"present":1}],"section_id":1}
+2025-12-15 15:54:00 - Decoded input: {"attendance_date":"2025-12-15","attendance":[{"student_id":1,"present":1}],"section_id":1}
+2025-12-15 15:54:00 - Session: instructor_id=1, subject_id=1
+2025-12-15 15:54:00 - DB connection loaded
+2025-12-15 15:54:00 - Entered try block
+2025-12-15 15:54:00 - Verify result: 0
+2025-12-15 15:54:00 - Access denied
+2025-12-15 15:54:12 - Script started
+2025-12-15 15:54:12 - Raw input: {"attendance_date":"2025-12-15","attendance":[{"student_id":1,"present":1}],"section_id":1}
+2025-12-15 15:54:12 - Decoded input: {"attendance_date":"2025-12-15","attendance":[{"student_id":1,"present":1}],"section_id":1}
+2025-12-15 15:54:12 - Session: instructor_id=1, subject_id=1
+2025-12-15 15:54:12 - DB connection loaded
+2025-12-15 15:54:12 - Entered try block
+2025-12-15 15:54:12 - Verify result: 0
+2025-12-15 15:54:12 - Access denied

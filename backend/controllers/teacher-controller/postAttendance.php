@@ -81,8 +81,8 @@ try {
     // Prepare insert/update statement
     // Table: attendance_id, student_id, class_id, subject_id, date, status
     $sql = "INSERT INTO tbl_attendance 
-            (student_id, class_id, subject_id, date, status) 
-            VALUES (:student_id, :class_id, :subject_id, :date, :status)
+            (student_id, class_id, date, status) 
+            VALUES (:student_id, :class_id, :date, :status)
             ON DUPLICATE KEY UPDATE 
             status = VALUES(status)";
     
@@ -102,7 +102,7 @@ try {
         
         $stmt->bindParam(':student_id', $student_id, PDO::PARAM_INT);
         $stmt->bindParam(':class_id', $section_id, PDO::PARAM_INT);
-        $stmt->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
+        // $stmt->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
         $stmt->bindParam(':date', $attendance_date);
         $stmt->bindParam(':status', $status);
         
@@ -141,6 +141,5 @@ try {
         "success" => false,
         "message" => "Database error occurred: " . $e->getMessage()
     ]);
-    error_log("Error in saveAttendance.php: " . $e->getMessage());
 }
 ?>
