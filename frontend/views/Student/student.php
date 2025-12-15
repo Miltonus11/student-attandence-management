@@ -7,6 +7,7 @@ $first_name = $_SESSION['first_name'];
 $last_name = $_SESSION['last_name'];
 $user_id = $_SESSION['user_id']; 
 
+echo $student_id ;
 ?>
 <!DOCTYPE html>
 <html lang="en">

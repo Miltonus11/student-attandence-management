@@ -3,7 +3,6 @@ $(document).ready(function () {
 
     const tableContainer = $("#tableContainer");
     const tableFooter = $("#tableFooter");
-
     $("#tableLoading").hide();
     tableContainer.show();
     tableFooter.show();
@@ -69,26 +68,44 @@ $(document).ready(function () {
     // Save attendance
     $("#saveAttendance").click(() => {
         const attendanceData = [];
-
+        const attendanceDate = $('#attendanceDate').val();
         $("#attendanceTable tbody tr").each(function () {
-            const id = $(this).data("student-id");
+            const student_id = $(this).data("student-id");
             const checked = $(this).find(".attendance-checkbox").is(":checked");
-
+            
             attendanceData.push({
-                id,
+                student_id,
                 present: checked ? 1 : 0
             });
         });
 
-        console.log("Saved Attendance:", attendanceData);
+        const formData = {
+            attendance_date: attendanceDate,
+            attendance: attendanceData,
+            section_id: section.id
+        }
 
-        Swal.fire({
-            icon: "success",
-            title: "Attendance Saved!",
-            confirmButtonColor: "#012970"
-        }).then(() => {
-            window.location.href = "section.php";
+        console.log(formData);
+        $.ajax({
+        url: "../../../backend/controllers/teacher-controller/postAttendance.php", 
+        method: "POST",
+        contentType: "application/json", 
+        dataType: "json",
+        data: JSON.stringify(formData),
+        success: function (result) {
+            Swal.fire({
+                    icon: 'success',
+                    title: 'Attendance Posted!',
+                    text: 'Attendance successfully posted.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+        },
+        error:() => alert("Failed to save attendance. Please try again.")
+        
         });
+
+        
     });
 
     // Download PDF button handler
