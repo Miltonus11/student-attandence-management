@@ -20,20 +20,18 @@ function loadSectionData() {
     $('#teacherName').text('Loading...');
 
     $.ajax({
-        url: '../../../backend/getStudentSubject.php',
+        url: '../../../backend/controllers/student-controller/getStudentAttendance.php',
         method: 'GET',
-        data: { user_id: studentId },
+        data: { student_id: studentId },
         success: function(response) {
             if (response.success) {
-                const data = response.data;
-                $('#sectionName').text(data.class_name || 'N/A');
-                $('#subjectInfo').text(data.subject_name || 'N/A');
-                $('#teacherName').text((data.teacher_first_name && data.teacher_last_name) ? `${data.teacher_first_name} ${data.teacher_last_name}` : 'N/A');
-                subjectName = data.subject_name || 'General';
-                document.title = (data.class_name || 'Section') + " - Attendance";
-                
-                loadSubjectTasks();
-                updateAttendanceStats(); 
+                const data = response.Attendance;
+
+                const present = data.length > 0 ? data[0].present : 0;
+                const absent  = data.length > 0 ? data[0].absent : 0;
+                console.log(data.present)
+                $('#daysPresent').text(present);
+                $('#daysAbsent').text(absent);
                 showToast('Data loaded successfully!', 'success');
             } else {
                 showError(response.message || 'Failed to load data');
@@ -269,8 +267,7 @@ function updateAttendanceStats() {
     const present = mockAttendance.present;
     const absent = mockAttendance.absent;
     const attendanceRate = mockAttendance.attendanceRate;
-    
-    $('#daysPresent').text(present);
+     $('#daysPresent').text(present);
     $('#daysAbsent').text(absent);
     
     let msg = '';
