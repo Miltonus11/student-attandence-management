@@ -45,10 +45,7 @@ function renderClass(classes) {
                             <i class='fas fa-graduation-cap text-primary me-2'></i>
                             ${title}${year}
                         </h5>
-                        <small class="text-muted d-block">
-                            <i class="fas fa-chalkboard-teacher me-1"></i>
-                            ${teacherName}
-                        </small>
+                     
                         <button class='btn btn-primary'
                             onclick="window.location.href='section-details.php?class_id=${c.class_id}'">
                             <i class='fas fa-eye'></i> View

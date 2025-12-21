@@ -103,17 +103,23 @@
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label for="student_id" class="form-label">Student ID No.</label>
-                                <input type="text" class="form-control" id="student_id" required>
+                                <input type="text" maxlength="8" pattern="\d{1,8}" class="form-control" id="student_id" placeholder="Enter up to 8 digits" required>
                             </div>
                             
                             <div class="col-md-2">
                                 <label for="year_level" class="form-label">Year Level</label>
-                                <input type="text" class="form-control" id="year_level" required>
+                                <select id="year_level" class="form-control">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+
                             </div>
                         </div> 
 
                         <div class="row mb-3">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="first_name" class="form-label">First Name</label>
                                 <input type="text" class="form-control" id="first_name" required>
                             </div>
@@ -169,17 +175,17 @@
                 <div class="modal-body">
                     <div class="row mb-3">
                         <input type="hidden" id="edit_student_id">
-                        <div class="col-md-1">
+                        <div class="col-md-4">
                             <label for="edit_student_number" class="form-label">Student ID No.</label>
                             <input type="text" class="form-control" id="edit_student_number" readonly>
                         </div>
-                        <div style="margin-left:20px" class="col-md-2">
+                        <div class="col-md-4">
                             <label for="edit_year_level" class="form-label">Year Level</label>
                             <input type="text" class="form-control" id="edit_year_level" required>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="edit_first_name" class="form-label">First Name</label>
                             <input type="text" class="form-control" id="edit_first_name" required>
                         </div>
