@@ -36,6 +36,7 @@ function renderClass(classes) {
     classes.forEach(c => {
         let title = c.class_name;
         let year  = c.year_level ?  `<span class='badge bg-secondary ms-2'>Year ${c.year_level}</span>` : "";
+        const teacherName = c.teacher_name ? c.teacher_name : '<span class="text-danger">Not assigned</span>';
         html += `
             <div class='col-md-12 col-lg-12 mb-3 class-card' data-title='${title}'>
                 <div class='card h-100'>
@@ -44,6 +45,10 @@ function renderClass(classes) {
                             <i class='fas fa-graduation-cap text-primary me-2'></i>
                             ${title}${year}
                         </h5>
+                        <small class="text-muted d-block">
+                            <i class="fas fa-chalkboard-teacher me-1"></i>
+                            ${teacherName}
+                        </small>
                         <button class='btn btn-primary'
                             onclick="window.location.href='section-details.php?class_id=${c.class_id}'">
                             <i class='fas fa-eye'></i> View

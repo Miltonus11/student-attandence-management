@@ -44,56 +44,67 @@ function initializeDashboard() {
     });
 }
 
+let attendanceChart = null;
+
+
 function loadAttendanceChart() {
-    const ctx = document.getElementById('attendanceChart').getContext('2d');
-    
-    // Sample data for the last 7 days
-    const dates = getLast7Days();
-    const presentData = generateSampleData(650, 750);
-    const absentData = generateSampleData(100, 150);
-    
-    // Create the line chart
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: dates,
-            datasets: [
-                {
-                    label: 'Present',
-                    data: presentData,
-                    borderColor: '#28a745',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'Absent',
-                    data: absentData,
-                    borderColor: '#dc3545',
-                    backgroundColor: 'rgba(220, 53, 69, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
+    fetch('http://localhost/dev/student-attandence-management/backend/controllers/admin-controller/reports/getAttendanceChart.php')
+        .then(res => res.json())
+        .then(data => {
+
+            if (!data.success) {
+                console.error('Chart API failed');
+                return;
             }
-        }
-    });
+
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+
+            // Destroy old chart (important!)
+            if (attendanceChart) {
+                attendanceChart.destroy();
+            }
+
+            attendanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: 'Present',
+                            data: data.present,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Absent',
+                            data: data.absent,
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Students'
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.error('Error loading attendance chart:', err);
+        });
 }
+
 
 function getLast7Days() {
     const days = [];

@@ -12,7 +12,7 @@
             <div class="profile-name" 
                  style="font-weight: bold; font-size: 16px;"
                  id="sidebarProfileName">
-                <?php echo htmlspecialchars($sidebar_user['name'] ?? 'Teacher'); ?>
+                <?php echo htmlspecialchars($_SESSION['first_name'] . " " . $_SESSION['last_name'] ?? 'Teacher'); ?>
             </div>
         </div>
 
